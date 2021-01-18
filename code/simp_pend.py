@@ -12,14 +12,13 @@ this also splits the pendulum into a position and a velocity component
 motion described by d/dt(phi_1) = phi_2, and d/dt(phi_2) = -g/l * sin(phi_1)
 '''
 
-phi_start = [0,3] #two arbitrary values, experiment the effect of changing these
-
+phi_start = [0,0.5] #starting position and velocity - THIS HAS BIG IMPACT ON THE OUTCOME 
 '''
 definitions - experiment with changing these 
 '''
 
 g = 9.81
-mass = 1
+mass = 4
 length = 3
 dt = 0.05 
 time_points = np.arange(0,10,dt) #this was changed so now the timestep between points was availible in an easier way
@@ -28,7 +27,7 @@ time_points = np.arange(0,10,dt) #this was changed so now the timestep between p
 get the matrix(arrays) of the first order ODEs so that odeint can solve it
 '''
 
-def dphi_12_dt(phi_start, time_points, g, mass, legnth): #error thrown up that it only takes 4 positional arguments but 5 were given if the timepoints function isn't here
+def dphi_12_dt(phi_start, time_points, g, legnth): #error thrown up that it only takes 4 positional arguments but 5 were given if the timepoints function isn't here
     phi_1 = phi_start[0]
     phi_2 = phi_start[1]
     dphi_1_dt = phi_2
@@ -39,20 +38,20 @@ def dphi_12_dt(phi_start, time_points, g, mass, legnth): #error thrown up that i
     return dphi_12_dt
 
 
-motion = odeint(dphi_12_dt, phi_start, time_points, args=(g,mass, length))
+motion = odeint(dphi_12_dt, phi_start, time_points, args=(g, length))
 
 disp = motion[:,0]
 vel = motion[:,1]
-'''
-fig, ax = plt.subplots(ncols=3, nrows=1)
+
+fig, ax = plt.subplots(ncols=1, nrows=3)
 fig.suptitle('Plotting the pendulum motion and velocity of a simple pendulum')
 
-ax[0].plot(time_points, disp, color = 'm')
+ax[0].plot(time_points, disp, color = 'b')
 ax[0].set(title = 'Pendulum position', xlabel = 'time', ylabel = 'displacement')
 ax[0].grid()
 
 
-ax[1].plot(time_points, vel, color = 'c')
+ax[1].plot(time_points, vel, color = 'r')
 ax[1].set(title = 'Pendulum velocity', xlabel = 'time', ylabel = 'velocity')
 ax[1].grid()
 
@@ -61,9 +60,10 @@ ax[2].plot(time_points, motion[:,0], color = 'm', label = 'Displacement')
 ax[2].plot(time_points, motion[:,1], color = 'c', label = 'Velocity')
 ax[2].set(title = 'Superposition of both components', xlabel = 'time', ylabel = '')
 ax[2].legend(loc = 'best')
+ax[2].grid()
 plt.show()
 
-'''
+
 
 '''
 setting up the points in spatial co-ordinates so they can be animated
@@ -104,8 +104,7 @@ def animate(i):
     time_text.set_text(time_template.format(i*dt))
     return line, time_text
 
-ani = animation.FuncAnimation(fig, animate, np.arange(1, len(positions_x)),
-                              interval=25, blit=True, init_func=ani_init)
+ani = animation.FuncAnimation(fig, animate, np.arange(1, len(positions_x)),  interval=25, blit=True, init_func=ani_init)
 
 plt.show()
 
