@@ -1,5 +1,6 @@
 import numpy as np
 import math 
+import random
 #not sure entirely how to do this without particle ball class - it will be different to the final class, so kept contained in this file 
 '''
 generates a load of particles that move around a box.
@@ -23,7 +24,7 @@ class particle:
         '''
         returns true if incident particle overlaps with self particle
         '''
-        return np.hypot(self.r - incident.r) < self.radius - incident.radius
+        return np.hypot(*(self.r - incident.r)) < self.radius - incident.radius
 
     def update(self, dt):
         '''
@@ -62,8 +63,8 @@ class sim:
         for i in enumerate(radii):
             #find a start position
             while True:
-                r = [self.x_size * np.random.random(), self.y_size * np.random.random()] # generate a random starting point within the x and y size of the box
-                v = [np.random.random(), np.random.random()] #generate a random starting velocity 
+                r = [self.x_size * random.random(), self.y_size * random.random()] # generate a random starting point within the x and y size of the box
+                v = [random.random(), random.random()] #generate a random starting velocity 
                 new = particle(r, v, radii[i])
                 for collider in self.particles: #check that it doesnt spawn inside a different particle:
                     if collider.overlap(new):
