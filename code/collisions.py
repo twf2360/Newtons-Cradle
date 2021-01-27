@@ -18,11 +18,12 @@ class particle:
     set up the particles that are used in the simulation
     '''
     
-    def __init__(self, r = np.array([0,0], dtype = float), velocity = np.array([0,0], dtype = float), radius = 1):
+    def __init__(self, r = np.array([0,0], dtype = float), velocity = np.array([0,0], dtype = float), radius = 1, x_size =1, y_size=1):
         self.velocity = velocity
         self.r = r 
         self.radius = radius
-    
+        self.x_size = x_size
+        self.y_size = y_size
     def overlap(self, incident):
         '''
         returns true if incident particle overlaps with self particle
@@ -34,10 +35,21 @@ class particle:
         updates the position of the particle after a time dt
         '''
         self.r += self.velocity * dt
+        '''
+        make sure the particles bounce off the walls 
+        little worried about corners! 
 
+        '''
+        x,y = self.r[0], self.r[1]
+        vx, vy = self.velocity[0], self.velocity[1]
+        
+        if not (self.radius < x < (self.x_size - self.radius)):
+            vx = -vx # this makes me a little uncomfortable, probably a cleaner way of doing this 
+        if not (self.radius < y < (self.y_size - self.radius)):
+            vy = -vy
 
 class sim:
-    def __init__(self, x_size, y_size, number_of_particles, radii):
+    def __init__(self, x_size = 1, y_size = 1, number_of_particles = 3 , radii = [2,3,4]):
         self.x_size = x_size
         self.y_size = y_size
 
@@ -76,7 +88,7 @@ class sim:
             while True:
                 r = [self.x_size * random.random(), self.y_size * random.random()] # generate a random starting point within the x and y size of the box
                 v = [random.random(), random.random()] #generate a random starting velocity 
-                new = particle(r, v, radii[i])
+                new = particle(r, v, radii[i], self.x_size, self.y_size)
                 for collider in self.particles: #check that it doesnt spawn inside a different particle:
                     if collider.overlap(new):
                         break
