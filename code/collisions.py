@@ -2,6 +2,9 @@ import numpy as np
 import math 
 import random
 from itertools import combinations
+from matplotlib.patches import Circle
+from matplotlib import animation
+import matplotlib.pyplot as plt
 #not sure entirely how to do this without particle ball class - it will be different to the final class, so kept contained in this file 
 '''
 generates a load of 2D particles that move around a 2D box, and sometimes smack each other.
@@ -29,7 +32,7 @@ class particle:
         '''
         returns true if incident particle overlaps with self particle
         '''
-        return np.hypot(*(self.r - incident.r)) < self.radius - incident.radius
+        return np.hypot(*(self.r - incident.r)) < self.radius + incident.radius
 
     def update(self, dt):
         '''
@@ -46,8 +49,23 @@ class particle:
         
         if not (self.radius < x < (self.x_size - self.radius)):
             vx = -vx # this makes me a little uncomfortable, probably a cleaner way of doing this 
+            if self.radius > x:
+                self.r[0] = self.radius
+            if  x > self.x_size - self.radius:
+                self.r[0] = self.x_size - self.radius
+
         if not (self.radius < y < (self.y_size - self.radius)):
             vy = -vy
+            if self.radius > y:
+                self.r[1] = self.radius
+            if  x > self.y_size - self.radius:
+                self.r[1] = self.y_size - self.radius
+        self.velocity = np.array([vx,vy])
+
+    def draw(self, ax):
+        circle = Circle(xy=self.r, radius=self.radius, **{'edgecolor': 'b', 'fill': False})
+        ax.add_patch(circle)
+        return circle
 
 class sim:
     def __init__(self, x_size = 1, y_size = 1, number_of_particles = 3 , radii = [2,3,4]):
@@ -94,7 +112,7 @@ class sim:
             #find a start position
             while True:
                 r = np.array([self.x_size * random.random(), self.y_size * random.random()]) # generate a random starting point within the x and y size of the box
-                v = np.array([self.x_size * random.random(),self.y_size * random.random()]) #generate a random starting velocity that scales with box size
+                v = np.array([self.x_size * random.random()/2 ,self.y_size * random.random()/2]) #generate a random starting velocity that scales with box size
                 new = particle(r, v, radius_list[i], self.x_size, self.y_size)
                 for collider in self.particles: #check that it doesnt spawn inside a different particle:
                     if collider.overlap(new):
@@ -140,16 +158,56 @@ class sim:
 
 
     def update(self, repeats, dt):
-        for repeat in range(repeats):
+        for repeat in np.arange(repeats):
+            #print(repeat)
             for counter, particle in enumerate(self.particles):
+                #print(counter)
                 particle.update(dt)
                 self.collisions()
+                self.circles[counter].center = particle.r
+            
+            return self.circles
                 #time = repeat * counter
                 #self.timestamps.append(time)
                 #print('particle number {}.'.format(counter), particle.velocity)
         #print('These are the timestamps',self.timestamps)
 
+    def init_animation(self):
+        '''
+        Initialise the animation - setup all the circles
+        '''
+        self.circles = []
+        for particle in self.particles:
+            self.circles.append(particle.draw(self.ax))
+        return self.circles
+    
+    def animate_func(self, i):
+        '''
+        function passed into matplotlib funcanimation. 
+        '''
+        self.update(10, 0.01) #change this to edit the repeats and tme 
+        return self.circles
+
+    def do_animation(self, save=False):
+        '''
+        actually do the animation, if save = True then saves the animation to disk
+        '''
+
+        fig, self.ax = plt.subplots()
+        for s in ['top','bottom','left','right']:
+            self.ax.spines[s].set_linewidth(2)
+        self.ax.set_aspect('equal', 'box')
+        self.ax.set_xlim(0, self.x_size)
+        self.ax.set_ylim(0, self.y_size)
+        self.ax.xaxis.set_ticks([])
+        self.ax.yaxis.set_ticks([])
+        anim = animation.FuncAnimation(fig, self.animate_func, init_func=self.init_animation,
+                               frames=800, interval=2, blit=True)
+        if save:
+            anim.save('collision.mp4')
+        else:
+            plt.show()
 
 
-test = sim(10,10,5,1)
-test.update(1000,0.1)
+test = sim(5,5,5,0.5)
+test.do_animation(False)
