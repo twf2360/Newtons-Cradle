@@ -5,11 +5,12 @@ from itertools import combinations
 #not sure entirely how to do this without particle ball class - it will be different to the final class, so kept contained in this file 
 '''
 generates a load of 2D particles that move around a 2D box, and sometimes smack each other.
+
 a lot of credit to:
 https://scipython.com/blog/two-dimensional-collisions/
 
-few other assumptions that will built in:
-all of the particles have the same density - of 1 - and so mass = volume 
+few assumptions that will built in:
+all of the particles have the same density - of 1 - and so mass = volume, or area in this case 
 collisions are all perfectly elastic - momentum and kinetic energy conserved
 these govern the equations of motion used to handle all the collisions between particles
 '''
@@ -53,10 +54,11 @@ class sim:
         self.x_size = x_size
         self.y_size = y_size
 
+
         self.get_particles(number_of_particles, radii)
 
 
-    def get_particles(self, number, radii):
+    def get_particles(self, number, radius):
         '''
         'spawn' all the particles: number of particles and radii must be defined 
         radii can either be a number, or a list of numbers that is right length - every particle needs a radii, and no extra! 
@@ -64,31 +66,36 @@ class sim:
         '''
 
         '''
-        make sure the radius is in the form wanted
+        make sure the radius is in the form wanted, a list with a length of number of particles
         '''
-
+        radius_list = []
         try: #check to see if radii is an array or a single number 
-            radii.shape()
-            assert number == len(radii) #throws asserterror if the list isn't the right size
-        except TypeError: #if it's a single number, make into a list of the same number 
-            def radius_list_generator(number, radii):
-                for i in range(number):
-                    yield radii
+            radius.shape
+            assert number == len(radius) #throws asserterror if the list isn't the right size
+            radius_list = radius
+        except AttributeError: #if it's a single number, make into a list of the same number 
+            #print('oops')
             
-                radii = radius_list_generator(number, radii) 
+            def make_radius_list(number):
+                for i in range(number):
+                    radius_list.append(radius)
+            
+            make_radius_list(number) 
+
 
         '''
         get the given number of particles with the given radius!
         '''
         self.particles = []
         self.number = number
+        self.timestamps = []
 
-        for i in enumerate(radii):
+        for i in range(len(radius_list)):
             #find a start position
             while True:
-                r = [self.x_size * random.random(), self.y_size * random.random()] # generate a random starting point within the x and y size of the box
-                v = [random.random(), random.random()] #generate a random starting velocity 
-                new = particle(r, v, radii[i], self.x_size, self.y_size)
+                r = np.array([self.x_size * random.random(), self.y_size * random.random()]) # generate a random starting point within the x and y size of the box
+                v = np.array([self.x_size * random.random(),self.y_size * random.random()]) #generate a random starting velocity that scales with box size
+                new = particle(r, v, radius_list[i], self.x_size, self.y_size)
                 for collider in self.particles: #check that it doesnt spawn inside a different particle:
                     if collider.overlap(new):
                         break
@@ -129,5 +136,20 @@ class sim:
         for i,j in pairs:
             if self.particles[i].overlap(self.particles[j]): #check if they overlap
                 calculate_velocities(self.particles[i], self.particles[j]) #if they do overlap, then calculate the change in velocity
+                print('there was a collison!') #just for testing
 
 
+    def update(self, repeats, dt):
+        for repeat in range(repeats):
+            for counter, particle in enumerate(self.particles):
+                particle.update(dt)
+                self.collisions()
+                #time = repeat * counter
+                #self.timestamps.append(time)
+                #print('particle number {}.'.format(counter), particle.velocity)
+        #print('These are the timestamps',self.timestamps)
+
+
+
+test = sim(10,10,5,1)
+test.update(1000,0.1)

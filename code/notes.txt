@@ -5,12 +5,15 @@ This page is just to keep track of things that need doing, and random thoughts:
     - current idea is to to check for overlap at every point somehow? then the starting point and velocity of the angular motion can be then calculated in a similar way to the velocity after collision
 
 - to do:
-    - simple pend 
-    - animate simple pend 
-    - damped pend + animate
-    - collisions + animate
+    - simple pend   (done)
+    - animate simple pend (done)
+    - damped pend + animate (done)
+    - collisions + animate (in progress)
+        - collisions dont seem as often as they should....
+
+        - before animating, maybe check the simulation by using one ball and printing it's motion to check whether it stays within the walls
+        - clean up the range(len(radii)) bit. you know the bit (in progress)
     - combine
     - find things to analyse (consv of momentum, energy, how changing time step effects things etc)
     - ensure that enough "advanced coding methods" are present
         - read up on what counts as advanced coding methods 
-        
