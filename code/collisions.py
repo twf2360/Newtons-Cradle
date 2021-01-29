@@ -5,6 +5,7 @@ from itertools import combinations
 from matplotlib.patches import Circle
 from matplotlib import animation
 import matplotlib.pyplot as plt
+from ball import ball
 #not sure entirely how to do this without particle ball class - it will be different to the final class, so kept contained in this file 
 '''
 generates a load of 2D particles that move around a 2D box, and sometimes smack each other.
@@ -208,6 +209,3 @@ class sim:
         else:
             plt.show()
 
-
-test = sim(5,5,5,0.5)
-test.do_animation(False)
