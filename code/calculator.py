@@ -30,7 +30,7 @@ class calculator:
 
     def get_balls(self, number, positions, velocities, radii, masses, anchors):
         for i in np.arange(number):
-            spawnedBall = ball(position= positions[i], velocity= velocities[i], radius= radii[i], mass = masses[i], anchor= anchors[i])
+            spawnedBall = ball(position= np.array(positions[i], dtype = float),velocity= np.array(velocities[i], dtype = float), radius= np.array(radii[i], dtype = float), mass = masses[i], anchor= anchors[i])
             self.ball_list.append(spawnedBall)
         return self.ball_list
 
@@ -48,5 +48,8 @@ class calculator:
                 ball.momentum += netForce*self.timestep
                 ball.velocity = ball.momentum/ball.mass
                 ball.update(self.timestep)
-
+                print('ball updated, position = {}'.format(ball.position))
+testing = calculator(0.1, 10)
+testing.get_balls(1,[[0,-1]], [[1,0]], [[1]],[[1]],[[0,0]])
+testing.calculate()
 
