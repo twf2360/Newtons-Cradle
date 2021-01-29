@@ -7,19 +7,22 @@ class ball:
     '''
 
 
-    def __init__(self, position = np.array([0,0], dtype = float), velocity = np.array([0,0], dtype = float), radius = 1, length = 1, mass = 1, anchor = np.array([0,1])):
+    def __init__(self, position = np.array([0,-1], dtype = float), velocity = np.array([0,0], dtype = float), radius = 1, mass = 1, anchor = np.array([0,0])):
         '''
         Initialisation function of the class:
         position, radius, mass and velocity all describe the ball itself
-        length describes the distance from the ball to the top, the length of the 'string'
-        anchor describes were the 'string' is attached
+        anchor describes were the 'string' is attached, from which the length of the string is calculated 
         
         '''
-        self.length = length
+        self.anchor = anchor
         self.position = position
         self.radius = radius
         self.mass = mass
         self.velocity = velocity
+        
+
+        self.length = np.linalg.norm(self.anchor - self.position)
+        self.momentum = position * velocity
 
 
     def update(self, dt):
