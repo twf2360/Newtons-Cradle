@@ -11,6 +11,7 @@ credit to: https://www.wired.com/2016/10/modeling-pendulum-harder-think/
 '''
 g_scalar = 9.8
 g_vector = np.array([0,-9.81])
+data = []
 class calculator:
     '''
 
@@ -49,6 +50,12 @@ class calculator:
                 ball.velocity = ball.momentum/ball.mass
                 ball.update(self.timestep)
                 print('ball updated, position = {}'.format(ball.position))
+
+                time = i * self.timestep
+                data_to_save = [time, ball.position, ball.velocities]
+                data.append(data_to_save)
+
+
 testing = calculator(0.1, 10)
 testing.get_balls(1,[[0,-1]], [[1,0]], [[1]],[[1]],[[0,0]])
 testing.calculate()
