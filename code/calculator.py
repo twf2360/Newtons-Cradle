@@ -133,6 +133,7 @@ plt.show()
 '''
 plot x and y position - not sure of this 
 '''
+'''
 
 fig, ax = plt.subplots()
 
@@ -141,3 +142,19 @@ fig.suptitle('x-y position of ball')
 ax.plot(np.transpose(position_list)[0], np.transpose(position_list)[1])
 ax.set(xlabel = 'x position of ball', ylabel = 'y position of ball')
 plt.show()
+'''
+
+'''
+plot x and y against time on seperate graphs against time 
+'''
+fig, ax = plt.subplots(ncols= 2, nrows= 1)
+
+ax[0].set(xlabel = 'time', ylabel = 'x position', title = 'x-position against time')
+ax[0].plot(time_list, np.transpose(position_list)[0], color = 'm')
+
+ax[1].set(xlabel = 'time', ylabel = 'y position', title = 'y-position against time')
+ax[1].plot(time_list, np.transpose(position_list)[1], color = 'r')
+
+
+plt.show()
+
