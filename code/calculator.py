@@ -45,17 +45,15 @@ class calculator:
         '''
         for i in np.arange(self.iterations):
             for ball in self.ball_list:
-                #print('velocity at the start = {}'.format(ball.velocity))
-                print(ball.mass)
                 magAcceleration = (np.linalg.norm(ball.velocity)**2)/ball.length #calculate magnitude of  centripetal acceleration
 
                 angPos = math.atan((ball.position[0] - ball.anchor[0])/((ball.position[1] - ball.anchor[1]))) #angle of the ball compared to the anchor
-                #print(angPos)
+
                 stringTension_scalar = ((ball.mass*g_scalar*math.cos(angPos)) + ball.mass*magAcceleration) 
                 stringTension_vector = stringTension_scalar * (np.array((ball.position-ball.anchor)/ball.length))
 
                 netForce = ball.mass*g_vector + stringTension_vector
-                #print(netForce)
+
                 ball.velocity += (netForce*self.timestep/ball.mass)
                 ball.update(self.timestep)
                 
@@ -63,39 +61,51 @@ class calculator:
                 time = i * self.timestep
                 data_to_save = [time, copy.deepcopy(ball.position), copy.deepcopy(ball.velocity)]
                 data.append(data_to_save)
-                #print('velocity at the end = {}'.format(ball.velocity))
-
-                #print('ball updated, position = {}, time = {}'.format(ball.position, time))
+                
+               
 
 
 testing = calculator(0.01, 1000)
-testing.get_balls(1,[[0,-1]], [[0.1,0]], [1],[1],[[0,0]])
+testing.get_balls(number =1, positions= [[0,-1]], velocities= [[0.1,0]], radii= [1], masses= [1], anchors= [[0,0]])
 testing.calculate()
+
+
+
+'''
+all of the below are just used for plotting - these will eventually be put into their own class, allowing stuff to be saved
+in a dataframe etc. For now, The splurge
+'''
+'''
+the below is just to get certain lists that can then be plotted later on
+'''
 
 time_list = []
 position_list = []
 for i in data:
-    #print(i)
     time_list.append(i[0])
     position_list.append(i[1])
 
 
+'''
+plot x against time to check the expected pattern of motion
+'''
+'''
 fig, ax = plt.subplots()
 
-fig.suptitle('First Plot Test')
+fig.suptitle('x position against time')
 
 ax.plot(time_list, np.transpose(position_list)[0])
 ax.set(xlabel = 'time', ylabel = 'x position of ball')
 plt.show()
-
-
+'''
 
 '''
-there appears to be a singularity in the code so i want to animate it to see if i can see what happens.
+animation! This needs some work due to the "zoom out" issue
 '''
 '''
+
 fig = plt.figure()
-ax = fig.add_subplot(111, autoscale_on = False) #the 111 is what defines the subplot - nrows, ncolums, and index 
+ax = fig.add_subplot(111, autoscale_on = True) #the 111 is what defines the subplot - nrows, ncolums, and index 
 
 line, = ax.plot([],[], 'o-')
 time_template = 'time ={}s'
@@ -116,5 +126,18 @@ def animate(i):
 
 ani = animation.FuncAnimation(fig, animate, np.arange(1, len(positions_x)),  interval=25, blit=True, init_func=ani_init)
 
+
 plt.show()
 '''
+
+'''
+plot x and y position - not sure of this 
+'''
+
+fig, ax = plt.subplots()
+
+fig.suptitle('x-y position of ball')
+
+ax.plot(np.transpose(position_list)[0], np.transpose(position_list)[1])
+ax.set(xlabel = 'x position of ball', ylabel = 'y position of ball')
+plt.show()
