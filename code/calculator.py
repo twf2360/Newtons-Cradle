@@ -2,6 +2,7 @@ import math
 import numpy as np 
 from ball import ball
 import matplotlib.pyplot as plt 
+import copy
 '''
 I realised that the previous version, using the ODE solver, probably wouldn't be all the applicable moving forward
 Trying a forces method instead to model the pendulum motion.
@@ -43,26 +44,42 @@ class calculator:
         '''
         for i in np.arange(self.iterations):
             for ball in self.ball_list:
+                print('velocity at the start = {}'.format(ball.velocity))
                 magAcceleration = (ball.velocity**2)/ball.length #calculate magnitude of  centripetal acceleration 
-                angPos = math.atan((ball.position[0]- ball.anchor[0])/(ball.position[1] - ball.anchor[1])) #angle of the ball compared to the anchor
+                angPos = math.atan((ball.position[0]- ball.anchor[0])/(-(ball.position[1] - ball.anchor[1]))) #angle of the ball compared to the anchor
+                #print(angPos)
                 stringTension = ((ball.mass*g_vector*math.cos(angPos)) + ball.mass*magAcceleration) * ball.length
+                #print(stringTension)
                 netForce = ball.mass*g_vector + stringTension
-                ball.momentum += netForce*self.timestep
-                ball.velocity = ball.momentum/ball.mass
+                #print(netForce)
+                ball.velocity += (netForce*self.timestep/ball.mass)
                 ball.update(self.timestep)
-                print('ball updated, position = {}'.format(ball.position))
+                
 
                 time = i * self.timestep
-                data_to_save = [time, ball.position, ball.velocity]
+                data_to_save = [time, copy.deepcopy(ball.position), copy.deepcopy(ball.velocity)]
                 data.append(data_to_save)
+                print('velocity at the end = {}'.format(ball.velocity))
+
+                print('ball updated, position = {}, time = {}'.format(ball.position, time))
 
 
 testing = calculator(0.1, 10)
 testing.get_balls(1,[[0,-1]], [[1,0]], [[1]],[[1]],[[0,0]])
 testing.calculate()
 
+time_list = []
+position_list = []
+for i in data:
+    #print(i)
+    time_list.append(i[0])
+    position_list.append(i[1])
+
+print(data)
+
 fig, ax = plt.subplots()
 fig.suptitle('First Plot Test')
 
-ax.plot(data[0], data[1])
-ax.set()
+ax.plot(time_list, np.transpose(position_list)[0])
+ax.set(xlabel = 'time', ylabel = 'x position of ball')
+plt.show()
