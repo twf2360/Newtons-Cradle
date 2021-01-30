@@ -1,6 +1,7 @@
 import math
 import numpy as np 
 from ball import ball
+import matplotlib.pyplot as plt 
 '''
 I realised that the previous version, using the ODE solver, probably wouldn't be all the applicable moving forward
 Trying a forces method instead to model the pendulum motion.
@@ -52,7 +53,7 @@ class calculator:
                 print('ball updated, position = {}'.format(ball.position))
 
                 time = i * self.timestep
-                data_to_save = [time, ball.position, ball.velocities]
+                data_to_save = [time, ball.position, ball.velocity]
                 data.append(data_to_save)
 
 
@@ -60,3 +61,8 @@ testing = calculator(0.1, 10)
 testing.get_balls(1,[[0,-1]], [[1,0]], [[1]],[[1]],[[0,0]])
 testing.calculate()
 
+fig, ax = plt.subplots()
+fig.suptitle('First Plot Test')
+
+ax.plot(data[0], data[1])
+ax.set()
