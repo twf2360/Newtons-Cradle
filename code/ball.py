@@ -22,8 +22,6 @@ class ball:
         
 
         self.length = np.linalg.norm(self.anchor - self.position)
-        self.momentum =  velocity / mass
-
 
     def update(self, dt):
         '''
