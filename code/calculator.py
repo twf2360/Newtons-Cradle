@@ -4,6 +4,7 @@ from ball import ball
 import matplotlib.pyplot as plt 
 import copy
 import matplotlib.animation as animation
+from itertools import combinations
 '''
 I realised that the previous version, using the ODE solver, probably wouldn't be all the applicable moving forward
 Trying a forces method instead to model the pendulum motion.
@@ -33,6 +34,7 @@ class calculator:
         self.ball_list = []
 
     def get_balls(self, number, positions, velocities, radii, masses, anchors):
+        self.number = number
         for i in np.arange(number):
             spawnedBall = ball(position= np.array(positions[i], dtype = float),velocity= np.array(velocities[i], dtype = float), radius= np.array(radii[i], dtype = float), mass = masses[i], anchor= anchors[i])
             self.ball_list.append(spawnedBall)
@@ -44,13 +46,34 @@ class calculator:
         calculate the movement of the ball 
         '''
         for i in np.arange(self.iterations):
-            for ball in self.ball_list:
+            for ball in self.ball_list: 
+                pairs = combinations(range(self.number), 2)
+                for i,j in pairs:
+                    if self.ball_list[i].overlap(self.ball_list[j]):
+                        print('There was a collsison')
+                        ball1, ball2 = self.ball_list[i], self.ball_list[j]
+                        totalMass = ball1.mass + ball2.mass
+
+                        pos1, pos2 = ball1.position, ball2.position
+                        distance = np.linalg.norm(pos1 - pos2)**2
+
+                        v1_before = ball1.velocity
+                        v2_before = ball2.velocity
+
+                        v1_after = v1_before - (2*ball1.mass / totalMass) (np.dot(v1_before-v2_before, pos1- pos2) / distance) * (pos1- pos2)
+                        v2_after = v2_before - (2*ball2.mass / totalMass) (np.dot(v2_before-v1_before, pos2- pos1) / distance) * (pos2 - pos1)
+
+                        ball1.velocity = v1_after
+                        ball2.velocity = v2_after
+
+                    
+                print('no collision, current position ={}'.format(ball.position))
                 magAcceleration = (np.linalg.norm(ball.velocity)**2)/ball.length #calculate magnitude of  centripetal acceleration
 
                 angPos = math.atan((ball.position[0] - ball.anchor[0])/((ball.position[1] - ball.anchor[1]))) #angle of the ball compared to the anchor
 
-                stringTension_scalar = ((ball.mass*g_scalar*math.cos(angPos)) + ball.mass*magAcceleration) 
-                stringTension_vector = stringTension_scalar * (np.array((ball.position-ball.anchor)/ball.length))
+                stringTension_scalar = ((ball.mass*g_scalar*math.cos(angPos)) + ball.mass*magAcceleration) #calculate magnitude of string tension
+                stringTension_vector = stringTension_scalar * (np.array((ball.position-ball.anchor)/ball.length)) #acts along the direction of the string towards the centre
 
                 netForce = ball.mass*g_vector + stringTension_vector
 
@@ -70,15 +93,6 @@ testing.get_balls(number =1, positions= [[0,-1]], velocities= [[0.1,0]], radii= 
 testing.calculate()
 
 
-
-'''
-all of the below are just used for plotting - these will eventually be put into their own class, allowing stuff to be saved
-in a dataframe etc. For now, The splurge
-'''
-'''
-the below is just to get certain lists that can then be plotted later on
-'''
-
 time_list = []
 position_list = []
 for i in data:
@@ -89,7 +103,7 @@ for i in data:
 '''
 plot x against time to check the expected pattern of motion
 '''
-'''
+
 fig, ax = plt.subplots()
 
 fig.suptitle('x position against time')
@@ -97,64 +111,5 @@ fig.suptitle('x position against time')
 ax.plot(time_list, np.transpose(position_list)[0])
 ax.set(xlabel = 'time', ylabel = 'x position of ball')
 plt.show()
-'''
 
-'''
-animation! This needs some work due to the "zoom out" issue
-'''
-'''
-
-fig = plt.figure()
-ax = fig.add_subplot(111, autoscale_on = True) #the 111 is what defines the subplot - nrows, ncolums, and index 
-
-line, = ax.plot([],[], 'o-')
-time_template = 'time ={}s'
-time_text = ax.text(0.05,0.9, '', transform=ax.transAxes)
-def ani_init():
-    line.set_data([], [])
-    time_text.set_text('')
-    return line, time_text
-positions_x = np.transpose(position_list)[0]
-positions_y = np.transpose(position_list)[1]
-def animate(i):
-    plot_x = [0,positions_x[i]]
-    plot_y = [0,positions_y[i]]
-
-    line.set_data(plot_x,plot_y)
-    time_text.set_text(time_template.format(i*0.01))
-    return line, time_text
-
-ani = animation.FuncAnimation(fig, animate, np.arange(1, len(positions_x)),  interval=25, blit=True, init_func=ani_init)
-
-
-plt.show()
-'''
-
-'''
-plot x and y position - not sure of this 
-'''
-'''
-
-fig, ax = plt.subplots()
-
-fig.suptitle('x-y position of ball')
-
-ax.plot(np.transpose(position_list)[0], np.transpose(position_list)[1])
-ax.set(xlabel = 'x position of ball', ylabel = 'y position of ball')
-plt.show()
-'''
-
-'''
-plot x and y against time on seperate graphs against time 
-'''
-fig, ax = plt.subplots(ncols= 2, nrows= 1)
-
-ax[0].set(xlabel = 'time', ylabel = 'x position', title = 'x-position against time')
-ax[0].plot(time_list, np.transpose(position_list)[0], color = 'm')
-
-ax[1].set(xlabel = 'time', ylabel = 'y position', title = 'y-position against time')
-ax[1].plot(time_list, np.transpose(position_list)[1], color = 'r')
-
-
-plt.show()
 
