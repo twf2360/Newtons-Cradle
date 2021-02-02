@@ -34,4 +34,4 @@ class ball:
         '''
         returns true if the the incident ball overlaps with self
         '''
-        return np.hypot(*(self.position - incident.position)) < self.radius + incident.radius
+        return np.hypot(*(self.position - incident.position)) <= self.radius + incident.radius

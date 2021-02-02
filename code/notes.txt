@@ -24,4 +24,4 @@ This page is just to keep track of things that need doing, and random thoughts:
         - read up on what counts as advanced coding methods 
 
 
-
+Feels like it's worth writing up about using np.seterr, and try except statements to find what values of ball.position and ball.anchor were causing the runtime warning for overflow
