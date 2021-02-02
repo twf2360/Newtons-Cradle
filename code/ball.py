@@ -22,11 +22,10 @@ class ball:
         
 
         self.length = np.linalg.norm(self.anchor - self.position)
-        self.momentum = position * velocity
-
 
     def update(self, dt):
         '''
         updates the position of the ball after a time dt
         '''
         self.position += self.velocity * dt
+        #print('ball velocity was updated to {}'.format(self.velocity))
