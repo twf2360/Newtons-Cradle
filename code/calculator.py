@@ -89,20 +89,14 @@ class calculator:
             
             elif (np.isnan(delta_y)) or (delta_y == 0):
                 angPos = (math.pi/2)
-                print('dy = {}'.format(delta_y))
+                #print('dy = {}'.format(delta_y))
                 
             else:
                 angPos = 0
                 #print('dx = {}'.format(delta_x))
     
             stringTension_scalar = ((ball.mass*g_scalar*math.cos(angPos)) + ball.mass*magAcceleration) #calculate magnitude of string tension
-            try:
-                stringTension_vector = stringTension_scalar * (np.array((to_anchor)/normalisation))
-                #print(to_anchor, normalisation) #acts along the direction of the string towards the centre
-            except FloatingPointError:
-                print('it do be like that sometimes',ball.position, ball.anchor, ball.length)
- 
-                sys.exit()
+            stringTension_vector = stringTension_scalar * (np.array((to_anchor)/normalisation))
 
             
             netForce = ball.mass*g_vector + stringTension_vector
@@ -137,7 +131,7 @@ class calculator:
 
 
 testing = calculator(0.001, 5000)
-testing.get_balls(number = 2, positions= [[-1,0],[0,-1]], velocities= [[0,0],[0,-0.0]], radii= [0.5,0.5], masses= [1,1], anchors= [[0,0],[0,0]])
+testing.get_balls(number = 2, positions= [[-2,0],[0,-1]], velocities= [[0,0],[0,-0.0]], radii= [0.5,0.5], masses= [1,1], anchors= [[-1,0],[0,0]])
 #testing.get_balls(number =1, positions= [[0,-1]], velocities= [[0.1,0]], radii= [1], masses= [1], anchors= [[0,0]])
 testing.calculate()
 
@@ -159,4 +153,5 @@ fig.suptitle('x position against time')
 ax.plot(time_list, np.transpose(ball1_data)[0], label = 'ball 1')
 ax.plot(time_list, np.transpose(ball2_data)[0], label = 'ball 2')
 ax.set(xlabel = 'time', ylabel = 'x position of ball')
+ax.legend(loc='best')
 plt.show()
