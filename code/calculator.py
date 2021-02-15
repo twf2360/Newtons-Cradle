@@ -136,8 +136,8 @@ class calculator:
                
 
 
-testing = calculator(0.01, 50)
-testing.get_balls(number = 2, positions= [[0,-1],[-1,0]], velocities= [[0,0],[0,-0.1]], radii= [0.5,0.5], masses= [1,1], anchors= [[0,0],[0,0]])
+testing = calculator(0.001, 5000)
+testing.get_balls(number = 2, positions= [[0,-1],[-1,0]], velocities= [[0,0],[0,-0.0]], radii= [0.5,0.5], masses= [1,1], anchors= [[0,0],[0,0]])
 #testing.get_balls(number =1, positions= [[0,-1]], velocities= [[0.1,0]], radii= [1], masses= [1], anchors= [[0,0]])
 testing.calculate()
 
