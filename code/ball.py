@@ -29,3 +29,9 @@ class ball:
         '''
         self.position += self.velocity * dt
         #print('ball velocity was updated to {}'.format(self.velocity))
+
+    def overlap(self, incident):
+        '''
+        returns true if the the incident ball overlaps with self
+        '''
+        return np.hypot(*(self.position - incident.position)) <= self.radius + incident.radius
