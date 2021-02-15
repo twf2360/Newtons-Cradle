@@ -5,7 +5,7 @@ phys389-2021-project-twf2360 created by GitHub Classroom
 
 Writing a program that simulates, and hopefully animates, a Newton's cradle, for module PHYS389 at Lancaster University. 
 ### About PHYS389: Computer Modelling
-PHYS389 is intented to build upon previous Computer Modelling techniques from PHYS281, and introduce more advanced programming techniques than those used in the previous Computer Modelling Module, PHYS281. These more advanced techniques could be more sophisticated class methods, such as inheritcance. Alternatively, the system could be more complicated than the PHYS281, consisting of more complicated motion - such as random, or choatic motion. Additionally, as an addition to PHYS281, a testing system should be implemented, using libraries such as PyTest.
+PHYS389 is intented to build upon previous Computer Modelling techniques from PHYS281, and introduce more advanced programming techniques than those used in the previous Computer Modelling Module, PHYS281. These more advanced techniques could be more sophisticated class methods, such as inheritcance. Alternatively, the system could be more complicated than the PHYS281, consisting of more complicated motion - such as random, or choatic motion. Additionally, as an addition to PHYS281, a testing system should be implemented, using libraries such as PyTest. This is a large portion of the final grade, and it is important that it is included
 
 ### Personal Project 
 As two of the recommended projects were a force damped pendulum, or a double pendulum. To add to this, I decided to try to code a Newton's Cradke. Ideally, the 'pendulum motion' shown by the balls on the end of the pendulum will also show damped behviour. 
