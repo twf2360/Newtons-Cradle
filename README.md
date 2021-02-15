@@ -14,12 +14,13 @@ The aim is to not only write a program to simulate and animate a newtons cradle,
 ### Milestones 
 There are various milestones that will help to document my progress! 
 1. Simulate a simple pendulum
-  - Done using ODEINT
-  - Need to ensure that the 'forces' method works
-  - Succesfully animated 
+    - Done using ODEINT
+    - Need to ensure that the 'forces' method works
+    - Succesfully animated 
 2. Extend to a damped pendulum
-  - Done using ODEINT
-  - Succesfully animated
+    - Done using ODEINT
+    - Succesfully animated
 3. Model Collisons 
-  - Done 
-  - Successfully animated
+    - Done 
+    - Successfully animated
+4. Extend to a Newtons Cradle
