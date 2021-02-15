@@ -66,7 +66,7 @@ class calculator:
             ball1.velocity = v1_after
             ball2.velocity = v2_after
 
-            print('ball 1 velocity after collision = {}, ball 2 velocity afer collision = {} \nball 1 position = {}, ball 2 position = {}'.format(ball1.velocity, ball2.velocity, ball1.position, ball2.position))
+            #print('ball 1 velocity after collision = {}, ball 2 velocity afer collision = {} \nball 1 position = {}, ball 2 position = {}'.format(ball1.velocity, ball2.velocity, ball1.position, ball2.position))
 
         def movement(ball):
             '''
