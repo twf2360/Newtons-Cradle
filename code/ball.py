@@ -35,3 +35,14 @@ class ball:
         returns true if the the incident ball overlaps with self
         '''
         return np.hypot(*(self.position - incident.position)) <= self.radius + incident.radius
+
+    def kinetic(self):
+        '''returns kinetic energy of the ball'''
+        ke = 0.5*self.mass*self.velocity**2
+        return ke 
+    
+    def potential(self):
+        ''' returns potential energy of the ball ''' 
+        h = self.anchor[1] - self.position[1]
+        mgh = self.mass * 9.81 * h
+        return mgh
