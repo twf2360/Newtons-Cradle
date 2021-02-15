@@ -14,7 +14,7 @@ This will be much easier to combine with the collisions
 
 credit to: https://www.wired.com/2016/10/modeling-pendulum-harder-think/
 '''
-g_scalar = -9.8
+g_scalar = 9.81
 g_vector = np.array([0,-9.81])
 data = []
 np.seterr(over='raise')
@@ -77,28 +77,28 @@ class calculator:
             delta_x = np.abs((ball.position[0] - ball.anchor[0]))
             delta_y = np.abs((ball.position[1] - ball.anchor[1]))
 
-            to_anchor = ball.position-ball.anchor 
+            to_anchor = ball.anchor - ball.position  
             normalisation = np.linalg.norm(to_anchor)
             #print(to_anchor)
             
             if (not np.isnan(delta_x)) and (delta_x != 0) and (not np.isnan(delta_y)) and (delta_y != 0):
+                ''' this to avoid the possibility of any divide by 0 errors if the ball is at 0 or 90 degrees to the vertical '''
                 #print(ball.position[1] - ball.anchor[1])
                 angPos = math.atan(delta_x/delta_y) #angle of the ball compared to the anchor
                 #print(angPos)
             
             elif (np.isnan(delta_y)) or (delta_y == 0):
-                angPos = math.pi
-                #print('dy = {}'.format(delta_y))
+                angPos = (math.pi/2)
+                print('dy = {}'.format(delta_y))
                 
-            
             else:
                 angPos = 0
                 #print('dx = {}'.format(delta_x))
     
-            
             stringTension_scalar = ((ball.mass*g_scalar*math.cos(angPos)) + ball.mass*magAcceleration) #calculate magnitude of string tension
             try:
-                stringTension_vector = stringTension_scalar * (np.array((to_anchor)/normalisation)) #acts along the direction of the string towards the centre
+                stringTension_vector = stringTension_scalar * (np.array((to_anchor)/normalisation))
+                #print(to_anchor, normalisation) #acts along the direction of the string towards the centre
             except FloatingPointError:
                 print('it do be like that sometimes',ball.position, ball.anchor, ball.length)
  
@@ -137,7 +137,7 @@ class calculator:
 
 
 testing = calculator(0.001, 5000)
-testing.get_balls(number = 2, positions= [[0,-1],[-1,0]], velocities= [[0,0],[0,-0.0]], radii= [0.5,0.5], masses= [1,1], anchors= [[0,0],[0,0]])
+testing.get_balls(number = 2, positions= [[-1,0],[0,-1]], velocities= [[0,0],[0,-0.0]], radii= [0.5,0.5], masses= [1,1], anchors= [[0,0],[0,0]])
 #testing.get_balls(number =1, positions= [[0,-1]], velocities= [[0.1,0]], radii= [1], masses= [1], anchors= [[0,0]])
 testing.calculate()
 
