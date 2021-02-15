@@ -135,7 +135,8 @@ testing.get_balls(number = 2, positions= [[-2,0],[0,-1]], velocities= [[0,0],[0,
 #testing.get_balls(number =1, positions= [[0,-1]], velocities= [[0.1,0]], radii= [1], masses= [1], anchors= [[0,0]])
 testing.calculate()
 
-
+np.save('data_testing.npy', data, allow_pickle = True)
+'''
 
 ball1_data = []
 ball2_data = []
@@ -155,3 +156,4 @@ ax.plot(time_list, np.transpose(ball2_data)[0], label = 'ball 2')
 ax.set(xlabel = 'time', ylabel = 'x position of ball')
 ax.legend(loc='best')
 plt.show()
+'''
