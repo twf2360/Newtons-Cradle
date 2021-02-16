@@ -55,6 +55,19 @@ class calculator:
         '''
         calculate the movement of the ball 
         '''
+        def air_resistance(self, ball):
+            ''' calculates the force of air resistance on the ball'''
+            air_density = 1.225
+            drag_coefficient = 0.5 #just googled the drag co-efficent of a sphere
+            cross_sec_area = math.pi * ball.radius**2
+            velocity = ball.velocity
+            speed = np.linalg.norm(velocity)
+            vel_direction = velocity / speed
+
+            force_scalar = 0.5 * air_density * speed**2 *drag_coefficient * cross_sec_area
+            force_vector = force_scalar * vel_direction
+            return force_vector
+
         def collision(ball1, ball2):
             '''
             calculate the change in velocities if there's a collision
@@ -74,10 +87,11 @@ class calculator:
 
             #print('ball 1 velocity after collision = {}, ball 2 velocity afer collision = {} \nball 1 position = {}, ball 2 position = {}'.format(ball1.velocity, ball2.velocity, ball1.position, ball2.position))
 
-        def movement(ball):
+        def movement(inputball):
             '''
-            calculate the change in velociy with no collision
+            calculate the change in velocity with no collision
             '''
+            ball = inputball
             magAcceleration = (np.linalg.norm(ball.velocity)**2)/ball.length #calculate magnitude of  centripetal acceleration
 
             delta_x = np.abs((ball.position[0] - ball.anchor[0]))
@@ -104,8 +118,9 @@ class calculator:
             stringTension_scalar = ((ball.mass*g_scalar*math.cos(angPos)) + ball.mass*magAcceleration) #calculate magnitude of string tension
             stringTension_vector = stringTension_scalar * (np.array((to_anchor)/normalisation))
 
-            
-            netForce = ball.mass*g_vector + stringTension_vector
+            air_resistance_force = air_resistance(ball) 
+            ''' PROBLEM IS HERE ''' 
+            netForce = ball.mass*g_vector + stringTension_vector + air_resistance_force
             acceleration = (netForce/ball.mass)
             velocity_change = acceleration * self.timestep
             ball.velocity += velocity_change
