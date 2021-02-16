@@ -61,6 +61,23 @@ class plotter:
         ax.legend()
         plt.show()
         
+    def plot_x_vs_y(self):
+        self.organise_by_ball()
+        fig, ax = plt.subplots()
+        fig.suptitle("x vs y positions")
+        for ball in range(self.number):
+            total_positions = self.organised_by_ball[ball]
+            x_positions = []
+            y_positions = []
+            for position in range(len(total_positions)):
+                x_positions.append(total_positions[position][0])
+                y_positions.append(total_positions[position][1])
+            ax.plot(x_positions, y_positions, label = 'ball {}'.format(ball+1))
+
+        ax.set(xlabel ='x positions', ylabel = 'y positions')
+        ax.legend()
+        plt.show()
+    
 
 test = plotter('data_testing', 2)
-test.plot_y_positions_vs_time()
+test.plot_x_vs_y()
