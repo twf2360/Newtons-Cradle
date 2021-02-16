@@ -7,7 +7,8 @@ class plotter:
     def __init__(self, data_name, number):
         file = data_name + '.npy'
         self.data = np.load(file, allow_pickle = True)
-        self.number = number
+        self.number= number
+        
 
     def organise_by_ball(self):
         '''results with [[ball1.position time 0, ball1.position time 1,...], [ball2.position time 0, ball2.position time 1,....], ....] '''
@@ -80,4 +81,6 @@ class plotter:
     
 
 test = plotter('data_testing', 2)
+test.plot_y_positions_vs_time()
+test.plot_x_positions_vs_time()
 test.plot_x_vs_y()

@@ -34,12 +34,18 @@ class calculator:
         self.timestep = timestep
         self.iterations = iterations 
         self.ball_list = []
+        
+       
+    
+
 
     def get_balls(self, number, positions, velocities, radii, masses, anchors):
         self.number = number
-        for i in np.arange(number):
+        
+        for i in np.arange(self.number):
             spawnedBall = ball(position= np.array(positions[i], dtype = float),velocity= np.array(velocities[i], dtype = float), radius= np.array(radii[i], dtype = float), mass = masses[i], anchor= anchors[i])
             self.ball_list.append(spawnedBall)
+        
         
         return self.ball_list
 
@@ -113,7 +119,7 @@ class calculator:
                     pairs = combinations(range(self.number), 2)
                     for x,y in pairs:
                         if self.ball_list[x].overlap(self.ball_list[y]):
-                            print('There was a collsison at iteration {}'.format(i))
+                            #print('There was a collsison at iteration {}'.format(i))
                             collision(self.ball_list[x], self.ball_list[y])
                             break
                     #print(i)
@@ -130,31 +136,19 @@ class calculator:
                
 
 '''
-testing = calculator(0.001, 5000)
-testing.get_balls(number = 2, positions= [[-2,0],[0,-1]], velocities= [[0,0],[0,-0.0]], radii= [0.5,0.5], masses= [1,1], anchors= [[-1,0],[0,0]])
-#testing.get_balls(number =1, positions= [[0,-1]], velocities= [[0.1,0]], radii= [1], masses= [1], anchors= [[0,0]])
+timestep = 0.0005
+iterations = 10000
+number = 2
+startPositions = [[-2,0], [0,-1]]
+startVelocities =[[0,0],[0,0]]
+Radii = [0.5,0.5]
+masses = [1,1]
+anchors = [[-1,0],[0,0]]
+testing = calculator(timestep, iterations)
+
+testing.get_balls(number, startPositions,startVelocities,Radii,masses,anchors)
 testing.calculate()
-'''
-'''
+
 np.save('data_testing.npy', data, allow_pickle = True)
 
-
-ball1_data = []
-ball2_data = []
-time_list = []
-
-for i in range(len(data)):
-    ball1_data.append(data[i][1][0].position)
-    ball2_data.append(data[i][1][1].position)
-    time_list.append(data[i][0])
-
-fig, ax = plt.subplots()
-
-fig.suptitle('x position against time')
-
-ax.plot(time_list, np.transpose(ball1_data)[0], label = 'ball 1')
-ax.plot(time_list, np.transpose(ball2_data)[0], label = 'ball 2')
-ax.set(xlabel = 'time', ylabel = 'x position of ball')
-ax.legend(loc='best')
-plt.show()
 '''
