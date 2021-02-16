@@ -129,14 +129,15 @@ class calculator:
                 
                
 
-
+'''
 testing = calculator(0.001, 5000)
 testing.get_balls(number = 2, positions= [[-2,0],[0,-1]], velocities= [[0,0],[0,-0.0]], radii= [0.5,0.5], masses= [1,1], anchors= [[-1,0],[0,0]])
 #testing.get_balls(number =1, positions= [[0,-1]], velocities= [[0.1,0]], radii= [1], masses= [1], anchors= [[0,0]])
 testing.calculate()
-
-np.save('data_testing.npy', data, allow_pickle = True)
 '''
+'''
+np.save('data_testing.npy', data, allow_pickle = True)
+
 
 ball1_data = []
 ball2_data = []
