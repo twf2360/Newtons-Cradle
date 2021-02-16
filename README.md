@@ -25,3 +25,5 @@ There are various milestones that will help to document my progress!
     - Done 
     - Successfully animated
 4. Extend to a Newtons Cradle
+    - Done, but more testing needing to be done to prove it works 
+    - Plotting function needs updating 
