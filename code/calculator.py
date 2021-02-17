@@ -55,17 +55,19 @@ class calculator:
         '''
         calculate the movement of the ball 
         '''
-        def air_resistance(self, ball):
+        def air_resistance(ball):
             ''' calculates the force of air resistance on the ball'''
             air_density = 1.225
             drag_coefficient = 0.5 #just googled the drag co-efficent of a sphere
             cross_sec_area = math.pi * ball.radius**2
+            if not np.any(ball.velocity):
+                return [0,0]
             velocity = ball.velocity
             speed = np.linalg.norm(velocity)
             vel_direction = velocity / speed
 
             force_scalar = 0.5 * air_density * speed**2 *drag_coefficient * cross_sec_area
-            force_vector = force_scalar * vel_direction
+            force_vector = (-force_scalar) * vel_direction # - as it always acts against the direction of the velocity
             return force_vector
 
         def collision(ball1, ball2):
@@ -87,11 +89,9 @@ class calculator:
 
             #print('ball 1 velocity after collision = {}, ball 2 velocity afer collision = {} \nball 1 position = {}, ball 2 position = {}'.format(ball1.velocity, ball2.velocity, ball1.position, ball2.position))
 
-        def movement(inputball):
-            '''
-            calculate the change in velocity with no collision
-            '''
-            ball = inputball
+
+        def stringtension(ball):
+            ''' calculates the force on the ball due to the string tension '''
             magAcceleration = (np.linalg.norm(ball.velocity)**2)/ball.length #calculate magnitude of  centripetal acceleration
 
             delta_x = np.abs((ball.position[0] - ball.anchor[0]))
@@ -118,9 +118,16 @@ class calculator:
             stringTension_scalar = ((ball.mass*g_scalar*math.cos(angPos)) + ball.mass*magAcceleration) #calculate magnitude of string tension
             stringTension_vector = stringTension_scalar * (np.array((to_anchor)/normalisation))
 
+            return stringTension_vector
+
+        def movement(ball):
+            '''
+            calculate the change in velocity with no collision
+            '''
+            tension_force = stringtension(ball)
             air_resistance_force = air_resistance(ball) 
-            ''' PROBLEM IS HERE ''' 
-            netForce = ball.mass*g_vector + stringTension_vector + air_resistance_force
+
+            netForce = ball.mass*g_vector + tension_force + air_resistance_force
             acceleration = (netForce/ball.mass)
             velocity_change = acceleration * self.timestep
             ball.velocity += velocity_change
@@ -150,7 +157,7 @@ class calculator:
                 
                
 
-'''
+
 timestep = 0.0005
 iterations = 10000
 number = 2
@@ -166,4 +173,3 @@ testing.calculate()
 
 np.save('data_testing.npy', data, allow_pickle = True)
 
-'''
