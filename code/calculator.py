@@ -6,14 +6,7 @@ import copy
 import matplotlib.animation as animation
 from itertools import combinations
 import sys
-'''
-I realised that the previous version, using the ODE solver, probably wouldn't be all the applicable moving forward
-Trying a forces method instead to model the pendulum motion.
 
-This will be much easier to combine with the collisions 
-
-credit to: https://www.wired.com/2016/10/modeling-pendulum-harder-think/
-'''
 g_scalar = 9.81
 g_vector = np.array([0,-9.81])
 data = []
@@ -174,10 +167,19 @@ startVelocities =[[0,0],[0,0]]
 Radii = [0.5,0.5]
 masses = [1,1]
 anchors = [[-1,0],[0,0]]
+<<<<<<< HEAD
 testing = calculator(timestep, iterations, 'on')
+=======
+air = 'on'
+testing = calculator(timestep, iterations, air)
+>>>>>>> analysis
 
 testing.get_balls(number, startPositions,startVelocities,Radii,masses,anchors)
 testing.calculate()
 
 np.save('data_testing.npy', data, allow_pickle = True)
+<<<<<<< HEAD
 
+=======
+'''
+>>>>>>> analysis

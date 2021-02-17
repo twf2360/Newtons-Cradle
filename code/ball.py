@@ -38,11 +38,12 @@ class ball:
 
     def kinetic(self):
         '''returns kinetic energy of the ball'''
-        ke = 0.5*self.mass*self.velocity**2
-        return ke 
+        ke = 0.5*self.mass*np.linalg.norm(self.velocity**2)
+        return ke
     
     def potential(self):
         ''' returns potential energy of the ball ''' 
-        h = self.anchor[1] - self.position[1]
+        lowest_point = self.anchor[1] - self.length
+        h = self.position[1] - lowest_point
         mgh = self.mass * 9.81 * h
         return mgh
