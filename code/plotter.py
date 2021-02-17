@@ -41,7 +41,7 @@ class plotter:
     
             ax.plot(self.timelist, x_positions , label = 'ball {}'.format(ball+1))
 
-        ax.set(xlabel = 'time list', ylabel = 'x position of balls')
+        ax.set(xlabel = 'time (s)', ylabel = 'x position of balls')
         ax.legend()
         plt.show()
         
@@ -58,7 +58,7 @@ class plotter:
     
             ax.plot(self.timelist, y_positions , label = 'ball {}'.format(ball+1))
 
-        ax.set(xlabel = 'time list', ylabel = 'x position of balls')
+        ax.set(xlabel = 'time (s)', ylabel = 'x position of balls')
         ax.legend()
         plt.show()
         
