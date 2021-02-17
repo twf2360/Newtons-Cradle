@@ -17,6 +17,8 @@ This page is just to keep track of things that need doing, and random thoughts:
             - currently -> 0.01 doesn't work, 0.001 does
         -put the collision handler, and the calculator without collisions, in seperate functions (done)
 
+    - add air resistance (done)
+        - make air resistance optional so that it can be tested
 
     - find things to analyse (consv of momentum, energy, how changing time step effects things etc)
     - ensure that enough "advanced coding methods" are present

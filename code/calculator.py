@@ -25,7 +25,7 @@ class calculator:
     takes the number of iterations, and the timesteps between iterations as arguments
     '''
 
-    def __init__(self, timestep, iterations):
+    def __init__(self, timestep, iterations, air_resistance_on_off):
         '''
         initalistation function of the class 
         timestep = the difference in time between the updates of the balls position
@@ -34,6 +34,11 @@ class calculator:
         self.timestep = timestep
         self.iterations = iterations 
         self.ball_list = []
+        if air_resistance_on_off not in ('off', 'on'):
+            print('air resistance must be set to "off" or "on"')
+            sys.exit()
+        else:
+            self.air_resistance_on_off = air_resistance_on_off
         
        
     
@@ -125,7 +130,10 @@ class calculator:
             calculate the change in velocity with no collision
             '''
             tension_force = stringtension(ball)
-            air_resistance_force = air_resistance(ball) 
+            if self.air_resistance_on_off == 'on':
+                air_resistance_force = air_resistance(ball) 
+            else:
+                air_resistance_force = [0,0]
 
             netForce = ball.mass*g_vector + tension_force + air_resistance_force
             acceleration = (netForce/ball.mass)
@@ -166,7 +174,7 @@ startVelocities =[[0,0],[0,0]]
 Radii = [0.5,0.5]
 masses = [1,1]
 anchors = [[-1,0],[0,0]]
-testing = calculator(timestep, iterations)
+testing = calculator(timestep, iterations, 'on')
 
 testing.get_balls(number, startPositions,startVelocities,Radii,masses,anchors)
 testing.calculate()
