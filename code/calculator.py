@@ -6,14 +6,7 @@ import copy
 import matplotlib.animation as animation
 from itertools import combinations
 import sys
-'''
-I realised that the previous version, using the ODE solver, probably wouldn't be all the applicable moving forward
-Trying a forces method instead to model the pendulum motion.
 
-This will be much easier to combine with the collisions 
-
-credit to: https://www.wired.com/2016/10/modeling-pendulum-harder-think/
-'''
 g_scalar = 9.81
 g_vector = np.array([0,-9.81])
 data = []
@@ -25,7 +18,7 @@ class calculator:
     takes the number of iterations, and the timesteps between iterations as arguments
     '''
 
-    def __init__(self, timestep, iterations):
+    def __init__(self, timestep, iterations, air_resistance_on_off):
         '''
         initalistation function of the class 
         timestep = the difference in time between the updates of the balls position
@@ -34,6 +27,11 @@ class calculator:
         self.timestep = timestep
         self.iterations = iterations 
         self.ball_list = []
+        if air_resistance_on_off not in ('off', 'on'):
+            print('air resistance must be set to "off" or "on"')
+            sys.exit()
+        else:
+            self.air_resistance_on_off = air_resistance_on_off
         
        
     
@@ -55,6 +53,21 @@ class calculator:
         '''
         calculate the movement of the ball 
         '''
+        def air_resistance(ball):
+            ''' calculates the force of air resistance on the ball'''
+            air_density = 1.225
+            drag_coefficient = 0.5 #just googled the drag co-efficent of a sphere
+            cross_sec_area = math.pi * ball.radius**2
+            if not np.any(ball.velocity):
+                return [0,0]
+            velocity = ball.velocity
+            speed = np.linalg.norm(velocity)
+            vel_direction = velocity / speed
+
+            force_scalar = 0.5 * air_density * speed**2 *drag_coefficient * cross_sec_area
+            force_vector = (-force_scalar) * vel_direction # - as it always acts against the direction of the velocity
+            return force_vector
+
         def collision(ball1, ball2):
             '''
             calculate the change in velocities if there's a collision
@@ -74,10 +87,9 @@ class calculator:
 
             #print('ball 1 velocity after collision = {}, ball 2 velocity afer collision = {} \nball 1 position = {}, ball 2 position = {}'.format(ball1.velocity, ball2.velocity, ball1.position, ball2.position))
 
-        def movement(ball):
-            '''
-            calculate the change in velociy with no collision
-            '''
+
+        def stringtension(ball):
+            ''' calculates the force on the ball due to the string tension '''
             magAcceleration = (np.linalg.norm(ball.velocity)**2)/ball.length #calculate magnitude of  centripetal acceleration
 
             delta_x = np.abs((ball.position[0] - ball.anchor[0]))
@@ -104,8 +116,19 @@ class calculator:
             stringTension_scalar = ((ball.mass*g_scalar*math.cos(angPos)) + ball.mass*magAcceleration) #calculate magnitude of string tension
             stringTension_vector = stringTension_scalar * (np.array((to_anchor)/normalisation))
 
-            
-            netForce = ball.mass*g_vector + stringTension_vector
+            return stringTension_vector
+
+        def movement(ball):
+            '''
+            calculate the change in velocity with no collision
+            '''
+            tension_force = stringtension(ball)
+            if self.air_resistance_on_off == 'on':
+                air_resistance_force = air_resistance(ball) 
+            else:
+                air_resistance_force = [0,0]
+
+            netForce = ball.mass*g_vector + tension_force + air_resistance_force
             acceleration = (netForce/ball.mass)
             velocity_change = acceleration * self.timestep
             ball.velocity += velocity_change
@@ -144,11 +167,11 @@ startVelocities =[[0,0],[0,0]]
 Radii = [0.5,0.5]
 masses = [1,1]
 anchors = [[-1,0],[0,0]]
-testing = calculator(timestep, iterations)
+air = 'on'
+testing = calculator(timestep, iterations, air)
 
 testing.get_balls(number, startPositions,startVelocities,Radii,masses,anchors)
 testing.calculate()
 
 np.save('data_testing.npy', data, allow_pickle = True)
-
 '''
