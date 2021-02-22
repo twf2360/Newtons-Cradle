@@ -19,6 +19,7 @@ This page is just to keep track of things that need doing, and random thoughts:
             - there may be an issue if the timestep is too high in calculating overlaps
                 - currently -> 0.01 doesn't work, 0.001 does
             - first few collisions work, things get weird after :confused:
+                - Possible solution!!! Is it due to the differences between euler and EC? 
         
         -put the collision handler, and the calculator without collisions, in seperate functions :white_check_mark:
 
