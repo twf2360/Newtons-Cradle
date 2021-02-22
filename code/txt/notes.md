@@ -22,7 +22,7 @@ This page is just to keep track of things that need doing, and random thoughts:
         
         -put the collision handler, and the calculator without collisions, in seperate functions :white_check_mark:
 
-    - Air resistance seems to have fair to great an impact
+    - Air resistance seems to have far too great an impact
         - it has been modelled using fluid resistance, co-efficnet maybe be too high, or  wrong units 
         - however, the energy response to damping is as expected 
     - find things to analyse (consv of momentum, energy, how changing time step effects things etc) :construction:
