@@ -41,7 +41,7 @@ class plotter:
     
             ax.plot(self.timelist, x_positions , label = 'ball {}'.format(ball+1))
 
-        ax.set(xlabel = 'time (s)', ylabel = 'x position of balls')
+        ax.set(xlabel = 'time list', ylabel = 'x position of balls')
         ax.legend()
         plt.show()
         
@@ -58,7 +58,7 @@ class plotter:
     
             ax.plot(self.timelist, y_positions , label = 'ball {}'.format(ball+1))
 
-        ax.set(xlabel = 'time (s)', ylabel = 'x position of balls')
+        ax.set(xlabel = 'time list', ylabel = 'x position of balls')
         ax.legend()
         plt.show()
         
@@ -130,7 +130,7 @@ class plotter:
             for ball in range(len(self.list_pe_by_time[time])):
                 total_pe += self.list_pe_by_time[time][ball] #add up all the kinetc energies of each ball at that time
             self.total_pe_list[time].append(total_pe)
-        print(self.total_pe_list)
+        
         
     
     def total_energy(self):

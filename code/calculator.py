@@ -55,7 +55,7 @@ class calculator:
         '''
         def air_resistance(ball):
             ''' calculates the force of air resistance on the ball'''
-            air_density = 1.225
+            air_density = 1.225 #this is the number which will be wrong 
             drag_coefficient = 0.5 #just googled the drag co-efficent of a sphere
             cross_sec_area = math.pi * ball.radius**2
             if not np.any(ball.velocity):
@@ -167,19 +167,10 @@ startVelocities =[[0,0],[0,0]]
 Radii = [0.5,0.5]
 masses = [1,1]
 anchors = [[-1,0],[0,0]]
-<<<<<<< HEAD
-testing = calculator(timestep, iterations, 'on')
-=======
 air = 'on'
 testing = calculator(timestep, iterations, air)
->>>>>>> analysis
 
 testing.get_balls(number, startPositions,startVelocities,Radii,masses,anchors)
 testing.calculate()
 
 np.save('data_testing.npy', data, allow_pickle = True)
-<<<<<<< HEAD
-
-=======
-'''
->>>>>>> analysis
