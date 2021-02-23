@@ -162,10 +162,10 @@ class calculator:
             data_to_save = [time, copy.deepcopy(self.ball_list)]
             data.append(data_to_save)
                 
-'''           
-
-timestep = 0.00005
-iterations = 50000
+           
+'''
+timestep = 0.000005
+iterations = 600000
 number = 2
 startPositions = [[-1.2,0], [0,-1]]
 startVelocities =[[0,0],[0,0]]
@@ -180,5 +180,4 @@ testing.get_balls(number, startPositions,startVelocities,Radii,masses,anchors)
 testing.calculate(approximation)
 
 np.save('data_testing.npy', data, allow_pickle = True)
-
 '''
