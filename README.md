@@ -36,3 +36,4 @@ There are various milestones that will help to document my progress!
 4. Extend to a Newtons Cradle
     - Done, but more testing needing to be done to prove it works 
     - Plotting function needs updating 
+5. Add a configuration file? 

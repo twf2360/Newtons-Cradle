@@ -193,6 +193,6 @@ class plotter:
 test = plotter('data_testing', 2)
 #test.plot_y_positions_vs_time()
 #test.plot_x_positions_vs_time()
-#test.plot_x_vs_y()
+test.plot_x_vs_y()
 test.energy_plot(kinetic=True, potential=True, total=True)
 

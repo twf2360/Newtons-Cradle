@@ -23,12 +23,29 @@ class ball:
 
         self.length = np.linalg.norm(self.anchor - self.position)
 
-    def update(self, dt):
+    def euler_update(self, dv, dt):
         '''
-        updates the position of the ball after a time dt
+        updates the position of the ball after a time dt, using the euler approximation
         '''
         self.position += self.velocity * dt
+        self.velocity += dv
         #print('ball velocity was updated to {}'.format(self.velocity))
+
+    def cromer_update(self, dv, dt):
+        '''
+        updates the position of the ball after a time dt, using the euler-cromer approximation
+        '''
+        self.velocity += dv
+        self.position += self.velocity * dt
+
+    def runge_kutta2(self, acceleration, dt):
+        '''
+        updates the position of the ball after a time dt, using the Runge-Kutta, second order approximation
+        '''
+        velocity_midpoint = self.velocity + 0.5 * dt * acceleration
+
+        self.position += velocity_midpoint * dt
+        self.velocity += dt * acceleration
 
     def overlap(self, incident):
         '''
