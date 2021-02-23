@@ -20,6 +20,7 @@ This page is just to keep track of things that need doing, and random thoughts:
                 - currently -> 0.01 doesn't work, 0.001 does
             - first few collisions work, things get weird after :confused:
                 - Possible solution!!! Is it due to the fact that EC is doesn't conserve energy?
+                - second possible solution - maybe due to the large size of the radii in previous iterations?
         
         -put the collision handler, and the calculator without collisions, in seperate functions :white_check_mark:
 

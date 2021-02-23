@@ -143,7 +143,7 @@ class calculator:
                     pairs = combinations(range(self.number), 2)
                     for x,y in pairs:
                         if self.ball_list[x].overlap(self.ball_list[y]):
-                            #print('There was a collsison at iteration {}'.format(i))
+                            print('There was a collsison at iteration {}'.format(i))
                             self.collision(self.ball_list[x], self.ball_list[y])
                             break
                     acceleration = self.calculate_acceleration(ball)
@@ -162,12 +162,12 @@ class calculator:
             data_to_save = [time, copy.deepcopy(self.ball_list)]
             data.append(data_to_save)
                 
-               
-'''
-timestep = 0.000005
-iterations = 500000
+'''           
+
+timestep = 0.00005
+iterations = 50000
 number = 2
-startPositions = [[-2,0], [0,-1]]
+startPositions = [[-1.2,0], [0,-1]]
 startVelocities =[[0,0],[0,0]]
 Radii = [0.1,0.1]
 masses = [1,1]
@@ -180,4 +180,5 @@ testing.get_balls(number, startPositions,startVelocities,Radii,masses,anchors)
 testing.calculate(approximation)
 
 np.save('data_testing.npy', data, allow_pickle = True)
+
 '''
