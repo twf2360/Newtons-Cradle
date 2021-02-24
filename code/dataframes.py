@@ -6,7 +6,8 @@ import copy
 from itertools import combinations
 import sys
 import pandas as pd     
-from calculator import calculator     
+from calculator import calculator    
+
 
 class results:
 
@@ -18,7 +19,7 @@ class results:
         self.masses = masses
         self.anchors = anchors
         self.iterations = iterations
-        pd.set_option("display.max_rows", None, "display.max_columns", None)
+        #pd.set_option("display.max_rows", None, "display.max_columns", None)
 
 
      
@@ -62,19 +63,19 @@ class results:
                         if x == 0: 
                             continue
                         data.append(important_results[x])
-                    print('we made it here!')
+                    #print('we made it here!')
                     
 
                     df2 = pd.DataFrame(data = [data], columns= columns)
-                    print(df2)
-                    df.append(df2, ignore_index = True)
+                    #print(df2)
+                    df = df.append(df2, ignore_index = True)
                         
 
-                    
+        df = df.fillna('No Collision')            
         print(df)
 
 
-iterations = 60000
+iterations = 50000
 number = 2
 startPositions = [[-1.2,0], [0,-1]]
 startVelocities =[[0,0],[0,0]]
@@ -84,9 +85,9 @@ anchors = [[-0.2,0],[0,0]]
 
 testing = results(number, startPositions, startVelocities, Radii, masses, anchors, iterations)
 
-timesteps = [0.00005]
-approximations = ['cromer', 'rk2']
-densities = [0, 1.225]
+timesteps = [0.00005, 0.00001]
+approximations = ['cromer', 'euler', 'rk2']
+densities = [0]
 
 testing.use_calculator(timesteps, approximations, densities)
 

@@ -153,7 +153,7 @@ class calculator:
                         if self.ball_list[x].overlap(self.ball_list[y]):
                             print('There was a collsison at iteration {}'.format(i))
                             self.collision(self.ball_list[x], self.ball_list[y])
-                            important_info.append('Collision at iteration {}'.format(i))
+                            important_info.append('iteration {}, time {}s'.format(i, self.timestep*i ))
                             #important_info.append([i, {'incedent ball velocity after':self.ball_list[x].velocity}, {'target ball velocity after': self.ball_list[y].velocity}])
                             break
                     acceleration = self.calculate_acceleration(ball, fluid_density)
