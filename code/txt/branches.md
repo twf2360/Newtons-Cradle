@@ -4,7 +4,8 @@ This markdown file is used to describe all of the branches that can be seen in t
 ### Main
 Main is the "origin" branch. The most up to date, and working methods are all merged into main when they are completed. 
 
-
+### df
+DF branch is used to add a new functionality: saving important stuff to dataframes! 
 ### fix_collisions
 This branch was made to hotfix the problems noticed about the collisions of the balls. It currently changes the code so that the y component of the velocity calculated after the collision is ignored and set to 0. This is obviously not a perfect solution, and will hopefuly be fixed at a later date.
 

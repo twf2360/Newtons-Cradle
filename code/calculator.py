@@ -6,7 +6,7 @@ import copy
 import matplotlib.animation as animation
 from itertools import combinations
 import sys
-
+import pandas as pd
 g_scalar = 9.81
 g_vector = np.array([0,-9.81])
 data = []
@@ -18,7 +18,7 @@ class calculator:
     takes the number of iterations, and the timesteps between iterations as arguments
     '''
 
-    def __init__(self, timestep, iterations, air_resistance_on_off):
+    def __init__(self, timestep, iterations):
         '''
         initalistation function of the class 
         timestep = the difference in time between the updates of the balls position
@@ -27,11 +27,7 @@ class calculator:
         self.timestep = timestep
         self.iterations = iterations 
         self.ball_list = []
-        if air_resistance_on_off not in ('off', 'on'):
-            print('air resistance must be set to "off" or "on"')
-            sys.exit()
-        else:
-            self.air_resistance_on_off = air_resistance_on_off
+        
         
        
     
@@ -50,9 +46,9 @@ class calculator:
 
 
     
-    def air_resistance(self,ball):
-        ''' calculates the force of air resistance on the ball'''
-        air_density = 1.225 #this is the number which will be wrong - it seems too high? 
+    def fluid_resistance(self,ball, density):
+        ''' calculates the force of fluid resistance on the ball, density of the fluid must be defined'''
+        fluid_density = density #1.225
         drag_coefficient = 0.5 #just googled the drag co-efficent of a sphere
         cross_sec_area = math.pi * ball.radius**2
         if not np.any(ball.velocity):
@@ -61,7 +57,7 @@ class calculator:
         speed = np.linalg.norm(velocity)
         vel_direction = velocity / speed
 
-        force_scalar = 0.5 * air_density * speed**2 *drag_coefficient * cross_sec_area
+        force_scalar = 0.5 * fluid_density * speed**2 *drag_coefficient * cross_sec_area
         force_vector = (-force_scalar) * vel_direction # - as it always acts against the direction of the velocity
         return force_vector
 
@@ -125,15 +121,14 @@ class calculator:
 
         return stringTension_vector
 
-    def calculate_acceleration(self, ball):
+    def calculate_acceleration(self, ball, density):
         '''
         calculate the acceleration of the ball if there is no collision
         '''
         tension_force = self.stringtension(ball)
-        if self.air_resistance_on_off == 'on':
-            air_resistance_force = self.air_resistance(ball) 
-        else:
-            air_resistance_force = [0,0]
+
+        air_resistance_force = self.fluid_resistance(ball, density) 
+
 
         netForce = ball.mass*g_vector + tension_force + air_resistance_force
         acceleration = (netForce/ball.mass)
@@ -141,10 +136,13 @@ class calculator:
         
 
 
-    def calculate(self, approximation):
+    def calculate(self, approximation, density):
         '''
         calculate the movement of the ball, with a chosen approximation
         '''
+        important_info = []
+        fluid_density = density
+        important_info.append([self.timestep ,approximation, fluid_density])
         if not approximation.lower() in ('cromer', 'euler', 'rk2'):
             print('approximation not recognised, must be cromer, euler, or RK')
         for i in np.arange(self.iterations):
@@ -155,8 +153,10 @@ class calculator:
                         if self.ball_list[x].overlap(self.ball_list[y]):
                             print('There was a collsison at iteration {}'.format(i))
                             self.collision(self.ball_list[x], self.ball_list[y])
+                            important_info.append('Collision at iteration {}'.format(i))
+                            #important_info.append([i, {'incedent ball velocity after':self.ball_list[x].velocity}, {'target ball velocity after': self.ball_list[y].velocity}])
                             break
-                    acceleration = self.calculate_acceleration(ball)
+                    acceleration = self.calculate_acceleration(ball, fluid_density)
                     delta_v = acceleration * self.timestep  # calculate the change in velocity over the timestep
                     
                     break   
@@ -171,42 +171,9 @@ class calculator:
             time = i * self.timestep
             data_to_save = [time, copy.deepcopy(self.ball_list)]
             data.append(data_to_save)
-                
-'''
+    
+        return important_info
 
-timestep = 0.00005
-iterations = 60000
-number = 3
-startPositions = [[-1.2,0], [0,-1], [0.2, -1]]
-startVelocities =[[0,0],[0,0], [0,0]]
-Radii = [0.1,0.1, 0.1]
-masses = [1,1,1]
-anchors = [[-0.2,0],[0,0],[0.2,0]]
-air = 'off'
-approximation = 'rk2'
-testing = calculator(timestep, iterations, air)
 
-testing.get_balls(number, startPositions,startVelocities,Radii,masses,anchors)
-testing.calculate(approximation)
 
-np.save('data_testing.npy', data, allow_pickle = True)
-'''
-'''
-
-timestep = 0.00001
-iterations = 500000
-number = 2
-startPositions = [[-1.2,0], [0,-1]]
-startVelocities =[[0,0],[0,0]]
-Radii = [0.1,0.1]
-masses = [2,2]
-anchors = [[-0.2,0],[0,0]]
-air = 'on'
-approximation = 'cromer'
-testing = calculator(timestep, iterations, air)
-
-testing.get_balls(number, startPositions,startVelocities,Radii,masses,anchors)
-testing.calculate(approximation)
-
-np.save('data_testing.npy', data, allow_pickle = True)
-'''
+        
