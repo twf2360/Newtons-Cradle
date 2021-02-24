@@ -39,33 +39,38 @@ class results:
                         
                     
                         data = [important_results[0][0], important_results[0][1], important_results[0][2]]
-                        for i in range(len(important_results)):
-                            if i == 0: 
+                        for x in range(len(important_results)):
+                            if x == 0: 
                                 continue
-                            data.append(important_results[i])
+                            data.append(important_results[x])
 
                         df = pd.DataFrame(data = [data], columns= columns)
+                        i = 1
+                        continue
                         
 
-                    else:
-                        number_columns = len(important_results)
-                        
-                        columns = ['timestep', 'approximation', 'density']
-                        for collision in range((number_columns - 1)): 
-                            columns.append('Collision {}'.format(collision + 1))
-                        
                     
-                        data = [important_results[0][0], important_results[0][1], important_results[0][2]]
-                        for i in range(len(important_results)):
-                            if i == 0: 
-                                continue
-                            data.append(important_results[i])
+                    number_columns = len(important_results)
+                    
+                    columns = ['timestep', 'approximation', 'density']
+                    for collision in range((number_columns - 1)): 
+                        columns.append('Collision {}'.format(collision + 1))
+                    
+                
+                    data = [important_results[0][0], important_results[0][1], important_results[0][2]]
+                    for x in range(len(important_results)):
+                        if x == 0: 
+                            continue
+                        data.append(important_results[x])
+                    print('we made it here!')
+                    
 
-                        df2 = pd.DataFrame(data = [data], columns= columns)
-                        df.append(df2, ignore_index = True)
+                    df2 = pd.DataFrame(data = [data], columns= columns)
+                    print(df2)
+                    df.append(df2, ignore_index = True)
                         
 
-                    i += 1
+                    
         print(df)
 
 
@@ -81,7 +86,7 @@ testing = results(number, startPositions, startVelocities, Radii, masses, anchor
 
 timesteps = [0.00005]
 approximations = ['cromer', 'rk2']
-densities = [0]
+densities = [0, 1.225]
 
 testing.use_calculator(timesteps, approximations, densities)
 
