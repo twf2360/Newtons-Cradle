@@ -21,6 +21,9 @@ This page is just to keep track of things that need doing, and random thoughts:
             - first few collisions work, things get weird after :confused:
                 - Possible solution!!! Is it due to the fact that EC is doesn't conserve energy?
                 - second possible solution - maybe due to the large size of the radii in previous iterations?
+                    -this has been fixed with a bit of a hotfix, but it works! 
+            - The total energy plot doesn't appear to be a simple addition of the ke and pe 
+                - perfect idea for a unit test! 
         
         -put the collision handler, and the calculator without collisions, in seperate functions :white_check_mark:
 

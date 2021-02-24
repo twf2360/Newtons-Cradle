@@ -4,8 +4,14 @@ This markdown file is used to describe all of the branches that can be seen in t
 ### Main
 Main is the "origin" branch. The most up to date, and working methods are all merged into main when they are completed. 
 
+
+### fix_collisions
+This branch was made to hotfix the problems noticed about the collisions of the balls. It currently changes the code so that the y component of the velocity calculated after the collision is ignored and set to 0. This is obviously not a perfect solution, and will hopefuly be fixed at a later date.
+
 ### methods 
-As of 23/02/2021 Methods is the current branch that is being worked on. The goal of this branch is implement more approximations to the motion of the ball. This is due to the fact that the current method in main relies on the Euler-Cromer approximation. It is unknown whether the weird results seen is due to the problems with the Euler-Cromer approximations, and so as well as extending the complexity and accuracy of the code, this will also test this hypothesis 
+The goal of this branch is implement more approximations to the motion of the ball. This is due to the fact that the current method in main relies on the Euler-Cromer approximation. It is unknown whether the weird results seen is due to the problems with the Euler-Cromer approximations, and so as well as extending the complexity and accuracy of the code, this will also test this hypothesis. 
+
+It was discovered that the weird results were due to problems with how the collisions were being handled, not the chosen approximation
 
 
 ### air_resistance

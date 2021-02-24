@@ -52,7 +52,7 @@ class calculator:
     
     def air_resistance(self,ball):
         ''' calculates the force of air resistance on the ball'''
-        air_density = 1.225 #this is the number which will be wrong 
+        air_density = 1.225 #this is the number which will be wrong - it seems too high? 
         drag_coefficient = 0.5 #just googled the drag co-efficent of a sphere
         cross_sec_area = math.pi * ball.radius**2
         if not np.any(ball.velocity):
@@ -191,8 +191,8 @@ testing.calculate(approximation)
 
 np.save('data_testing.npy', data, allow_pickle = True)
 '''
-
 '''
+
 timestep = 0.00001
 iterations = 500000
 number = 2
@@ -201,8 +201,8 @@ startVelocities =[[0,0],[0,0]]
 Radii = [0.1,0.1]
 masses = [2,2]
 anchors = [[-0.2,0],[0,0]]
-air = 'off'
-approximation = 'rk2'
+air = 'on'
+approximation = 'cromer'
 testing = calculator(timestep, iterations, air)
 
 testing.get_balls(number, startPositions,startVelocities,Radii,masses,anchors)
