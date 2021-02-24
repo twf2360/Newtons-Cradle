@@ -76,14 +76,14 @@ class calculator:
         v1_before = ball1.velocity
         v2_before = ball2.velocity
 
-        v1_after = v1_before - (2*ball1.mass / totalMass) * (np.dot(v1_before-v2_before, pos1- pos2) / distance) * (pos1 - pos2)
-        v2_after = v2_before - (2*ball2.mass / totalMass) * (np.dot(v2_before-v1_before, pos2- pos1) / distance) * (pos2 - pos1)
+        v1_after = v1_before - (2*ball1.mass / totalMass) * (np.dot((v1_before-v2_before), (pos1- pos2)) / distance) * (pos1 - pos2)
+        v2_after = v2_before - (2*ball2.mass / totalMass) * (np.dot((v2_before-v1_before) ,(pos2- pos1)) / distance) * (pos2 - pos1)
 
         ball1.velocity = v1_after
         ball2.velocity = v2_after
 
-        #print('ball 1 velocity after collision = {}, ball 2 velocity afer collision = {} \nball 1 position = {}, ball 2 position = {} \n \n'.format(ball1.velocity, ball2.velocity, ball1.position, ball2.position))
-
+        #print(' \n ball 1 velocity after collision = {}, ball 2 velocity afer collision = {} \nball 1 position = {}, ball 2 position = {}  \n'.format(ball1.velocity, ball2.velocity, ball1.position, ball2.position))
+        print(' v1 before = {}, v1 after = {} \n v2 before = {}, v2 after = {} \n r1 before = {}, r1 after = {} \n  r2 before = {}, r2 after = {} \n \n'.format(v1_before, v1_after, v2_before, v2_after, pos1, ball1.position, pos2, ball2.position))
 
     def stringtension(self,ball):
         ''' calculates the force on the ball due to the string tension '''
@@ -162,15 +162,34 @@ class calculator:
             data_to_save = [time, copy.deepcopy(self.ball_list)]
             data.append(data_to_save)
                 
-           
 '''
-timestep = 0.000005
-iterations = 600000
+
+timestep = 0.00005
+iterations = 60000
+number = 3
+startPositions = [[-1.2,0], [0,-1], [0.2, -1]]
+startVelocities =[[0,0],[0,0], [0,0]]
+Radii = [0.1,0.1, 0.1]
+masses = [1,1,1]
+anchors = [[-0.2,0],[0,0],[0.2,0]]
+air = 'off'
+approximation = 'rk2'
+testing = calculator(timestep, iterations, air)
+
+testing.get_balls(number, startPositions,startVelocities,Radii,masses,anchors)
+testing.calculate(approximation)
+
+np.save('data_testing.npy', data, allow_pickle = True)
+'''
+
+'''
+timestep = 0.00001
+iterations = 500000
 number = 2
 startPositions = [[-1.2,0], [0,-1]]
 startVelocities =[[0,0],[0,0]]
 Radii = [0.1,0.1]
-masses = [1,1]
+masses = [2,2]
 anchors = [[-0.2,0],[0,0]]
 air = 'off'
 approximation = 'rk2'
