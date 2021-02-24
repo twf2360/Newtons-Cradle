@@ -79,8 +79,16 @@ class calculator:
         v1_after = v1_before - (2*ball1.mass / totalMass) * (np.dot((v1_before-v2_before), (pos1- pos2)) / distance) * (pos1 - pos2)
         v2_after = v2_before - (2*ball2.mass / totalMass) * (np.dot((v2_before-v1_before) ,(pos2- pos1)) / distance) * (pos2 - pos1)
 
-        ball1.velocity = v1_after
-        ball2.velocity = v2_after
+        ''' this is where things arguably get very dodgy''' 
+
+        v1_x = v1_after[0]
+        v2_x = v2_after[0] 
+
+        v1_y = 0
+        v2_y = 0
+
+        ball1.velocity = np.array([v1_x, v1_y], dtype= float)
+        ball2.velocity = np.array([v2_x, v2_y], dtype = float)
 
         #print(' \n ball 1 velocity after collision = {}, ball 2 velocity afer collision = {} \nball 1 position = {}, ball 2 position = {}  \n'.format(ball1.velocity, ball2.velocity, ball1.position, ball2.position))
         print(' v1 before = {}, v1 after = {} \n v2 before = {}, v2 after = {} \n r1 before = {}, r1 after = {} \n  r2 before = {}, r2 after = {} \n \n'.format(v1_before, v1_after, v2_before, v2_after, pos1, ball1.position, pos2, ball2.position))
