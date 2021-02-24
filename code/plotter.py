@@ -141,7 +141,7 @@ class plotter:
         self.total_energy_by_time = np.add(self.total_pe_list , self.total_ke_list)
 
     def energy_plot(self, kinetic = False, potential = False, total = False):
-        if kinetic and potential:
+        if kinetic and potential and (not total):
             self.total_potential_energy()
             self.total_kinetic_energy()
             fig, ax = plt.subplots(nrows=1, ncols=2)
@@ -156,7 +156,7 @@ class plotter:
             fig.suptitle('Kinetic and potential energy time depence of the total system')
             plt.show()
 
-        if total:
+        if total and ((not kinetic) or (not potential)):
             self.total_energy()
             fig, ax = plt.subplots(nrows=1, ncols=1)
             ax.plot(self.timelist, self.total_energy_by_time)
@@ -183,6 +183,23 @@ class plotter:
                 fig.suptitle('potential energy of the system against time')
                 plt.show()
 
+        if kinetic and potential and total:
+            self.total_energy()
+            fig, ax = plt.subplots(nrows=1, ncols=3)
+            ax[0].plot(self.timelist, self.total_ke_list)
+            ax[0].set(xlabel = 'time', ylabel = 'kinetic energy of the system')
+            ax[0].grid()
+
+            ax[1].plot(self.timelist, self.total_pe_list)
+            ax[1].set(xlabel = 'time', ylabel = 'Potential energy of the system')
+            ax[1].grid()
+
+            ax[2].plot(self.timelist, self.total_energy_by_time)
+            ax[2].set(xlabel = 'time', ylabel = 'Total energy of the system')
+            ax[2].grid()
+                
+            fig.suptitle('energy time depencies of the total system')
+            plt.show()
 
 
 

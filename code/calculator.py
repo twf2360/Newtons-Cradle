@@ -93,7 +93,7 @@ class calculator:
         ball2.velocity = np.array([v2_x, v2_y], dtype = float)
 
         #print(' \n ball 1 velocity after collision = {}, ball 2 velocity afer collision = {} \nball 1 position = {}, ball 2 position = {}  \n'.format(ball1.velocity, ball2.velocity, ball1.position, ball2.position))
-        print(' v1 before = {}, v1 after = {} \n v2 before = {}, v2 after = {} \n r1 before = {}, r1 after = {} \n  r2 before = {}, r2 after = {} \n \n'.format(v1_before, v1_after, v2_before, v2_after, pos1, ball1.position, pos2, ball2.position))
+        #print(' v1 before = {}, v1 after = {} \n v2 before = {}, v2 after = {} \n r1 before = {}, r1 after = {} \n  r2 before = {}, r2 after = {} \n \n'.format(v1_before, v1_after, v2_before, v2_after, pos1, ball1.position, pos2, ball2.position))
 
     def stringtension(self,ball):
         ''' calculates the force on the ball due to the string tension '''
