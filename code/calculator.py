@@ -80,6 +80,8 @@ class calculator:
         v2_after = v2_before - (2*ball2.mass / totalMass) * (np.dot((v2_before-v1_before) ,(pos2- pos1)) / distance) * (pos2 - pos1)
 
         ''' this is where things arguably get very dodgy''' 
+        ''' there were some major issues with the y direction acting very weirdly during collisions, so now that has been artificially set to 0'''
+        ''' this can be thought of as the strings holding the balls having an infinitely large spring constant '''
 
         v1_x = v1_after[0]
         v2_x = v2_after[0] 
