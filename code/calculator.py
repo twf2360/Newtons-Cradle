@@ -7,6 +7,7 @@ import matplotlib.animation as animation
 from itertools import combinations
 import sys
 import pandas as pd
+from time import time
 g_scalar = 9.81
 g_vector = np.array([0,-9.81])
 data = []
@@ -152,9 +153,12 @@ class calculator:
                     pairs = combinations(range(self.number), 2)
                     for x,y in pairs:
                         if self.ball_list[x].overlap(self.ball_list[y]):
+                            if self.ball_list[x].velocity or self.ball_list[y].velocity == [0,0]:
+                                self.collision(self.ball_list[x], self.ball_list[y])
+                                continue
                             print('There was a collsison at iteration {}'.format(i))
                             self.collision(self.ball_list[x], self.ball_list[y])
-                            important_info.append('iteration {}, time {}s'.format(i, self.timestep*i ))
+                            important_info.append('iteration {}, time {}s'.format(i, self.timestep*i )) #add the balls that collide? 
                             #important_info.append([i, {'incedent ball velocity after':self.ball_list[x].velocity}, {'target ball velocity after': self.ball_list[y].velocity}])
                             break
                     acceleration = self.calculate_acceleration(ball, fluid_density)
@@ -172,8 +176,14 @@ class calculator:
             time = i * self.timestep
             data_to_save = [time, copy.deepcopy(self.ball_list)]
             data.append(data_to_save)
-    
+
         return important_info
+
+    def time_to_run(self, approximation, density):
+            start_time = time()
+            self.calculate(approximation, density)
+            time_to_run = start_time - time()
+            return time_to_run
 
 
 
