@@ -145,6 +145,7 @@ class calculator:
         important_info.append([self.timestep ,approximation, fluid_density])
         if not approximation.lower() in ('cromer', 'euler', 'rk2'):
             print('approximation not recognised, must be cromer, euler, or RK')
+            sys.exit()
         for i in np.arange(self.iterations):
             for ball in self.ball_list: 
                 while True: #probably a much cleaner way to do this somehow 
