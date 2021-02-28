@@ -36,6 +36,10 @@ This page is just to keep track of things that need doing, and random thoughts:
         - read up on what counts as advanced coding methods 
             -Abstract classes, inheritance?
 
+- add pytests
+- add config file
+- add the number of the balls that are colliding 
+- animate? 
 
 Feels like it's worth writing up about using np.seterr, and try except statements to find what values of ball.position and ball.anchor were causing the runtime warning for overflow
 This was a divide by 0 error, which is now solved! 
