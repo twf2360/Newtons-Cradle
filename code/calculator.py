@@ -181,9 +181,9 @@ class calculator:
 
     def time_to_run(self, approximation, density):
             start_time = time()
-            self.calculate(approximation, density)
+            collision_info = self.calculate(approximation, density)
             time_to_run = time() - start_time
-            return time_to_run
+            return [time_to_run, collision_info]
 
 
 

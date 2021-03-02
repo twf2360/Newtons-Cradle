@@ -7,6 +7,8 @@ from itertools import combinations
 import sys
 import pandas as pd     
 from calculator import calculator    
+import json
+#import config.json
 
 
 class results:
@@ -92,7 +94,7 @@ class results:
                 for fluid_density in densities:
                     calculating = calculator(timestep=timestep, iterations=self.iterations)
                     calculating.get_balls(number = self.number, positions = self.start_positions, velocities= self.start_velocities, radii = self.radii, masses= self.masses, anchors= self.anchors)
-                    time = calculating.time_to_run(approximation, fluid_density)
+                    time = calculating.time_to_run(approximation, fluid_density)[0]
                     if i == 0:
                         df = pd.DataFrame(data= [[timestep, approximation, fluid_density, time]] , columns=['Timestep', 'Approximation', 'Fluid Density', 'Time to run'])
                         i += 1
@@ -101,60 +103,17 @@ class results:
                     df = df.append(df2)
         print(df)
 
+with open("code\config.json") as configuration:
+    config = json.load(configuration)
+initialisation = config['initialisation']
+system = config['system']
 
-iterations = 50000
-number = 2
-startPositions = [[-1.2,0], [0,-1]]
-startVelocities =[[0,0],[0,0]]
-Radii = [0.1,0.1]
-masses = [2,2]
-anchors = [[-0.2,0],[0,0]]
 
-testing = results(number, startPositions, startVelocities, Radii, masses, anchors, iterations)
+testing = results(initialisation['number'], initialisation['StartPositions'], initialisation['StartVelocities'], initialisation['radii'], initialisation['masses'], initialisation['anchors'], initialisation['iterations'])
+testing.time_to_run_df(system['timesteps'], system['approximations'], system['densities'] )
 
-timesteps = [0.0005, 0.0001]
-approximations = ['cromer', 'euler', 'rk2']
-densities = [0, 1.225]
-
+#print(config['initialisation'])
+#print(config['system'])
+#testing = results(number, startPositions, startVelocities, Radii, masses, anchors, iterations)
 #testing.collision_df(timesteps, approximations, densities)
-testing.time_to_run_df(timesteps, approximations, densities)
-
-'''
-
-timestep = 0.00005
-iterations = 60000
-number = 3
-startPositions = [[-1.2,0], [0,-1], [0.2, -1]]
-startVelocities =[[0,0],[0,0], [0,0]]
-Radii = [0.1,0.1, 0.1]
-masses = [1,1,1]
-anchors = [[-0.2,0],[0,0],[0.2,0]]
-approximation = 'rk2'
-density = '1.225' #density of the fluid through which the ball is travelling - SET TO 0 TO MODEL FOR NO RESISTANCE
-
-testing = calculator(timestep, iterations)
-
-testing.get_balls(number, startPositions,startVelocities,Radii,masses,anchors)
-testing.calculate(approximation, density)
-
-np.save('data_testing.npy', data, allow_pickle = True)
-'''
-'''
-
-timestep = 0.00001
-iterations = 500000
-number = 2
-startPositions = [[-1.2,0], [0,-1]]
-startVelocities =[[0,0],[0,0]]
-Radii = [0.1,0.1]
-masses = [2,2]
-anchors = [[-0.2,0],[0,0]]
-air = 'on'
-approximation = 'cromer'
-testing = calculator(timestep, iterations, air)
-
-testing.get_balls(number, startPositions,startVelocities,Radii,masses,anchors)
-testing.calculate(approximation)
-
-np.save('data_testing.npy', data, allow_pickle = True)
-'''
+#testing.time_to_run_df(timesteps, approximations, densities)
