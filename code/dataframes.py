@@ -103,7 +103,7 @@ class results:
                     df = df.append(df2, ignore_index = True)
         print(df)
 
-with open("code\config.json") as configuration:
+with open(r"code\config.json") as configuration:
     config = json.load(configuration)
 initialisation = config['initialisation']
 system = config['system']
