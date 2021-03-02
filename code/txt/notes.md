@@ -37,7 +37,7 @@ This page is just to keep track of things that need doing, and random thoughts:
             -Abstract classes, inheritance?
 
 - add pytests
-- add config file
+- add config file :white_check_mark: 
 - add the number of the balls that are colliding 
 - animate? 
 

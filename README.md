@@ -20,6 +20,8 @@ The "txt" folder, contains various notes on the project. "notes" is a personal t
 "ball.py" is used to define the balls of the Newton's Cradle; Each ball is defined by a number of properties. These properties are: Their mass, radii, starting position and velocity, and the position of the point they are anchored to. The 'string' between the balls and anchors are currently modelled as massless rods. 
 "calculator.py" is used to calculate the motion of the balls, and as of 23/02/21, saves the results as "data_testing.npy", however this will not be the case in the final version of the code
 "plotter.py" reads in the saved results, and can plot various graphs based on either the positions or the energies of the balls. 
+"dataframes.py" runs the calculator for a defined system, and returns chosen important results - collision information, or time to run information
+"config.json" is used to define the system, and the initial state of all of the defined balls. 
 
 ### Milestones 
 There are various milestones that will help to document my progress! 
@@ -37,5 +39,8 @@ There are various milestones that will help to document my progress!
     - Done, but more testing needing to be done to prove it works 
     - Plotting function needs updating 
     - Animate?
-5. Add a configuration file? 
+5. Add a configuration file
+    - done 
 6. Add a dataframe of important information 
+    - done 
+7. Add a testing structure
