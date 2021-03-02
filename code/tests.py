@@ -35,4 +35,31 @@ def test_ball_initalisation_velocity():
 
 def test_ball_initalisation_radius():
     ball = ball_initialisation(position=[0,0], velocity=[0,0],radius= 1, mass = 1,anchor= [0,1])
-    assert ball.radius == 2
+    assert ball.radius == 1
+
+def test_ball_initalisation_mass():
+    ball = ball_initialisation(position=[0,0], velocity=[0,0],radius= 1, mass = 1,anchor= [0,1])
+    assert ball.mass == 1
+
+
+def test_ball_initalisation_anchor():
+    ball = ball_initialisation(position=[0,0], velocity=[0,0],radius= 1, mass = 1,anchor= [0,1])
+    assert (ball.anchor == [0,1]).all()
+
+def inital_config():
+    with open(r"code\config.json") as configuration:
+        config = json.load(configuration)
+    return config
+
+def ensure_dict():
+    config = inital_config()
+    assert type(config) == dict
+
+def test_for_initialisation_config():
+    config = inital_config()
+    assert type(config['initialisation']) == dict
+
+def test_for_system_config():
+    config = inital_config()
+    assert type(config['system']) == dict
+
