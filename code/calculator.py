@@ -158,7 +158,8 @@ class calculator:
                                 break #there may be an issue using break instead of using continue 
                             print('There was a collsison at iteration {}'.format(i))
                             self.collision(self.ball_list[x], self.ball_list[y])
-                            collision_info.append('iteration {}, time {}s'.format(i+1, self.timestep*(i+1)) #add the balls that collide? 
+                            number = i + 1
+                            collision_info.append('iteration {}, time {}s'.format(number, self.timestep*number)) #add the balls that collide? 
                             #important_info.append([i, {'incedent ball velocity after':self.ball_list[x].velocity}, {'target ball velocity after': self.ball_list[y].velocity}])
                             break
                     acceleration = self.calculate_acceleration(ball, fluid_density)
@@ -173,7 +174,7 @@ class calculator:
                 
                 if approximation.lower() == 'rk2':
                     ball.runge_kutta2(acceleration, self.timestep)
-            time = i * self.timestep
+            time = (i+1) * self.timestep
             data_to_save = [time, copy.deepcopy(self.ball_list)]
             data.append(data_to_save)
 
