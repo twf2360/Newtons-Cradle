@@ -141,9 +141,9 @@ class calculator:
         '''
         calculate the movement of the ball, with a chosen approximation
         '''
-        important_info = []
+        collision_info = []
         fluid_density = density
-        important_info.append([self.timestep ,approximation, fluid_density])
+        collision_info.append([self.timestep ,approximation, fluid_density])
         if not approximation.lower() in ('cromer', 'euler', 'rk2'):
             print('approximation not recognised, must be cromer, euler, or RK')
             sys.exit()
@@ -153,12 +153,12 @@ class calculator:
                     pairs = combinations(range(self.number), 2)
                     for x,y in pairs:
                         if self.ball_list[x].overlap(self.ball_list[y]):
-                            if self.ball_list[x].velocity or self.ball_list[y].velocity == [0,0]:
+                            if (np.all(self.ball_list[x].velocity == 0)) and (np.all(self.ball_list[y].velocity == 0)):
                                 self.collision(self.ball_list[x], self.ball_list[y])
-                                continue
+                                break #there may be an issue using break instead of using continue 
                             print('There was a collsison at iteration {}'.format(i))
                             self.collision(self.ball_list[x], self.ball_list[y])
-                            important_info.append('iteration {}, time {}s'.format(i, self.timestep*i )) #add the balls that collide? 
+                            collision_info.append('iteration {}, time {}s'.format(i, self.timestep*i )) #add the balls that collide? 
                             #important_info.append([i, {'incedent ball velocity after':self.ball_list[x].velocity}, {'target ball velocity after': self.ball_list[y].velocity}])
                             break
                     acceleration = self.calculate_acceleration(ball, fluid_density)
@@ -177,12 +177,12 @@ class calculator:
             data_to_save = [time, copy.deepcopy(self.ball_list)]
             data.append(data_to_save)
 
-        return important_info
+        return collision_info
 
     def time_to_run(self, approximation, density):
             start_time = time()
             self.calculate(approximation, density)
-            time_to_run = start_time - time()
+            time_to_run = time() - start_time
             return time_to_run
 
 
