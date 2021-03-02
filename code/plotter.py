@@ -1,4 +1,4 @@
-''' a class used to plot the results saved by the calculator '''
+''' a class used to plot the results saved by the calculator ''' '''RENAME THE DATA VARAIBLE'''
 import numpy as np 
 import matplotlib.pyplot as plt 
 from calculator import calculator
@@ -118,6 +118,7 @@ class plotter:
                 total_ke += self.list_ke_by_time[time][ball] #add up all the kinetc energies of each ball at that time
             self.total_ke_list[time].append(total_ke)
         #self.total_ke_list = self.total_ke_list
+        return self.total_ke_list
         
        
     def total_potential_energy(self):
@@ -130,6 +131,7 @@ class plotter:
             for ball in range(len(self.list_pe_by_time[time])):
                 total_pe += self.list_pe_by_time[time][ball] #add up all the kinetc energies of each ball at that time
             self.total_pe_list[time].append(total_pe)
+        return self.total_pe_list
         
         
     
@@ -139,6 +141,7 @@ class plotter:
         self.total_potential_energy()
         self.total_kinetic_energy()
         self.total_energy_by_time = np.add(self.total_pe_list , self.total_ke_list)
+        return self.total_energy_by_time
 
     def energy_plot(self, kinetic = False, potential = False, total = False):
         if kinetic and potential and (not total):
@@ -206,10 +209,11 @@ class plotter:
     def total_energy_per_ball(self):
         ''' check the conservation of energy for each idividual ball'''
     
-
+'''
 test = plotter('data_testing', 2)
 #test.plot_y_positions_vs_time()
 #test.plot_x_positions_vs_time()
 test.plot_x_vs_y()
 test.energy_plot(kinetic=True, potential=True, total=True)
 
+'''

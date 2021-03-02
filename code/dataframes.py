@@ -100,7 +100,7 @@ class results:
                         i += 1
                         continue
                     df2 = pd.DataFrame(data = [[timestep, approximation, fluid_density, time]], columns=['Timestep', 'Approximation', 'Fluid Density', 'Time to run'])
-                    df = df.append(df2)
+                    df = df.append(df2, ignore_index = True)
         print(df)
 
 with open("code\config.json") as configuration:
@@ -108,10 +108,10 @@ with open("code\config.json") as configuration:
 initialisation = config['initialisation']
 system = config['system']
 
-
+'''
 testing = results(initialisation['number'], initialisation['StartPositions'], initialisation['StartVelocities'], initialisation['radii'], initialisation['masses'], initialisation['anchors'], initialisation['iterations'])
 testing.time_to_run_df(system['timesteps'], system['approximations'], system['densities'] )
-
+'''
 #print(config['initialisation'])
 #print(config['system'])
 #testing = results(number, startPositions, startVelocities, Radii, masses, anchors, iterations)

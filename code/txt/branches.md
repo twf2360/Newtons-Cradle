@@ -4,6 +4,9 @@ This markdown file is used to describe all of the branches that can be seen in t
 ### Main
 Main is the "origin" branch. The most up to date, and working methods are all merged into main when they are completed. 
 
+### testing
+This branch will be used to add a testing framework in! 
+
 ### config 
 This branch was used to add a config file (code/config.json) where the paramters of the simulation are defined. 
 

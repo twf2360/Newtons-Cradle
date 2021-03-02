@@ -14,11 +14,11 @@ class ball:
         anchor describes were the 'string' is attached, from which the length of the string is calculated 
         
         '''
-        self.anchor = anchor
-        self.position = position
+        self.anchor = np.array(anchor)
+        self.position = np.array(position)
         self.radius = radius
         self.mass = mass
-        self.velocity = velocity
+        self.velocity = np.array(velocity)
         
 
         self.length = np.linalg.norm(self.anchor - self.position)
