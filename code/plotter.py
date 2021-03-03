@@ -83,12 +83,19 @@ class plotter:
         ax.legend()
         plt.show()
         
-    def plot_x_vs_y(self):
+    def plot_x_vs_y(self, system_config, show = False):
         '''
         plot the x position of all of the balls against the y position of the same ball.
 
         this is used plot the path of the balls as a visual check that they are following the expected path
         '''
+        timestep = system_config[0]
+        approximation = system_config[1]
+        density = system_config[2]
+        txt = "system paramaters: timestep = {}, approximation = {}, fluid density = {}".format(timestep, approximation, density)
+        config_name = 'timestep_{}'.format(timestep) + '_approximation_{}_'.format(approximation) + 'density_{}'.format(density) 
+        plot_name = 'path_plot_' + config_name
+        
         self.organise_by_ball_positon()
         fig, ax = plt.subplots()
         fig.suptitle("x vs y positions")
@@ -103,7 +110,10 @@ class plotter:
 
         ax.set(xlabel ='x positions', ylabel = 'y positions')
         ax.legend()
-        plt.show()
+        fig.text(.5, .05, txt, ha='center')
+        if show:
+            plt.show()
+        plt.savefig(plot_name)
 
     def kinetic_energy_by_time(self):
         '''
@@ -188,7 +198,7 @@ class plotter:
         self.total_energy_by_time = np.add(self.total_pe_list , self.total_ke_list)
         return self.total_energy_by_time
 
-    def energy_plot(self, system_config, kinetic = False, potential = False, total = False) :
+    def energy_plot(self, system_config, show = False, kinetic = False, potential = False, total = False) :
         '''
         plot the change in different energies in the system at different times 
 
@@ -202,7 +212,9 @@ class plotter:
         timestep = system_config[0]
         approximation = system_config[1]
         density = system_config[2]
-        txt = "system paramaters: timestep = {}, approximation = {}, fluid density = {}".format(timestep, approximation, density)
+        txt = "system configuration: timestep = {}, approximation = {}, fluid density = {}".format(timestep, approximation, density)
+        config_name = 'timestep_{}'.format(timestep) + '_approximation_{}_'.format(approximation) + 'density_{}'.format(density) 
+        plot_name = 'energy_plot_' + config_name
         
         if kinetic and potential and (not total):
             self.total_potential_energy()
@@ -218,7 +230,8 @@ class plotter:
             
             fig.suptitle('Kinetic and potential energy time depence of the total system')
             fig.text(.5, .05, txt, ha='center')
-            plt.show()
+            if show:
+                plt.show()
 
         if total and ((not kinetic) or (not potential)):
             self.total_energy()
@@ -228,7 +241,8 @@ class plotter:
             ax.grid()
             fig.suptitle('Total energy change with time of the total system')
             fig.text(.5, .05, txt, ha='center')
-            plt.show()
+            if show:
+                plt.show()
         
         if kinetic != potential: #i think this will give me an exclusive or
             if kinetic:
@@ -248,7 +262,8 @@ class plotter:
                 ax.grid()
                 fig.suptitle('potential energy of the system against time')
                 fig.text(.5, .05, txt, ha='center')
-                plt.show()
+                if show:
+                    plt.show()
 
         if kinetic and potential and total:
             self.total_energy()
@@ -267,7 +282,10 @@ class plotter:
                 
             fig.suptitle('energy time depencies of the total system')
             fig.text(.5, .05, txt, ha='center')
-            plt.show()
+            if show:
+                plt.show()
+            plt.savefig(plot_name)
+            
 
 
 

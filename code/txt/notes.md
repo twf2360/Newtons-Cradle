@@ -59,7 +59,9 @@ This page is just to keep track of things that need doing, and random thoughts t
             - add the number of the balls that are colliding into plots, or dataframes?
         - save dfs to disk?
     
-    - add "main.py" which is used to run the code? 
+    - add "main.py" which is used to run the code? :construction:
+
+    - update docstrings and readme to include main, and the changes made to plotter
 
     - add a change of mass possibility somewhere?
     
