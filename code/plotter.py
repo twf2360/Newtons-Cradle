@@ -86,8 +86,12 @@ class plotter:
     def plot_x_vs_y(self, system_config, show = False):
         '''
         plot the x position of all of the balls against the y position of the same ball.
+        
+        show (boolean) is set to True if you wish to see (and save) the plots, or False just to just save them
+        system_config (array_like) is the system configuration that is being plotted - the timestep, approximation, and density
 
         this is used plot the path of the balls as a visual check that they are following the expected path
+        
         '''
         timestep = system_config[0]
         approximation = system_config[1]
@@ -202,7 +206,9 @@ class plotter:
         '''
         plot the change in different energies in the system at different times 
 
-        system_config (array_like) is the system configuration that is being plotted - the timestep, approximation, and density 
+        system_config (array_like) is the system configuration that is being plotted - the timestep, approximation, and density
+
+        show (boolean) is set to True if you wish to see (and save) the plots, or False just to just save them
 
         if any of kinetic, potential, and total are set to True, then the graph of that energy over time will be plotted  
         These functions only plot the enegyies of the whole system - not individual balls

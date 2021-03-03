@@ -19,17 +19,19 @@ The "txt" folder contains two files, notes.md, and branches.md. Notes is a perso
 
 The "code" folder contains all of the code that is used to run the simulation:
     
-    - config.json should be changed to the configuration that you are looking to test. "initialisation" contains the number of balls, as well as all of the required information about them. This information includes their masses, radii, starting position and velocity, and the point at which they are anchored too.  "system" is used to define the different systems that you want to test. Therefore, multiple different approximations, timesteps, and fluid densities can be defined
+  - config.json should be changed to the configuration that you are looking to test. "initialisation" contains the number of balls, as well as all of the required information about them. This information includes their masses, radii, starting position and velocity, and the point at which they are anchored too.  "system" is used to define the different systems that you want to test. Therefore, multiple different approximations, timesteps, and fluid densities can be defined
     
-    - ball.py defines the ball objects. Each ball object is described by the paramaters mentioned in the config file. Ball.py also contains multiple different approximations of motion, which can be chosen when updating the balls position and velocity. There are also functions that return the kinetic and potential energy of the ball
+  - ball.py defines the ball objects. Each ball object is described by the paramaters mentioned in the config file. Ball.py also contains multiple different approximations of motion, which can be chosen when updating the balls position and velocity. There are also functions that return the kinetic and potential energy of the ball
     
-    - calculator.py calculates the motion of the system. It saves the state of the system (the ball objects, the approximation being used, the density of the fluid through which the balls are moving and the time), to disk, in a file called "system_states_over_time.npy". There is also a function used to calculate the time taken to run the calculator, should this be required
+  - calculator.py calculates the motion of the system. It saves the state of the system (the ball objects, the approximation being used, the density of the fluid through which the balls are moving and the time), to disk, in a file called "system_states_over_time.npy". There is also a function used to calculate the time taken to run the calculator, should this be required
    
-    - plotter.py reads in a file with a given name, and when the number of balls used in that simulation is defined, it can be used to plot the energy of, or positions of balls withing the system over time 
+  - plotter.py reads in a file with a given name, and when the number of balls used in that simulation is defined, it can be used to plot the energy of, or positions of balls withing the system over time 
     
-    - dataframes.py uses calculator.py to calculate the motion of the system for every system defined in the config file. It can then be used to print dataframes for the time at which all of the collisions took place for each system, or the time taken to run the calculator for each system
+  - dataframes.py uses calculator.py to calculate the motion of the system for every system defined in the config file. It can then be used to print dataframes for the time at which all of the collisions took place for each system, or the time taken to run the calculator for each system
 
-    -tests.py uses the pytest framework to test various parts of the code.
+  - main.py accesses all of the other classes, and is to be ran by a user after they have defined the system configuration in the config.json file.
+
+  -tests.py uses the pytest framework to test various parts of the code.
 
 
 
