@@ -60,6 +60,8 @@ This page is just to keep track of things that need doing, and random thoughts t
         - save dfs to disk?
     
     - add "main.py" which is used to run the code? 
+
+    - add a change of mass possibility somewhere?
     
     - animate? 
 

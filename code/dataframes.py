@@ -8,12 +8,20 @@ import sys
 import pandas as pd     
 from calculator import calculator    
 import json
-#import config.json
 
 
 class results:
+    '''
+    This is a class that accesses functions from within the calculator class, and prints the results using pandas dataframes
+    The calculator class is accessed multiple times, so that results can be compared
+    '''
 
     def __init__(self, number, start_positions, start_velocities, radii, masses, anchors, iterations):
+        '''
+        All of the paramaters needed by the calculator class have to be defined. 
+        All of the parameters throughout the initialisation function are constant throughout all of the different tests - these paramaters are held as a control
+        to compare the effect of changing all of the other parameters
+        '''
         self.number = number
         self.start_positions = start_positions
         self.start_velocities = start_velocities
@@ -27,8 +35,9 @@ class results:
      
     def collision_df(self, timesteps, approximations,  densities):
         '''
+
         Calculates the movement of the newtons cradle that is defined by the initialisation function, and a given timestep, approximation, and fluid density
-        In order to test multiple timesteps, approximations, and densities, these can be entered as an array
+        In order to test multiple timesteps, approximations, and densities, these must be entered as an array
         A dataframe will be printed that shows the number of the collisions, and the time at which they took place, for each defined "system"
 
         '''
@@ -85,7 +94,7 @@ class results:
     def time_to_run_df(self, timesteps, approximations,  densities):
         '''
         Calculates the movement of the newtons cradle that is defined by the initialisation function, and a given timestep, approximation, and fluid density
-        In order to test multiple timesteps, approximations, and densities, these can be entered as an array
+        In order to test multiple timesteps, approximations, and densities, these must be entered as an array, even if only of one value
         A dataframe will be printed that shows the time taken to run each version of the "system"
         '''
         i = 0 
