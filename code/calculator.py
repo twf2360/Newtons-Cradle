@@ -10,7 +10,7 @@ import pandas as pd
 from time import time
 g_scalar = 9.81
 g_vector = np.array([0,-9.81])
-data = []
+system_states_to_plot = []
 np.seterr(over='raise')
 class calculator:
     '''
@@ -89,9 +89,6 @@ class calculator:
         ball1.velocity = np.array([v1_x, v1_y], dtype= float)
         ball2.velocity = np.array([v2_x, v2_y], dtype = float)
 
-        #print(' \n ball 1 velocity after collision = {}, ball 2 velocity afer collision = {} \nball 1 position = {}, ball 2 position = {}  \n'.format(ball1.velocity, ball2.velocity, ball1.position, ball2.position))
-        #print(' v1 before = {}, v1 after = {} \n v2 before = {}, v2 after = {} \n r1 before = {}, r1 after = {} \n  r2 before = {}, r2 after = {} \n \n'.format(v1_before, v1_after, v2_before, v2_after, pos1, ball1.position, pos2, ball2.position))
-
     def stringtension(self,ball):
         ''' calculates the force on the ball due to the string tension '''
         magAcceleration = (np.linalg.norm(ball.velocity)**2)/ball.length #calculate magnitude of  centripetal acceleration
@@ -105,18 +102,14 @@ class calculator:
         
         if (not np.isnan(delta_x)) and (delta_x != 0) and (not np.isnan(delta_y)) and (delta_y != 0):
             ''' this to avoid the possibility of any divide by 0 errors if the ball is at 0 or 90 degrees to the vertical '''
-            #print(ball.position[1] - ball.anchor[1])
             angPos = math.atan(delta_x/delta_y) #angle of the ball compared to the anchor
-            #print(angPos)
         
         elif (np.isnan(delta_y)) or (delta_y == 0):
             angPos = (math.pi/2)
-            #print('dy = {}'.format(delta_y))
-            
+        
         else:
             angPos = 0
-            #print('dx = {}'.format(delta_x))
-
+        
         stringTension_scalar = ((ball.mass*g_scalar*math.cos(angPos)) + ball.mass*magAcceleration) #calculate magnitude of string tension
         stringTension_vector = stringTension_scalar * (np.array((to_anchor)/normalisation))
 
@@ -145,8 +138,9 @@ class calculator:
         fluid_density = density
         collision_info.append([self.timestep ,approximation, fluid_density])
         if not approximation.lower() in ('cromer', 'euler', 'rk2'):
-            print('approximation not recognised, must be cromer, euler, or RK')
+            print('approximation not recognised, must be cromer, euler, or RK2')
             sys.exit()
+        
         for i in np.arange(self.iterations):
             for ball in self.ball_list: 
                 while True: #probably a much cleaner way to do this somehow 
@@ -166,6 +160,8 @@ class calculator:
                     delta_v = acceleration * self.timestep  # calculate the change in velocity over the timestep
                     
                     break   
+                
+                
                 if approximation.lower() == 'euler':
                     ball.euler_update(delta_v, self.timestep)
                 
@@ -174,10 +170,12 @@ class calculator:
                 
                 if approximation.lower() == 'rk2':
                     ball.runge_kutta2(acceleration, self.timestep)
+            
             time = (i+1) * self.timestep
-            data_to_save = [time, copy.deepcopy(self.ball_list)]
-            data.append(data_to_save)
-
+            time_and_balls = [time, copy.deepcopy(self.ball_list)]
+            system_states_to_plot.append(time_and_balls)
+        
+        np.save('system_states_over_time.npy', system_states_to_plot, allow_pickle=True)
         return collision_info
 
     def time_to_run(self, approximation, density):

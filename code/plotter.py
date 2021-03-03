@@ -118,6 +118,7 @@ class plotter:
                 total_ke += self.list_ke_by_time[time][ball] #add up all the kinetc energies of each ball at that time
             self.total_ke_list[time].append(total_ke)
         #self.total_ke_list = self.total_ke_list
+        #print('KE', self.total_ke_list[150])
         return self.total_ke_list
         
        
@@ -131,6 +132,7 @@ class plotter:
             for ball in range(len(self.list_pe_by_time[time])):
                 total_pe += self.list_pe_by_time[time][ball] #add up all the kinetc energies of each ball at that time
             self.total_pe_list[time].append(total_pe)
+        #print('PE', self.total_pe_list[150])
         return self.total_pe_list
         
         
@@ -141,6 +143,7 @@ class plotter:
         self.total_potential_energy()
         self.total_kinetic_energy()
         self.total_energy_by_time = np.add(self.total_pe_list , self.total_ke_list)
+        #print('TOTAL', self.total_energy_by_time[150])
         return self.total_energy_by_time
 
     def energy_plot(self, kinetic = False, potential = False, total = False):
@@ -209,11 +212,10 @@ class plotter:
     def total_energy_per_ball(self):
         ''' check the conservation of energy for each idividual ball'''
     
-'''
-test = plotter('data_testing', 2)
+
+test = plotter('system_states_over_time', 1)
 #test.plot_y_positions_vs_time()
 #test.plot_x_positions_vs_time()
 test.plot_x_vs_y()
 test.energy_plot(kinetic=True, potential=True, total=True)
 
-'''
