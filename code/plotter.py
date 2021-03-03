@@ -4,13 +4,28 @@ import matplotlib.pyplot as plt
 from calculator import calculator
 
 class plotter:
+    '''
+    the plotter class is used to plot various different results that have been calculated by the calculator class
+    although it does not call on any functions from the calculator class, it relies on the calculations being completed so that it can read in the results
+    '''
     def __init__(self, data_name, number):
+        '''
+        Initialisation function of the class:
+        inputs:
+        data_name: the stem of an npy file that contains the saved data from the calculator 
+        number: the number of balls involved in the simulation
+        '''
         file = data_name + '.npy'
         self.data = np.load(file, allow_pickle = True)
         self.number= number
         
 
     def organise_by_ball_positon(self):
+        '''
+        The data that is read in by the calculator class is in a certain form [[time0, [ball1, ball2,....], [time1, [ball1, ball2,....]]]
+        this is however not always the most useful form for plotting uses. Therefore, both of the organise_by_ functions change the organisation of the read in array
+        these organisation functions are then used by the plotting function.
+        '''
         '''results with [[ball1.position time 0, ball1.position time 1,...], [ball2.position time 0, ball2.position time 1,....], ....] '''
         self.organise_by_time_position()
         lists_array = np.array(self.list_position_by_time)
@@ -30,6 +45,9 @@ class plotter:
 
     
     def plot_x_positions_vs_time(self):
+        '''
+        this function is used to plot the x positions of all of the balls against time 
+        '''
         self.organise_by_ball_positon()
         fig, ax = plt.subplots()
         fig.suptitle("x postions of Newton's Cradle Balls vs Time")
@@ -47,6 +65,9 @@ class plotter:
         
 
     def plot_y_positions_vs_time(self):
+        '''
+        used to plot the y position value of the balls against time 
+        '''
         self.organise_by_ball_positon()
         fig, ax = plt.subplots()
         fig.suptitle("y postions of Newton's Cradle Balls vs Time")
@@ -63,6 +84,11 @@ class plotter:
         plt.show()
         
     def plot_x_vs_y(self):
+        '''
+        plot the x position of all of the balls against the y position of the same ball.
+
+        this is used plot the path of the balls as a visual check that they are following the expected path
+        '''
         self.organise_by_ball_positon()
         fig, ax = plt.subplots()
         fig.suptitle("x vs y positions")
@@ -80,6 +106,10 @@ class plotter:
         plt.show()
 
     def kinetic_energy_by_time(self):
+        '''
+        similar to the organise_by_ functions, this function is used to organise the data that is read in into a certain form so that it can be plotted
+        this function is by all of the plots that require kinetic energy
+        '''
         '''results with [[ball1.ke time 0, ball2.ke time 0, ....], [ball1.ke time 1, ball2.ke time 1,....]] '''
         self.list_ke_by_time = [ [] for i in range(len(self.data))]
         self.timelist = []
@@ -92,6 +122,10 @@ class plotter:
         
     
     def potential_energy_by_time(self):
+        '''
+        similar to the organise_by_ functions, this function is used to organise the data that is read in into a certain form so that it can be plotted
+        this function is by all of the plots that require potential energy
+        '''
         '''results with [[ball1.pe time 0, ball2.pe time 0, ....], [ball1.pe time 1, ball2.pe time 1,....]] '''
         ''' in order to calculate the potential energy, the "ground" height is the y position of the ball when directly underneath it's anchor '''
         self.list_pe_by_time = [ [] for i in range(len(self.data))]
@@ -107,46 +141,60 @@ class plotter:
 
 
     def total_kinetic_energy(self):
-        ''' check the conservation of the entire systems kinetic energy ke ''' 
+        '''
+        this function turns [[ball1.ke time 0, ball2.ke time 0, ....], [ball1.ke time 1, ball2.ke time 1,....]] into [totalke time0, total ke time1,.....]
+        so the total kinetic energy of the system can then be plotted
+        '''
 
         self.kinetic_energy_by_time()
-        #print(self.list_ke_by_time)
-        self.total_ke_list = [[] for i in range(len(self.list_ke_by_time))]
+        self.total_ke_list = [[] for i in range(len(self.list_ke_by_time))] #generate an empty list of the correct size
+        
         for time in range(len(self.list_ke_by_time)):
             total_ke = 0 #at the each time section, reset ke to 0 so it can be calculated
             for ball in range(len(self.list_ke_by_time[time])):
                 total_ke += self.list_ke_by_time[time][ball] #add up all the kinetc energies of each ball at that time
             self.total_ke_list[time].append(total_ke)
-        #self.total_ke_list = self.total_ke_list
-        #print('KE', self.total_ke_list[150])
+
+
         return self.total_ke_list
         
        
     def total_potential_energy(self):
-        ''' check the conservation of the entire systems potenital energy pe ''' 
-    
+        '''
+        this function turns [[ball1.pe time 0, ball2.pe time 0, ....], [ball1.pe time 1, ball2.pe time 1,....]] into [totalpe time0, total pe time1,.....]
+        so the total kinetic energy of the system can then be plotted
+        '''
         self.potential_energy_by_time()
-        self.total_pe_list = [[] for i in range(len(self.list_pe_by_time))]
+        self.total_pe_list = [[] for i in range(len(self.list_pe_by_time))] #generate empty list of the correct size
         for time in range(len(self.list_pe_by_time)):
             total_pe = 0 #at the each time section, reset pe to 0 so it can be calculated
             for ball in range(len(self.list_pe_by_time[time])):
-                total_pe += self.list_pe_by_time[time][ball] #add up all the kinetc energies of each ball at that time
+                total_pe += self.list_pe_by_time[time][ball] #add up all the potential energies of each ball at that time
             self.total_pe_list[time].append(total_pe)
-        #print('PE', self.total_pe_list[150])
+
         return self.total_pe_list
         
         
     
     def total_energy(self):
-        ''' check the conservation of the entire systems total energy - pe + ke ''' 
+        '''
+        this function adds the total kinetic energy list to the total potential energy list, so that the total energy of the system can be plotted
+        this allows a check for total energy conservation
+        '''
+    
         ''' when air reistance is set to "on", energy will not be conservered ''' 
         self.total_potential_energy()
         self.total_kinetic_energy()
         self.total_energy_by_time = np.add(self.total_pe_list , self.total_ke_list)
-        #print('TOTAL', self.total_energy_by_time[150])
         return self.total_energy_by_time
 
     def energy_plot(self, kinetic = False, potential = False, total = False):
+        '''
+        plot the change in different energies in the system at different times 
+
+        if any of kinetic, potential, and total are set to True, then the graph of that energy over time will be plotted  
+        These functions only plot the enegyies of the whole system - not individual balls
+        '''
         if kinetic and potential and (not total):
             self.total_potential_energy()
             self.total_kinetic_energy()
@@ -209,8 +257,7 @@ class plotter:
 
 
 
-    def total_energy_per_ball(self):
-        ''' check the conservation of energy for each idividual ball'''
+
     
 '''
 test = plotter('system_states_over_time', 1)
