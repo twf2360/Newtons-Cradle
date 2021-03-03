@@ -98,7 +98,7 @@ class calculator:
 
         to_anchor = ball.anchor - ball.position  
         normalisation = np.linalg.norm(to_anchor)
-        #print(to_anchor)
+        
         
         if (not np.isnan(delta_x)) and (delta_x != 0) and (not np.isnan(delta_y)) and (delta_y != 0):
             ''' this to avoid the possibility of any divide by 0 errors if the ball is at 0 or 90 degrees to the vertical '''
@@ -154,7 +154,7 @@ class calculator:
                             self.collision(self.ball_list[x], self.ball_list[y])
                             number = i + 1
                             collision_info.append('iteration {}, time {}s'.format(number, self.timestep*number)) #add the balls that collide? 
-                            #important_info.append([i, {'incedent ball velocity after':self.ball_list[x].velocity}, {'target ball velocity after': self.ball_list[y].velocity}])
+
                             break
                     acceleration = self.calculate_acceleration(ball, fluid_density)
                     delta_v = acceleration * self.timestep  # calculate the change in velocity over the timestep

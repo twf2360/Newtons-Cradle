@@ -212,10 +212,11 @@ class plotter:
     def total_energy_per_ball(self):
         ''' check the conservation of energy for each idividual ball'''
     
-
+'''
 test = plotter('system_states_over_time', 1)
 #test.plot_y_positions_vs_time()
 #test.plot_x_positions_vs_time()
 test.plot_x_vs_y()
 test.energy_plot(kinetic=True, potential=True, total=True)
 
+'''

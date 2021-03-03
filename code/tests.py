@@ -89,7 +89,7 @@ In order to test the simplest aspects - such as that total energy = pe+ke, and c
 
 
 def plotter_init():
-    theta = math.pi/6
+    theta = math.pi/6 #initial starting angle! 
     get_results = calculator(0.0001,50000)
     get_results.get_balls(number = 1,positions= [[1 * math.sin(theta), -1 * math.cos(theta)]], velocities= [[0,0]], radii=[0.02], masses=[1], anchors= [[0,0]])
     get_results.calculate(approximation='cromer', density=0)
@@ -100,25 +100,21 @@ def plotter_init():
     total_e_by_time = plot.total_energy()
     return [ke_by_time, pe_by_time, total_e_by_time]
 
-def test_energy_addition_at_start():
+def test_energy_addition():
+    ''' use is close due to errors in floating point maths'''
     energies = plotter_init()
     ke = energies[0]
     pe = energies[1]
     total = energies[2]
     assert (math.isclose(total[0] == (ke[0] + pe[0]))).all(), "total energy does not equal potential plus kinetic at the start"
-
-def test_energy_addition_at_random_point():
-    ''' for speed reasons it may be better to combine the above two functions into one '''#
-
-    ''' use is close due to errors in floating point maths'''
-    energies = plotter_init()
-    ke = energies[0]
-    pe = energies [1]
-    total = energies[2]
     random_time = 50000 * random()
     random_time_int = math.floor(random_time)
-    assert (math.isclose(total[random_time_int],  (ke[random_time_int] + pe[random_time_int]))).all(), "total energy does not equal potential plus kinetic at a random time point"
+    assert (math.isclose(total[random_time_int],  (ke[random_time_int] + pe[random_time_int]))).all(), "total energy does not equal potential plus kinetic at the a random point"
 
-'''
-plotter_init()
-'''
+
+def test_energy_conservation():
+    energies = plotter_init()
+    total = energies[2]
+    assert (math.isclose(total[0], total[50000])).all()
+
+
