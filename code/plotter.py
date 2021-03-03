@@ -188,13 +188,22 @@ class plotter:
         self.total_energy_by_time = np.add(self.total_pe_list , self.total_ke_list)
         return self.total_energy_by_time
 
-    def energy_plot(self, kinetic = False, potential = False, total = False):
+    def energy_plot(self, system_config, kinetic = False, potential = False, total = False) :
         '''
         plot the change in different energies in the system at different times 
 
+        system_config (array_like) is the system configuration that is being plotted - the timestep, approximation, and density 
+
         if any of kinetic, potential, and total are set to True, then the graph of that energy over time will be plotted  
         These functions only plot the enegyies of the whole system - not individual balls
+
         '''
+
+        timestep = system_config[0]
+        approximation = system_config[1]
+        density = system_config[2]
+        txt = "system paramaters: timestep = {}, approximation = {}, fluid density = {}".format(timestep, approximation, density)
+        
         if kinetic and potential and (not total):
             self.total_potential_energy()
             self.total_kinetic_energy()
@@ -208,6 +217,7 @@ class plotter:
             ax[1].grid()
             
             fig.suptitle('Kinetic and potential energy time depence of the total system')
+            fig.text(.5, .05, txt, ha='center')
             plt.show()
 
         if total and ((not kinetic) or (not potential)):
@@ -217,6 +227,7 @@ class plotter:
             ax.set(xlabel = 'time', ylabel = 'total energy of the system')
             ax.grid()
             fig.suptitle('Total energy change with time of the total system')
+            fig.text(.5, .05, txt, ha='center')
             plt.show()
         
         if kinetic != potential: #i think this will give me an exclusive or
@@ -227,6 +238,7 @@ class plotter:
                 ax.set(xlabel = 'time', ylabel = 'kinetic energy of the system')
                 ax.grid()
                 fig.suptitle('kinetic energy of the system against time')
+                fig.text(.5, .05, txt, ha='center')
                 plt.show()
             if potential:
                 self.total_potential_energy()
@@ -235,6 +247,7 @@ class plotter:
                 ax.set(xlabel = 'time', ylabel = 'potential energy of the system')
                 ax.grid()
                 fig.suptitle('potential energy of the system against time')
+                fig.text(.5, .05, txt, ha='center')
                 plt.show()
 
         if kinetic and potential and total:
@@ -253,6 +266,7 @@ class plotter:
             ax[2].grid()
                 
             fig.suptitle('energy time depencies of the total system')
+            fig.text(.5, .05, txt, ha='center')
             plt.show()
 
 

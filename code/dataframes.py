@@ -80,16 +80,17 @@ class results:
                         if x == 0: 
                             continue
                         data.append(collision_results[x])
-                    #print('we made it here!')
+                
                     
 
                     df2 = pd.DataFrame(data = [data], columns= columns)
-                    #print(df2)
+                    
                     df = df.append(df2, ignore_index = True)
                         
 
         df = df.fillna('No Collision')            
         print(df)
+        df.to_csv('collisions.csv')
 
     def time_to_run_df(self, timesteps, approximations,  densities):
         '''
@@ -111,12 +112,14 @@ class results:
                     df2 = pd.DataFrame(data = [[timestep, approximation, fluid_density, time]], columns=['Timestep', 'Approximation', 'Fluid Density', 'Time to run'])
                     df = df.append(df2, ignore_index = True)
         print(df)
+        df.to_csv('time_to_run.csv')
 
+'''
 with open(r"code\config.json") as configuration:
     config = json.load(configuration)
 initialisation = config['initialisation']
 system = config['system']
-
+'''
 '''
 testing = results(initialisation['number'], initialisation['StartPositions'], initialisation['StartVelocities'], initialisation['radii'], initialisation['masses'], initialisation['anchors'], initialisation['iterations'])
 testing.time_to_run_df(system['timesteps'], system['approximations'], system['densities'] )
