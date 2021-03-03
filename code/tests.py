@@ -51,7 +51,7 @@ def test_ball_initalisation_anchor():
     ball = ball_initialisation(position=[0,0], velocity=[0,0],radius= 1, mass = 1,anchor= [0,1])
     assert (ball.anchor == [0,1]).all()
 
-''' ADD KE AND PE HERE ''' 
+ 
 
 '''
 the next group of tests are for the the configuration file. This ensures that there is a dictionary that defines the configuration, and that it contains all of the needed parameters 
@@ -106,15 +106,15 @@ def test_energy_addition():
     ke = energies[0]
     pe = energies[1]
     total = energies[2]
-    assert (math.isclose(total[0] == (ke[0] + pe[0]))).all(), "total energy does not equal potential plus kinetic at the start"
+    assert (np.isclose(total[0] , (np.add(ke[0] , pe[0])))).all(), "total energy does not equal potential plus kinetic at the start"
     random_time = 50000 * random()
     random_time_int = math.floor(random_time)
-    assert (math.isclose(total[random_time_int],  (ke[random_time_int] + pe[random_time_int]))).all(), "total energy does not equal potential plus kinetic at the a random point"
+    assert (np.isclose(total[random_time_int],  (np.add(ke[random_time_int]  ,pe[random_time_int])))).all(), "total energy does not equal potential plus kinetic at the a random point"
 
 
 def test_energy_conservation():
     energies = plotter_init()
     total = energies[2]
-    assert (math.isclose(total[0], total[50000])).all()
+    assert (np.isclose(total[0], total[50000]))
 
 
