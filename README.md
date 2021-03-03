@@ -17,7 +17,7 @@ The folder titled "learning" can be ignored. It contains three more simple scrip
 
 The "txt" folder contains two files, notes.md, and branches.md. Notes is a personal to-do list, that will be used to document the progress of the project, and keep track of any ideas for future improvement. As the use of Git/GitHub is being assessed for the PHYS389 module, I did not want to delete any of the previous branches. Therefore, branches.md contains information on each of the branches, why they were created, and what they were used for.
 
-The "code" folder contains all of the code that is used to run the simulation. 
+The "code" folder contains all of the code that is used to run the simulation:
     
     - config.json should be changed to the configuration that you are looking to test. "initialisation" contains the number of balls, as well as all of the required information about them. This information includes their masses, radii, starting position and velocity, and the point at which they are anchored too.  "system" is used to define the different systems that you want to test. Therefore, multiple different approximations, timesteps, and fluid densities can be defined
     
