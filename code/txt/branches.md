@@ -5,10 +5,10 @@ This markdown file is used to describe all of the branches that can be seen in t
 Main is the "origin" branch. The most up to date, and working methods are all merged into main when they are completed. 
 
 ### testing
-This branch will be used to add a testing framework in! 
+This branch will be used to add an initial testing framework in. 
 
 ### config 
-This branch was used to add a config file (code/config.json) where the paramters of the simulation are defined. 
+This branch was used to add a config file (code/config.json) where the paramters of the simulation are defined. It then had to be ensured that the rest of the code - particularly dataframes.py could read in from the config file 
 
 ### df
 DF branch was used to add a new functionality: saving important stuff to dataframes! Whilst code/dataframes.py will be updated outside of this original branch, this was when the file was initially created 
