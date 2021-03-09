@@ -3,7 +3,7 @@
 {"initialisation": 
 
     
-    {"iterations": 50000,
+    {"iterations": 10000,
     "number": 2,
     "StartPositions": [[-0.7,-0.8660254], [0,-1]],
     "StartVelocities": [[0,0],[0,0]],
@@ -13,8 +13,8 @@
 
 "system": 
 
-    {"timesteps" :[0.0005, 0.0001],
-    "approximations":  ["cromer", "euler", "rk2"],
+    {"timesteps" :[0.0001],
+    "approximations":  ["cromer", "rk2"],
     "densities": [0, 1.225]}
 
 }

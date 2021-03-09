@@ -8,6 +8,7 @@ from itertools import combinations
 import sys
 import pandas as pd
 from time import time
+import os
 g_scalar = 9.81
 g_vector = np.array([0,-9.81])
 system_states_to_plot = []
@@ -184,6 +185,7 @@ class calculator:
 
 
     def calculate(self, approximation, density):
+        time_and_balls = []
         '''
         calculate the movement of the ball, with a chosen approximation
 
@@ -234,7 +236,9 @@ class calculator:
             time = (i+1) * self.timestep
             time_and_balls = [time, copy.deepcopy(self.ball_list)]
             system_states_to_plot.append(time_and_balls)
-        
+
+        if os.path.isfile('system_states_over_time.npy'):
+            os.remove('system_states_over_time.npy')
         np.save('system_states_over_time.npy', system_states_to_plot, allow_pickle=True)
         return collision_info
 

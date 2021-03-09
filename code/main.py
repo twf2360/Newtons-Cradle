@@ -24,24 +24,29 @@ class main:
         upon initialisation, config.json is opened and the configuration is "read in"
         '''
         with open(r"code\config.json") as configuration:
-            config = json.load(configuration)
-        self.initialisation = config['initialisation']
-        self.system = config['system']
+            self.config = json.load(configuration)
+        
+        self.initialisation = self.config['initialisation']
+        self.system = self.config['system']
         self.number = self.initialisation['number']
 
     def get_plots(self):
-        sys_config = np.array((self.system.values())) #the plotter function takes the system configuration as an argument in order to display on the plots
+       
+
         timesteps = self.system['timesteps']
         approximations = self.system['approximations']
         densities = self.system['densities']
+        
         for timestep in timesteps:
             for approximation in approximations:
                 for density in densities:
-                    calculating = calculator(timestep=timestep, iterations=self.iterations)
-                    calculating.get_balls(number = self.number, positions = self.start_positions, velocities= self.start_velocities, radii = self.radii, masses= self.masses, anchors= self.anchors)
+                    calculating = calculator(timestep=timestep, iterations=self.initialisation['iterations'])
+                    calculating.get_balls(self.initialisation['number'], self.initialisation['StartPositions'], self.initialisation['StartVelocities'], self.initialisation['radii'], self.initialisation['masses'], self.initialisation['anchors'])
+                    calculating.calculate(approximation, density)
                     plots = plotter('system_states_over_time', self.number)
-                    plots.plot_x_vs_y(sys_config, show = False)
-                    plots.energy_plot(sys_config, show = False, kinetic = True, kinetic = True, kinetic = True)
+                    plots.plot_x_vs_y([timestep, approximation, density], show = False)
+                    plots.energy_plot([timestep, approximation, density], show = False, kinetic = True, total=  True, potential=  True)
+        
 
     def get_dfs(self):
         get_results = results(self.initialisation['number'], self.initialisation['StartPositions'], self.initialisation['StartVelocities'], self.initialisation['radii'], self.initialisation['masses'], self.initialisation['anchors'], self.initialisation['iterations'])
@@ -53,7 +58,7 @@ class main:
         plots (boolean) : if plots is set to true then the plots of the defined simulation will be saved 
         dataframes (boolean): if dataframes is set to true then the dataframes showing time to run, and collision information are saved. 
         '''
-
+        
         if dataframes and (not plots):
             self.get_dfs()
         
@@ -64,4 +69,6 @@ class main:
             self.get_plots()
             self.get_dfs()
 
-            
+
+test = main()
+test.main(True, True)

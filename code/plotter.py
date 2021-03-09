@@ -2,6 +2,7 @@
 import numpy as np 
 import matplotlib.pyplot as plt 
 from calculator import calculator
+import os
 
 class plotter:
     '''
@@ -16,8 +17,15 @@ class plotter:
         number: the number of balls involved in the simulation
         '''
         file = data_name + '.npy'
+        self.data= []
+        
         self.data = np.load(file, allow_pickle = True)
         self.number= number
+        os.remove(file) #this was added to debug why there were multiple overlaying plots
+        plt.clf() #as was this 
+        plt.close()
+        plt.cla()
+        
         
 
     def organise_by_ball_positon(self):
@@ -28,6 +36,7 @@ class plotter:
         '''
         '''results with [[ball1.position time 0, ball1.position time 1,...], [ball2.position time 0, ball2.position time 1,....], ....] '''
         self.organise_by_time_position()
+        self.position_organised_by_ball = []
         lists_array = np.array(self.list_position_by_time)
         self.position_organised_by_ball = lists_array.transpose(1,0,2)
 
@@ -98,10 +107,12 @@ class plotter:
         density = system_config[2]
         txt = "system paramaters: timestep = {}, approximation = {}, fluid density = {}".format(timestep, approximation, density)
         config_name = 'timestep_{}'.format(timestep) + '_approximation_{}_'.format(approximation) + 'density_{}'.format(density) 
-        plot_name = 'path_plot_' + config_name
+        plot_name = 'path_plot_' + config_name +'.jpeg'
         
         self.organise_by_ball_positon()
-        fig, ax = plt.subplots()
+        plt.clf()
+        fig, ax = plt.subplots(figsize= [15,10])
+        
         fig.suptitle("x vs y positions")
         for ball in range(self.number):
             total_positions = self.position_organised_by_ball[ball]
@@ -117,7 +128,11 @@ class plotter:
         fig.text(.5, .05, txt, ha='center')
         if show:
             plt.show()
+        plt.subplots_adjust(bottom=0.15)
         plt.savefig(plot_name)
+        plt.clf()
+        plt.cla()
+        plt.close()
 
     def kinetic_energy_by_time(self):
         '''
@@ -220,12 +235,13 @@ class plotter:
         density = system_config[2]
         txt = "system configuration: timestep = {}, approximation = {}, fluid density = {}".format(timestep, approximation, density)
         config_name = 'timestep_{}'.format(timestep) + '_approximation_{}_'.format(approximation) + 'density_{}'.format(density) 
-        plot_name = 'energy_plot_' + config_name
+        plot_name = 'energy_plot_' + config_name +'.jpeg'
         
         if kinetic and potential and (not total):
             self.total_potential_energy()
             self.total_kinetic_energy()
             fig, ax = plt.subplots(nrows=1, ncols=2)
+            plt.clf()
             ax[0].plot(self.timelist, self.total_ke_list)
             ax[0].set(xlabel = 'time', ylabel = 'kinetic energy of the system')
             ax[0].grid()
@@ -273,7 +289,9 @@ class plotter:
 
         if kinetic and potential and total:
             self.total_energy()
-            fig, ax = plt.subplots(nrows=1, ncols=3)
+            plt.clf()
+            fig, ax = plt.subplots(nrows=1, ncols=3, figsize= [15,10])
+            
             ax[0].plot(self.timelist, self.total_ke_list)
             ax[0].set(xlabel = 'time', ylabel = 'kinetic energy of the system')
             ax[0].grid()
@@ -284,13 +302,18 @@ class plotter:
 
             ax[2].plot(self.timelist, self.total_energy_by_time)
             ax[2].set(xlabel = 'time', ylabel = 'Total energy of the system')
+            ax[2].set_ylim([0,3])
             ax[2].grid()
                 
             fig.suptitle('energy time depencies of the total system')
             fig.text(.5, .05, txt, ha='center')
             if show:
                 plt.show()
+            plt.subplots_adjust(bottom=0.15)
             plt.savefig(plot_name)
+            plt.clf()
+            plt.cla()
+            plt.close()
             
 
 
