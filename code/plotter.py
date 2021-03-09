@@ -18,13 +18,10 @@ class plotter:
         '''
         file = data_name + '.npy'
         self.data= []
-        
         self.data = np.load(file, allow_pickle = True)
         self.number= number
         os.remove(file) #this was added to debug why there were multiple overlaying plots
-        plt.clf() #as was this 
-        plt.close()
-        plt.cla()
+        
         
         
 
@@ -110,7 +107,6 @@ class plotter:
         plot_name = 'path_plot_' + config_name +'.jpeg'
         
         self.organise_by_ball_positon()
-        plt.clf()
         fig, ax = plt.subplots(figsize= [15,10])
         
         fig.suptitle("x vs y positions")
@@ -130,10 +126,7 @@ class plotter:
             plt.show()
         plt.subplots_adjust(bottom=0.15)
         plt.savefig(plot_name)
-        plt.clf()
-        plt.cla()
-        plt.close()
-
+        
     def kinetic_energy_by_time(self):
         '''
         similar to the organise_by_ functions, this function is used to organise the data that is read in into a certain form so that it can be plotted
@@ -241,7 +234,7 @@ class plotter:
             self.total_potential_energy()
             self.total_kinetic_energy()
             fig, ax = plt.subplots(nrows=1, ncols=2)
-            plt.clf()
+            
             ax[0].plot(self.timelist, self.total_ke_list)
             ax[0].set(xlabel = 'time', ylabel = 'kinetic energy of the system')
             ax[0].grid()
@@ -289,9 +282,8 @@ class plotter:
 
         if kinetic and potential and total:
             self.total_energy()
-            plt.clf()
-            fig, ax = plt.subplots(nrows=1, ncols=3, figsize= [15,10])
             
+            fig, ax = plt.subplots(nrows=1, ncols=3, figsize= [15,10])
             ax[0].plot(self.timelist, self.total_ke_list)
             ax[0].set(xlabel = 'time', ylabel = 'kinetic energy of the system')
             ax[0].grid()
@@ -304,6 +296,9 @@ class plotter:
             ax[2].set(xlabel = 'time', ylabel = 'Total energy of the system')
             ax[2].set_ylim([0,3])
             ax[2].grid()
+            m, b = np.polyfit(self.timelist, self.total_energy_by_time, 1)
+            fit = m*self.timelist + b
+            ax[2].plot(self.timelist, fit , linestyle = 'dashed')
                 
             fig.suptitle('energy time depencies of the total system')
             fig.text(.5, .05, txt, ha='center')
@@ -311,9 +306,6 @@ class plotter:
                 plt.show()
             plt.subplots_adjust(bottom=0.15)
             plt.savefig(plot_name)
-            plt.clf()
-            plt.cla()
-            plt.close()
             
 
 

@@ -1,5 +1,4 @@
 
-
 {"initialisation": 
 
     
@@ -13,13 +12,9 @@
 
 "system": 
 
-    {"timesteps" :[0.0001],
-    "approximations":  ["cromer", "rk2"],
-    "densities": [0, 1.225]}
+    {"timesteps" :[0.0005, 0.0001],
+    "approximations":  ["cromer", "euler", "rk2"],
+    "densities": [0, 100]}
 
 }
     
-
-
-
-

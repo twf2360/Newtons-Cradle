@@ -34,6 +34,7 @@ class calculator:
         self.timestep = timestep
         self.iterations = iterations 
         self.ball_list = []
+        system_states_to_plot.clear()
         
         
        
@@ -209,7 +210,7 @@ class calculator:
                     pairs = combinations(range(self.number), 2)
                     for x,y in pairs:
                         if self.ball_list[x].overlap(self.ball_list[y]):
-                            if (np.all(self.ball_list[x].velocity == 0)) and (np.all(self.ball_list[y].velocity == 0)):
+                            if (np.all(self.ball_list[x].velocity == 0)) and (np.all(self.ball_list[y].velocity == 0)): #change these to isclose
                                 self.collision(self.ball_list[x], self.ball_list[y])
                                 break #there may be an issue using break instead of using continue 
                             print('There was a collsison at iteration {}'.format(i))
