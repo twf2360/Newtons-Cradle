@@ -13,6 +13,7 @@ import json
 from dataframes import results
 
 ''' there will be a way to make this faster, as currently plots runs the calculator through, and then collision dfs does it again, and then time to run dfs does it again '''
+''' fixed the dfs part '''
 
 class main:
     '''
@@ -50,8 +51,8 @@ class main:
 
     def get_dfs(self):
         get_results = results(self.initialisation['number'], self.initialisation['StartPositions'], self.initialisation['StartVelocities'], self.initialisation['radii'], self.initialisation['masses'], self.initialisation['anchors'], self.initialisation['iterations'])
-        get_results.time_to_run_df(self.system['timesteps'], self.system['approximations'], self.system['densities'])
-        get_results.collision_df(self.system['timesteps'], self.system['approximations'], self.system['densities'])
+        get_results.collision_and_time_seperate_df(self.system['timesteps'], self.system['approximations'], self.system['densities'])
+        
 
     def main(self, plots = True, dataframes = True):
         '''

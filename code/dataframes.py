@@ -108,11 +108,71 @@ class results:
                     if i == 0:
                         df = pd.DataFrame(data= [[timestep, approximation, fluid_density, time]] , columns=['Timestep', 'Approximation', 'Fluid Density', 'Time to run'])
                         i += 1
+                        
                         continue
                     df2 = pd.DataFrame(data = [[timestep, approximation, fluid_density, time]], columns=['Timestep', 'Approximation', 'Fluid Density', 'Time to run'])
                     df = df.append(df2, ignore_index = True)
         print(df)
         df.to_csv('time_to_run.csv')
+
+    def collision_and_time_seperate_df(self, timesteps, approximations, densities):
+        i = 0 
+        for timestep in timesteps:
+            for approximation in approximations:
+                for fluid_density in densities:
+                    calculating = calculator(timestep=timestep, iterations=self.iterations)
+                    calculating.get_balls(number = self.number, positions = self.start_positions, velocities= self.start_velocities, radii = self.radii, masses= self.masses, anchors= self.anchors)
+                    results = calculating.time_to_run(approximation, fluid_density)
+                    time = results[0]
+                    collision_results = results[1]
+
+                    if i == 0:
+                        time_df = pd.DataFrame(data= [[timestep, approximation, fluid_density, time]] , columns=['Timestep', 'Approximation', 'Fluid Density', 'Time to run'])
+                        
+                        number_columns = len(collision_results)
+                        columns = ['timestep', 'approximation', 'density']
+                        for collision in range((number_columns - 1)): 
+                            columns.append('Collision {}'.format(collision + 1))
+                        
+                    
+                        data = [collision_results[0][0], collision_results[0][1], collision_results[0][2]]
+                        for x in range(len(collision_results)):
+                            if x == 0: 
+                                continue
+                            data.append(collision_results[x])
+
+                        collision_df = pd.DataFrame(data = [data], columns= columns)
+                        i += 1
+                        continue
+
+                    time_df2 = pd.DataFrame(data = [[timestep, approximation, fluid_density, time]], columns=['Timestep', 'Approximation', 'Fluid Density', 'Time to run'])
+                    time_df = time_df.append(time_df2, ignore_index = True)
+
+                    number_columns = len(collision_results)
+                    
+                    columns = ['timestep', 'approximation', 'density']
+                    for collision in range((number_columns - 1)): 
+                        columns.append('Collision {}'.format(collision + 1))
+                    
+                
+                    data = [collision_results[0][0], collision_results[0][1], collision_results[0][2]]
+                    for x in range(len(collision_results)):
+                        if x == 0: 
+                            continue
+                        data.append(collision_results[x])
+                
+                    
+
+                    collision_df2 = pd.DataFrame(data = [data], columns= columns)
+                    
+                    collision_df = collision_df.append(collision_df2, ignore_index = True)
+
+                    
+        
+        time_df.to_csv('time_to_run.csv')
+        collision_df = collision_df.fillna('No Collision')            
+        collision_df.to_csv('collisions.csv')
+
 
 '''
 with open(r"code\config.json") as configuration:
