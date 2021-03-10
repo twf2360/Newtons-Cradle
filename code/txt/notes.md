@@ -43,7 +43,7 @@ This page is just to keep track of things that need doing, and random thoughts t
     - find things to analyse (consv of momentum, energy, how changing time step effects things etc) :construction:
         - added kinetic, potential and total energy to plotter and they can be anaylsed
     
-    - ensure that enough "advanced coding methods" are present
+    - ensure that enough "advanced coding methods" are present :construction:
         - read up on what counts as advanced coding methods 
             - Abstract classes, inheritance?
 
@@ -59,11 +59,11 @@ This page is just to keep track of things that need doing, and random thoughts t
             - add the number of the balls that are colliding into plots, or dataframes?
         - save dfs to disk?
     
-    - add "main.py" which is used to run the code? :construction:
+    - add "main.py" which is used to run the code? :white_check_mark:
 
     - add non-elastic collisions? 
 
-    - update docstrings and readme to include main, and the changes made to plotter
+    - update docstrings and readme to include main, and the changes made to plotter :white_check_mark:
 
     - add a change of mass possibility somewhere?
     
