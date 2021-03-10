@@ -16,6 +16,7 @@ Furthermore, There is a possibility that a Newton's Cradle is not a choatic enou
 
 ### Required Python Packages
 The simulation requires certain python packages for many of the calculations. The documentation for importing python modules can be found [here](https://pip.pypa.io/en/stable/)
+
 Required modules:
  - NumPy
  - Matplotlib
@@ -33,7 +34,7 @@ Once the "code" folder has been downloaded and unpacked, two files require user 
 ##### config.json:
 config.json defines the system configurations that are to be simulated. System configurations must be entered as values to the keys already shown in config.json. There will key:value pairs already entered in the downloaded file.
 > only certain system configurations are possible, as will be described in "What Systems Can Be Simulated" 
-##### main.py 
+##### main.py:
 main.py is the file that reads the configurations descirbed in config.json, and accesses all of the other classes contained in this repo in order to run the simulation. In order to run the simulation, an instance of the main class should be created, and then the class function main should be run. Main takes two inputs, plots and dataframes. These inputs should be set to true or false, depending on whether a use wants the plots, or the dataframes of the results of the simulation should be saved to disk
 > an example of creating an instance of the class and calling the correct class method will be present at the bottom of the main.py file
 ### What Systems Can Be Simulated   
