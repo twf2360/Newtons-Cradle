@@ -32,6 +32,29 @@ def plotter_init():
     total_e_by_time = plot.total_energy()
     return [ke_by_time, pe_by_time, total_e_by_time]
 
+def test_list_lengths():
+    '''
+    lots of lists are created by the plotter class, and the length of them should be known, as it should be the number of iterations in a lot of case
+    '''
+
+    ''' as testing class attributes, not results, need to call a new class instance'''
+
+    theta = math.pi/6 #initial starting angle! 
+    get_results = calculator(0.0001,50000)
+    get_results.get_balls(number = 1,positions= [[1 * math.sin(theta), -1 * math.cos(theta)]], velocities= [[0,0]], radii=[0.02], masses=[1], anchors= [[0,0]])
+    get_results.calculate(approximation='rk2', density=0)
+    plot = plotter('system_states_over_time', 1)
+
+    assert len(plot.timelist) == 50000
+    assert len(plot.total_ke_list) == 50000
+    assert len(plot.total_pe_list) == 50000
+    assert len(plot.total_energy_by_time) == 50000
+    assert len(plot.potential_energy_by_time) == 50000
+    assert len(plot.kinetic_energy_by_time) == 50000
+    assert len(plot.list_position_by_time) == 50000
+
+    
+
 def test_energy_addition():
     ''' use is close due to errors in floating point maths'''
     energies = plotter_init()
