@@ -123,10 +123,13 @@ class calculator:
 
         v1_x = v1_after[0]
         v2_x = v2_after[0] 
-
+        '''
+        v1_y = v1_after[1]
+        v2_y = v2_after[1]
+        '''
         v1_y = 0
         v2_y = 0
-
+        
         ball1.velocity = np.array([v1_x, v1_y], dtype= float)
         ball2.velocity = np.array([v2_x, v2_y], dtype = float)
 
@@ -203,17 +206,22 @@ class calculator:
         if not approximation.lower() in ('cromer', 'euler', 'rk2'):
             print('approximation not recognised, must be cromer, euler, or RK2')
             sys.exit()
-        
+        constant_collisions = 0 #this value is set to nonzero when the balls are found to be stationary, therefore constantly colliding - could use true / false instead 
         for i in np.arange(self.iterations):
             for ball in self.ball_list: 
                 while True: #probably a much cleaner way to do this somehow 
                     pairs = combinations(range(self.number), 2)
                     for x,y in pairs:
                         if self.ball_list[x].overlap(self.ball_list[y]):
-                            if (np.all(self.ball_list[x].velocity == 0)) and (np.all(self.ball_list[y].velocity == 0)): #change these to isclose
+                            if (np.isclose(self.ball_list[x].velocity, [0,0], atol=0.0005).all()) and (np.isclose(self.ball_list[y].velocity, [0,0], atol=0.0005).all()): #change these to isclose
                                 self.collision(self.ball_list[x], self.ball_list[y])
+                                number = i + 1 
+                                if constant_collisions == 0:
+                                    collision_info.append('stationary balls, constant collisions')
+                                    constant_collisions += 1
                                 break #there may be an issue using break instead of using continue 
                             print('There was a collsison at iteration {}'.format(i))
+                            #print(self.ball_list[x].velocity,self.ball_list[y].velocity)
                             self.collision(self.ball_list[x], self.ball_list[y])
                             number = i + 1
                             collision_info.append('iteration {}, time {}s'.format(number, self.timestep*number)) #add the balls that collide? 

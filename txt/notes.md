@@ -65,6 +65,8 @@ This page is just to keep track of things that need doing, and random thoughts t
 
     - update docstrings and readme to include main, and the changes made to plotter :white_check_mark:
 
+    - deal with collisions when the balls have stopped :construction: 
+
     - add a change of mass possibility somewhere?
     
     - animate? 

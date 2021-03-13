@@ -107,7 +107,7 @@ class plotter:
         plot_name = 'path_plot_' + config_name +'.jpeg'
         
         self.organise_by_ball_positon()
-        fig, ax = plt.subplots(figsize= [15,10])
+        fig, ax = plt.subplots(figsize= [12,10])
         
         fig.suptitle("x vs y positions")
         for ball in range(self.number):
@@ -120,7 +120,8 @@ class plotter:
             ax.plot(x_positions, y_positions, label = 'ball {}'.format(ball+1))
 
         ax.set(xlabel ='x positions', ylabel = 'y positions')
-        ax.legend()
+        ax.set_aspect(1.0/ax.get_data_ratio(), adjustable='box')
+        ax.legend(loc='lower left')
         fig.text(.5, .05, txt, ha='center')
         if show:
             plt.show()
