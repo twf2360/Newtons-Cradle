@@ -183,7 +183,7 @@ class results:
                     time = results[0]
                     collision_results = results[1]
 
-                    plot_class_call = plotter('system_states_over_time.npy', self.number)
+                    plot_class_call = plotter('system_states_over_time', self.number)
                     energy_list = plot_class_call.total_energy()
                     
                     energy_min= min(energy_list)
@@ -198,8 +198,8 @@ class results:
                         ''' initialise the time dataframe'''
                         time_df = pd.DataFrame(data= [[timestep, approximation, fluid_density, time]] , columns=['Timestep (s)', 'Approximation', 'Fluid Density (kg/m^3)', 'Time to run (s)'])
                         
-                        ''' initialise the energy conservation dataframe ''''
-                        conservation_df = pd.DataFrame(data=[timestep, approximation, density, energy_diff, energy_variation_as_percentage], columns=['Timestep (s)','Approximation', 'Fluid Density (kg/m^3)', 'Difference in minimum and maximum energy (J)', 'Energy difference as a percentage of initial energy (%)']) 
+                        ''' initialise the energy conservation dataframe '''
+                        conservation_df = pd.DataFrame(data=[[timestep, approximation, fluid_density, energy_diff, energy_variation_as_percentage]], columns=['Timestep (s)','Approximation', 'Fluid Density (kg/m^3)', 'Difference in minimum and maximum energy (J)', 'Energy difference as a percentage of initial energy (%)']) 
 
                         ''' initialise the collision results dataframe ''' 
                         number_of_columns = len(collision_results)
@@ -225,7 +225,7 @@ class results:
                     time_df = time_df.append(time_df_new_row, ignore_index = True)
 
                     '''create the new row of energy conservation results, and add to the dataframe '''
-                    conservation_df_new_row = pd.DataFrame(data=[timestep, approximation, density, energy_diff, energy_variation_as_percentage], columns=['Timestep (s)','Approximation', 'Fluid Density (kg/m^3)', 'Difference in minimum and maximum energy (J)', 'Energy difference as a percentage of initial energy (%)'])
+                    conservation_df_new_row = pd.DataFrame(data=[[timestep, approximation, fluid_density, energy_diff, energy_variation_as_percentage]], columns=['Timestep (s)','Approximation', 'Fluid Density (kg/m^3)', 'Difference in minimum and maximum energy (J)', 'Energy difference as a percentage of initial energy (%)'])
                     conservation_df.append(conservation_df_new_row, ignore_index = True)
                 
 
