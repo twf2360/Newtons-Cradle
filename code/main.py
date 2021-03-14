@@ -71,7 +71,7 @@ class main:
         note: if the configuration only contains one ball, there will be no collisions, and therefore collisions.csv will only contain the system settings
         '''
         get_results = results(self.initialisation['number'], self.initialisation['StartPositions'], self.initialisation['StartVelocities'], self.initialisation['radii'], self.initialisation['masses'], self.initialisation['anchors'], self.initialisation['iterations']) # initialises the results class in dataframes.py
-        get_results.collision_and_time_seperate_df(self.system['timesteps'], self.system['approximations'], self.system['densities']) #uses the collision_and_time_seperate_df class method to obtain the dataframes and save them to disk
+        get_results.all_three_dfs(self.system['timesteps'], self.system['approximations'], self.system['densities']) #uses the collision_and_time_seperate_df class method to obtain the dataframes and save them to disk
         
 
     def main(self, plots = True, dataframes = True):
