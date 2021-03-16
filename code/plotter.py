@@ -120,8 +120,8 @@ class plotter:
             ax.plot(x_positions, y_positions, label = 'ball {}'.format(ball+1))
 
         ax.set(xlabel ='x positions', ylabel = 'y positions')
-        ax.set_xlim([-0.8, 0.6])
-        ax.set_ylim([-1.2,-0.7])
+        ax.set_xlim([-12, 12])
+        ax.set_ylim([-12, -6])
         ax.legend(loc='lower left')
         fig.text(.5, .05, txt, ha='center')
         if show:

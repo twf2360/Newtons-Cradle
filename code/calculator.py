@@ -117,22 +117,25 @@ class calculator:
         v1_after = v1_before - (2*ball1.mass / totalMass) * (np.dot((v1_before-v2_before), (pos1- pos2)) / distance) * (pos1 - pos2)
         v2_after = v2_before - (2*ball2.mass / totalMass) * (np.dot((v2_before-v1_before) ,(pos2- pos1)) / distance) * (pos2 - pos1)
 
-        #print('maybe direction is weird', pos1 - pos2)
+        print('maybe direction is weird', pos1 - pos2)
+        print('maybe velocities before are wierd', v1_before, v2_before)
+        ''' the dot product is used to handle the angle between the two.. maybe force this vaulue? '''
+        print(np.dot((v1_before-v2_before), (pos1- pos2)))
         ''' this is where things arguably get very dodgy''' 
         ''' there were some major issues with the y direction acting very weirdly during collisions, so now that has been artificially set to 0'''
         ''' this can be thought of as the strings holding the balls having an infinitely large spring constant '''
 
-        
+        '''
         v1_y = 0
         v2_y = 0
-        
+        '''
 
         v1_x = v1_after[0]
         v2_x = v2_after[0] 
-        '''
+        
         v1_y = v1_after[1]
         v2_y = v2_after[1]
-        '''
+        
         ball1.velocity = np.array([v1_x, v1_y], dtype= float)
         ball2.velocity = np.array([v2_x, v2_y], dtype = float)
 
@@ -245,7 +248,13 @@ class calculator:
                     ball.cromer_update(delta_v, self.timestep) 
                 
                 if approximation.lower() == 'rk2':
-                    ball.runge_kutta2(acceleration, self.timestep)
+                    start_points = ball.runge_kutta2_prep(acceleration, self.timestep)
+                    start_position = start_points[0]
+                    start_velocity = start_points[1]
+                
+                    mid_acceleration = self.calculate_acceleration(ball, density)
+
+                    ball.runge_kutta2(start_position, start_velocity, acceleration, mid_acceleration, self.timestep)
             
             time = (i+1) * self.timestep
             time_and_balls = [time, copy.deepcopy(self.ball_list)]

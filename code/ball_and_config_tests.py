@@ -39,11 +39,11 @@ def test_ball_initalisation_velocity():
     assert (ball.velocity == [0,0]).all()
 
 def test_ball_initalisation_radius():
-    ball = ball_initialisation(position=[0,0], velocity=[0,0],radius= 1, mass = 1,anchor= [0,1])
-    assert ball.radius == 1
+    ball = ball_initialisation(position=[0,0], velocity=[0,0],radius= 0.2, mass = 1,anchor= [0,1])
+    assert ball.radius == 0.2
 
 def test_ball_initalisation_mass():
-    ball = ball_initialisation(position=[0,0], velocity=[0,0],radius= 1, mass = 1,anchor= [0,1])
+    ball = ball_initialisation(position=[0,0], velocity=[0,0],radius= 0.2, mass = 1,anchor= [0,1])
     assert ball.mass == 1
 
 

@@ -1,6 +1,6 @@
 import math 
 import numpy as np 
-
+import calculator
 class ball:
     '''
     class used to define the balls involved in the simulation.
@@ -56,17 +56,39 @@ class ball:
         self.velocity += dv
         self.position += self.velocity * dt
 
-    def runge_kutta2(self, acceleration, dt):
+    def runge_kutta2_prep(self, acceleration_start, dt):
+        '''
+        in order to complete the runge kutta approximation of motion, midpoints of position, velocity and acceleration must be used
+        this function is used to update the ball to the midpoint position and velocity, so that the midpoint acceleration can be calculated 
+        '''
+        start_position = self.position
+        start_velocity = self.velocity
+        position_midpoint = self.position + 0.5 * dt * self.velocity
+        velocity_midpoint = self.velocity + 0.5 * dt * acceleration_start
+
+        self.position = position_midpoint
+        self.velocity = velocity_midpoint
+        #print('prep complete!')
+
+        return [start_position, start_velocity]
+
+
+        
+        
+    def runge_kutta2(self, start_position, start_velocity, acceleration_start, acceleration_mid, dt):
         '''
         updates the position of the ball after a time dt, using the Runge-Kutta, second order approximation
 
         dt = the timestep between iterations used by the calculator 
         acceleration = the acceleration at a given moment that has been calculated using the calculator
         '''
-        velocity_midpoint = self.velocity + 0.5 * dt * acceleration
+        
+        velocity_midpoint = self.velocity + 0.5 * dt * acceleration_start
 
-        self.position += velocity_midpoint * dt
-        self.velocity += dt * acceleration
+        
+
+        self.position = start_position + velocity_midpoint * dt
+        self.velocity = start_velocity + dt * acceleration_mid
 
     def overlap(self, incident):
         '''

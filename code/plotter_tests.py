@@ -94,7 +94,7 @@ def test_two_ball_energy():
     assert np.isclose(ke_plus_pe[0], total[0]).all(), "total energy not equal to kinetic plus potential at start" 
     random_time = 50000 * random()
     random_time_int = math.floor(random_time)
-    assert np.isclose(ke_plus_pe[random_time_int], total[random_time_int0]).all(), "total energy not equal to kinetic plus potential at random time"
+    assert np.isclose(ke_plus_pe[random_time_int], total[random_time_int]).all(), "total energy not equal to kinetic plus potential at random time"
 
 '''
 this is more analysis than a test, really 

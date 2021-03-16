@@ -147,7 +147,7 @@ class results:
                 for density in densities:
                     calculating = calculator(timestep=timestep, iterations=self.iterations)
                     calculating.get_balls(number = self.number, positions = self.start_positions, velocities= self.start_velocities, radii = self.radii, masses= self.masses, anchors= self.anchors)
-                    results = calculating.time_to_run(approximation, fluid_density)
+                    results = calculating.time_to_run(approximation, density)
                     plot_class_call = plotter('system_states_over_time.npy', self.number)
                     energy_list = plot_class_call.total_energy()
                     energy_min= min(energy_list)
@@ -226,7 +226,7 @@ class results:
 
                     '''create the new row of energy conservation results, and add to the dataframe '''
                     conservation_df_new_row = pd.DataFrame(data=[[timestep, approximation, fluid_density, energy_diff, energy_variation_as_percentage]], columns=['Timestep (s)','Approximation', 'Fluid Density (kg/m^3)', 'Difference in minimum and maximum energy (J)', 'Energy difference as a percentage of initial energy (%)'])
-                    conservation_df.append(conservation_df_new_row, ignore_index = True)
+                    conservation_df = conservation_df.append(conservation_df_new_row, ignore_index = True)
                 
 
                     ''' create the new row of collision results and add to the dataframe. New row is generated using the same process to generate the first row'''
