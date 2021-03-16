@@ -107,7 +107,7 @@ class plotter:
         plot_name = 'path_plot_' + config_name +'.jpeg'
         
         self.organise_by_ball_positon()
-        fig, ax = plt.subplots(figsize= [12,10])
+        fig, ax = plt.subplots(figsize= [15,8])
         
         fig.suptitle("x vs y positions")
         for ball in range(self.number):
@@ -120,7 +120,8 @@ class plotter:
             ax.plot(x_positions, y_positions, label = 'ball {}'.format(ball+1))
 
         ax.set(xlabel ='x positions', ylabel = 'y positions')
-        ax.set_aspect(1.0/ax.get_data_ratio(), adjustable='box')
+        ax.set_xlim([-0.8, 0.6])
+        ax.set_ylim([-1.2,-0.7])
         ax.legend(loc='lower left')
         fig.text(.5, .05, txt, ha='center')
         if show:
@@ -284,7 +285,7 @@ class plotter:
         if kinetic and potential and total:
             self.total_energy()
             
-            fig, ax = plt.subplots(nrows=1, ncols=3, figsize= [15,10])
+            fig, ax = plt.subplots(nrows=1, ncols=3, figsize= [25,10])
             ax[0].plot(self.timelist, self.total_ke_list)
             ax[0].set(xlabel = 'time', ylabel = 'kinetic energy of the system')
             ax[0].grid()

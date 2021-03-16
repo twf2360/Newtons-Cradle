@@ -117,9 +117,15 @@ class calculator:
         v1_after = v1_before - (2*ball1.mass / totalMass) * (np.dot((v1_before-v2_before), (pos1- pos2)) / distance) * (pos1 - pos2)
         v2_after = v2_before - (2*ball2.mass / totalMass) * (np.dot((v2_before-v1_before) ,(pos2- pos1)) / distance) * (pos2 - pos1)
 
+        #print('maybe direction is weird', pos1 - pos2)
         ''' this is where things arguably get very dodgy''' 
         ''' there were some major issues with the y direction acting very weirdly during collisions, so now that has been artificially set to 0'''
         ''' this can be thought of as the strings holding the balls having an infinitely large spring constant '''
+
+        
+        v1_y = 0
+        v2_y = 0
+        
 
         v1_x = v1_after[0]
         v2_x = v2_after[0] 
@@ -127,9 +133,6 @@ class calculator:
         v1_y = v1_after[1]
         v2_y = v2_after[1]
         '''
-        v1_y = 0
-        v2_y = 0
-        
         ball1.velocity = np.array([v1_x, v1_y], dtype= float)
         ball2.velocity = np.array([v2_x, v2_y], dtype = float)
 
@@ -221,8 +224,10 @@ class calculator:
                                     constant_collisions += 1
                                 break #there may be an issue using break instead of using continue 
                             print('There was a collsison at iteration {}'.format(i))
+                            #print('before:', self.ball_list[x].velocity, self.ball_list[y].velocity)
                             #print(self.ball_list[x].velocity,self.ball_list[y].velocity)
                             self.collision(self.ball_list[x], self.ball_list[y])
+                            #print('after:', self.ball_list[x].velocity, self.ball_list[y].velocity, '\n')
                             number = i + 1
                             collision_info.append('iteration {}, time {}s'.format(number, self.timestep*number)) #add the balls that collide? 
 

@@ -51,6 +51,7 @@ class main:
         for timestep in timesteps:
             for approximation in approximations:
                 for density in densities:
+                    print(timestep, approximation, density)
                     calculating = calculator(timestep=timestep, iterations=self.initialisation['iterations']) #initialise the calculator class using the selected timestep
                     calculating.get_balls(self.initialisation['number'], self.initialisation['StartPositions'], self.initialisation['StartVelocities'], self.initialisation['radii'], self.initialisation['masses'], self.initialisation['anchors']) #set up the calculator with the correct conditions defined by the initialisation config
                     calculating.calculate(approximation, density) #calculate the movement using the current approximation and density 
@@ -58,7 +59,7 @@ class main:
                     plots = plotter('system_states_over_time', self.number) #read in the calculated data so that it can be plotted 
                     plots.plot_x_vs_y([timestep, approximation, density], show = False) #ploy the paths of the balls, just save the plot instead of showing it 
                     plots.energy_plot([timestep, approximation, density], show = False, kinetic = True, total=  True, potential=  True) #plot the energy of the balls, just save the plot instead of showing it
-        
+                    print('\n \n \n')
 
     def get_dfs(self):
         '''
@@ -98,4 +99,4 @@ class main:
 
 ''' example of how to run the simulation'''
 test = main()
-test.main(plots= True, dataframes= True)
+test.main(plots= True, dataframes= False)
