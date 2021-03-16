@@ -7,6 +7,7 @@ from itertools import combinations
 import sys
 import pandas as pd     
 from calculator import calculator    
+from plotter import plotter
 import json
 
 
@@ -15,13 +16,15 @@ class results:
     This is a class that accesses functions from within the calculator class, and prints the results using pandas dataframes
     The calculator class is accessed multiple times, so that results can be compared
 
-    The results class contains three functions:
+    The results class contains four class methods:
         - collision_df generates a dataframe for all of the collisions that take place for every possible configuration described in the config file 
         - time_to_run_df generates a dataframe for the time to run each configuration described in the config file
+        - conservation_df generates a dataframe that investigates the conservation of energy of each system configuration
 
-        - collision_and_time_seperate_df generates both of the above dataframes. This third function was made to be called by the main class, as this way the calculator only has to be ran once for each
-        system, instead of once each for both of the above functions, in order to cut down on the total time to run when running the main class.
+        - all_three_dfs generates all three of the previously defined functions. The reason these methods are combined is so that the calculator class does not have to perform
+        repeat calculations - this dramatically shortens the time taken to generate the dataframes. Becuase of this, all_three_dfs is the class method that is called by main.py
 
+        
     '''
 
     def __init__(self, number, start_positions, start_velocities, radii, masses, anchors, iterations):
@@ -133,14 +136,44 @@ class results:
         print(df)
         df.to_csv('time_to_run.csv')
 
-    def collision_and_time_seperate_df(self, timesteps, approximations, densities):
+    def conservation_of_energy_df(self, timesteps, approximations, densities):
         '''
-        generates two dataframes, one to describe the number of collisions in the simulation of every configuration, and one detailing the time taken to run each simulation
-        the dataframes are then saved to disk as collisions.csv and time_to_run.csv. 
+        return a dataframe showing the difference between the minimum and maximum of total energy for each system configuration
+        used to compare system configurations 
+        '''
+        first_column = True
+        for timestep in timesteps:
+            for approximation in approximations:
+                for density in densities:
+                    calculating = calculator(timestep=timestep, iterations=self.iterations)
+                    calculating.get_balls(number = self.number, positions = self.start_positions, velocities= self.start_velocities, radii = self.radii, masses= self.masses, anchors= self.anchors)
+                    results = calculating.time_to_run(approximation, fluid_density)
+                    plot_class_call = plotter('system_states_over_time.npy', self.number)
+                    energy_list = plot_class_call.total_energy()
+                    energy_min= min(energy_list)
+                    energy_max= max(energy_list)
+                    energy_diff= energy_max - energy_min
+                    energy_start = energy_list[0]
+                    energy_variation_as_fraction = energy_diff/energy_start
+                    energy_variation_as_percentage = energy_variation_as_fraction * 100
+                    
+                    if first_column:
+                        conservation_df = pd.DataFrame(data=[timestep, approximation, density, energy_diff, energy_variation_as_percentage], columns=['timstep','approximation', 'density', 'difference in minimum and maximum energy', 'energy difference as a oercentage of initial energy']) 
+                        first_column = False
+                        continue 
+                    conservation_df_new_row = pd.DataFrame(data=[timestep, approximation, density, energy_diff, energy_variation_as_percentage], columns=['timstep','approximation', 'density', 'difference in minimum and maximum energy', 'energy difference as a oercentage of initial energy'])
+                    conservation_df.append(conservation_df_new_row, ignore_index = True)
+                
+        conservation_df.to_csv('conservation.csv')
+
+    def all_three_dfs(self, timesteps, approximations, densities):
+        '''
+        generates three dataframes, one to describe the number of collisions in the simulation of every configuration, one detailing the time taken to run each simulation, and one investigating the conservation of energy for each simulation
+        the dataframes are then saved to disk as collisions.csv, time_to_run.csv and conservation.csv 
+         
+        '''
+        first_column = True 
         
-        This is done using the processes documented in the class methods collision_df() and time_to_run_df()
-        '''
-        i = 0 
         for timestep in timesteps:
             for approximation in approximations:
                 for fluid_density in densities:
@@ -150,66 +183,72 @@ class results:
                     time = results[0]
                     collision_results = results[1]
 
-                    if i == 0:
-                        time_df = pd.DataFrame(data= [[timestep, approximation, fluid_density, time]] , columns=['Timestep', 'Approximation', 'Fluid Density', 'Time to run'])
+                    plot_class_call = plotter('system_states_over_time', self.number)
+                    energy_list = plot_class_call.total_energy()
+                    
+                    energy_min= min(energy_list)
+                    energy_max= max(energy_list)
+                    energy_diff= energy_max - energy_min
+                    energy_start = energy_list[0]
+                    energy_variation_as_fraction = energy_diff/energy_start
+                    energy_variation_as_percentage = energy_variation_as_fraction * 100
+                    
+
+                    if first_column:
+                        ''' initialise the time dataframe'''
+                        time_df = pd.DataFrame(data= [[timestep, approximation, fluid_density, time]] , columns=['Timestep (s)', 'Approximation', 'Fluid Density (kg/m^3)', 'Time to run (s)'])
                         
-                        number_columns = len(collision_results)
-                        columns = ['timestep', 'approximation', 'density']
-                        for collision in range((number_columns - 1)): 
+                        ''' initialise the energy conservation dataframe '''
+                        conservation_df = pd.DataFrame(data=[[timestep, approximation, fluid_density, energy_diff, energy_variation_as_percentage]], columns=['Timestep (s)','Approximation', 'Fluid Density (kg/m^3)', 'Difference in minimum and maximum energy (J)', 'Energy difference as a percentage of initial energy (%)']) 
+
+                        ''' initialise the collision results dataframe ''' 
+                        number_of_columns = len(collision_results)
+                        
+                        columns = ['Timestep (s)', 'Approximation', 'Fluid Density (kg/m^3)']
+                        for collision in range((number_of_columns - 1)): 
                             columns.append('Collision {}'.format(collision + 1))
                         
-                    
-                        data = [collision_results[0][0], collision_results[0][1], collision_results[0][2]]
+                        ''' extract the system information - timestep, approximation, and density - from the collision results'''
+                        collision_data = [collision_results[0][0], collision_results[0][1], collision_results[0][2]]
+                        
+                        ''' append the information about all of the collision results to the new list, collision_data, that will become each row of the dataframe'''
                         for x in range(len(collision_results)):
-                            if x == 0: 
+                            if x == 0: #the first item in collision_results is the system information, which was added manually and so is skipped
                                 continue
-                            data.append(collision_results[x])
+                            collision_data.append(collision_results[x]) #append the collision information to the list for the new row
 
-                        collision_df = pd.DataFrame(data = [data], columns= columns)
-                        i += 1
+                        collision_df = pd.DataFrame(data = [collision_data], columns= columns)
+                        first_column = False
                         continue
+                    ''' create the new row of time results, and add this row into the dataframe'''
+                    time_df_new_row = pd.DataFrame(data = [[timestep, approximation, fluid_density, time]], columns=['Timestep (s)', 'Approximation', 'Fluid Density (kg/m^3)', 'Time to run (s)'])
+                    time_df = time_df.append(time_df_new_row, ignore_index = True)
 
-                    time_df2 = pd.DataFrame(data = [[timestep, approximation, fluid_density, time]], columns=['Timestep', 'Approximation', 'Fluid Density', 'Time to run'])
-                    time_df = time_df.append(time_df2, ignore_index = True)
+                    '''create the new row of energy conservation results, and add to the dataframe '''
+                    conservation_df_new_row = pd.DataFrame(data=[[timestep, approximation, fluid_density, energy_diff, energy_variation_as_percentage]], columns=['Timestep (s)','Approximation', 'Fluid Density (kg/m^3)', 'Difference in minimum and maximum energy (J)', 'Energy difference as a percentage of initial energy (%)'])
+                    conservation_df.append(conservation_df_new_row, ignore_index = True)
+                
 
-                    number_columns = len(collision_results)
+                    ''' create the new row of collision results and add to the dataframe. New row is generated using the same process to generate the first row'''
+                    number_of_columns = len(collision_results)
                     
-                    columns = ['timestep', 'approximation', 'density']
-                    for collision in range((number_columns - 1)): 
+                    columns = ['Timestep (s)', 'Approximation', 'Fluid Density (kg/m^3)']
+                    for collision in range((number_of_columns - 1)): 
                         columns.append('Collision {}'.format(collision + 1))
                     
                 
-                    data = [collision_results[0][0], collision_results[0][1], collision_results[0][2]]
+                    collision_data = [collision_results[0][0], collision_results[0][1], collision_results[0][2]]
                     for x in range(len(collision_results)):
                         if x == 0: 
                             continue
-                        data.append(collision_results[x])
+                        collision_data.append(collision_results[x])
                 
-                    
-
-                    collision_df2 = pd.DataFrame(data = [data], columns= columns)
-                    
-                    collision_df = collision_df.append(collision_df2, ignore_index = True)
+                    collision_df_new_row = pd.DataFrame(data = [collision_data], columns= columns)
+                    collision_df = collision_df.append(collision_df_new_row, ignore_index = True)
 
                     
         
         time_df.to_csv('time_to_run.csv')
         collision_df = collision_df.fillna('No Collision')            
         collision_df.to_csv('collisions.csv')
-
-
-'''
-with open(r"code\config.json") as configuration:
-    config = json.load(configuration)
-initialisation = config['initialisation']
-system = config['system']
-'''
-'''
-testing = results(initialisation['number'], initialisation['StartPositions'], initialisation['StartVelocities'], initialisation['radii'], initialisation['masses'], initialisation['anchors'], initialisation['iterations'])
-testing.time_to_run_df(system['timesteps'], system['approximations'], system['densities'] )
-'''
-#print(config['initialisation'])
-#print(config['system'])
-#testing = results(number, startPositions, startVelocities, Radii, masses, anchors, iterations)
-#testing.collision_df(timesteps, approximations, densities)
-#testing.time_to_run_df(timesteps, approximations, densities)
+        conservation_df.to_csv('conservation.csv')
