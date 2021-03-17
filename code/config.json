@@ -1,7 +1,7 @@
 {"initialisation": 
 
     
-    {"iterations": 1500000,
+    {"iterations": 1000000,
     "number": 2,
     "StartPositions": [[-10,-8.6602540378443864676372317075293618347140262690519031402790348972], [5,-10]],
     "StartVelocities": [[0,0],[0,0]],
@@ -11,7 +11,7 @@
 
 "system": 
 
-    {"timesteps" :[0.00001],
+    {"timesteps" :[0.00001, 0.0001, 0.001, 0.01],
     "approximations":  ["cromer"],
     "densities": [0]}
 

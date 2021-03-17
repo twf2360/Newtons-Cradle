@@ -296,7 +296,7 @@ class plotter:
 
             ax[2].plot(self.timelist, self.total_energy_by_time)
             ax[2].set(xlabel = 'time', ylabel = 'Total energy of the system')
-            ax[2].set_ylim([0,3])
+            ax[2].set_ylim([0,30])
             ax[2].grid()
             m, b = np.polyfit(self.timelist, self.total_energy_by_time, 1)
             fit = m*self.timelist + b
