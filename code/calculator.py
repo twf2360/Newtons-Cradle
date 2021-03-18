@@ -209,9 +209,11 @@ class calculator:
         collision_info = []
         fluid_density = density
         collision_info.append([self.timestep ,approximation, fluid_density])
-        if not approximation.lower() in ('cromer', 'euler', 'rk2'):
+        
+        if not approximation.lower() in ('cromer', 'euler', 'rk2'): #ensure the approximation is a recognises one. 
             print('approximation not recognised, must be cromer, euler, or RK2')
             sys.exit()
+        
         constant_collisions = 0 #this value is set to nonzero when the balls are found to be stationary, therefore constantly colliding - could use true / false instead 
         for i in np.arange(self.iterations):
             for ball in self.ball_list: 
@@ -225,7 +227,7 @@ class calculator:
                                 if constant_collisions == 0:
                                     collision_info.append('stationary balls, constant collisions')
                                     constant_collisions += 1
-                                break #there may be an issue using break instead of using continue 
+                                break 
                             print('There was a collsison at iteration {}'.format(i))
                             #print('before:', self.ball_list[x].velocity, self.ball_list[y].velocity)
                             #print(self.ball_list[x].velocity,self.ball_list[y].velocity)
@@ -255,6 +257,9 @@ class calculator:
                     mid_acceleration = self.calculate_acceleration(ball, density)
 
                     ball.runge_kutta2(start_position, start_velocity, acceleration, mid_acceleration, self.timestep)
+                if (ball.velocity == [0,0]).all():
+                    time = (i+1) * self.timestep
+                    print('time:', time)
             
             time = (i+1) * self.timestep
             time_and_balls = [time, copy.deepcopy(self.ball_list)]

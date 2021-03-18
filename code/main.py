@@ -99,4 +99,4 @@ class main:
 
 ''' example of how to run the simulation'''
 test = main()
-test.main(plots= True, dataframes= True)
+test.main(plots= False, dataframes= True)
