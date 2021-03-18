@@ -120,8 +120,8 @@ class plotter:
             ax.plot(x_positions, y_positions, label = 'ball {}'.format(ball+1))
 
         ax.set(xlabel ='x positions', ylabel = 'y positions')
-        ax.set_xlim([-7, 7])
-        ax.set_ylim([-12, -6])
+        ax.set_xlim([-0.06, 0.06])
+        ax.set_ylim([-0.12, -0.06])
         ax.legend(loc='lower left')
         fig.text(.5, .05, txt, ha='center')
         if show:
@@ -178,7 +178,14 @@ class plotter:
             for ball in range(len(self.list_ke_by_time[time])):
                 total_ke += self.list_ke_by_time[time][ball] #add up all the kinetc energies of each ball at that time
             self.total_ke_list[time].append(total_ke)
-
+        
+        '''
+        this was used when determing the time period of the pendulums
+        for i in range(len(self.total_ke_list)):
+            ke_value = self.total_ke_list[i]
+            if np.isclose(ke_value, 0):
+                print(ke_value, self.timelist[i])
+        '''
 
         return self.total_ke_list
         
@@ -285,7 +292,7 @@ class plotter:
         if kinetic and potential and total:
             self.total_energy()
             
-            fig, ax = plt.subplots(nrows=1, ncols=3, figsize= [25,10])
+            fig, ax = plt.subplots(nrows=1, ncols=3, figsize= [25,10], sharey=True)
             ax[0].plot(self.timelist, self.total_ke_list)
             ax[0].set(xlabel = 'time', ylabel = 'kinetic energy of the system')
             ax[0].grid()
@@ -296,7 +303,7 @@ class plotter:
 
             ax[2].plot(self.timelist, self.total_energy_by_time)
             ax[2].set(xlabel = 'time', ylabel = 'Total energy of the system')
-            ax[2].set_ylim([0,0.3])
+            #ax[2].set_ylim([0,0.003])
             ax[2].grid()
             m, b = np.polyfit(self.timelist, self.total_energy_by_time, 1)
             fit = m*self.timelist + b

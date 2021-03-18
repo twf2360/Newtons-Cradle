@@ -32,6 +32,7 @@ class ball:
         self.mass = mass
         self.velocity = np.array(velocity)
         
+        
 
         self.length = np.linalg.norm(self.anchor - self.position)
 

@@ -147,7 +147,7 @@ class results:
                 for density in densities:
                     calculating = calculator(timestep=timestep, iterations=self.iterations)
                     calculating.get_balls(number = self.number, positions = self.start_positions, velocities= self.start_velocities, radii = self.radii, masses= self.masses, anchors= self.anchors)
-                    results = calculating.time_to_run(approximation, density)
+                    calculating.time_to_run(approximation, density)
                     plot_class_call = plotter('system_states_over_time.npy', self.number)
                     energy_list = plot_class_call.total_energy()
                     energy_min= min(energy_list)

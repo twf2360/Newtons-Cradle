@@ -217,7 +217,7 @@ class calculator:
         constant_collisions = 0 #this value is set to nonzero when the balls are found to be stationary, therefore constantly colliding - could use true / false instead 
         for i in np.arange(self.iterations):
             for ball in self.ball_list: 
-                while True: #probably a much cleaner way to do this somehow 
+                while True:
                     pairs = combinations(range(self.number), 2)
                     for x,y in pairs:
                         if self.ball_list[x].overlap(self.ball_list[y]):
@@ -228,11 +228,11 @@ class calculator:
                                     collision_info.append('stationary balls, constant collisions')
                                     constant_collisions += 1
                                 break 
-                            print('There was a collsison at iteration {}'.format(i))
-                            #print('before:', self.ball_list[x].velocity, self.ball_list[y].velocity)
-                            #print(self.ball_list[x].velocity,self.ball_list[y].velocity)
+                            #print('There was a collsison at iteration {}'.format(i))
+
+                          
                             self.collision(self.ball_list[x], self.ball_list[y])
-                            #print('after:', self.ball_list[x].velocity, self.ball_list[y].velocity, '\n')
+                            
                             number = i + 1
                             collision_info.append('iteration {}, time {}s'.format(number, self.timestep*number)) #add the balls that collide? 
 
@@ -257,9 +257,7 @@ class calculator:
                     mid_acceleration = self.calculate_acceleration(ball, density)
 
                     ball.runge_kutta2(start_position, start_velocity, acceleration, mid_acceleration, self.timestep)
-                if (ball.velocity == [0,0]).all():
-                    time = (i+1) * self.timestep
-                    print('time:', time)
+                
             
             time = (i+1) * self.timestep
             time_and_balls = [time, copy.deepcopy(self.ball_list)]
