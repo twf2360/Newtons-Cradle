@@ -28,6 +28,7 @@ This page is just to keep track of things that need doing, and random thoughts t
                 - not due to overly large radii 
                 - this has been fixed with a bit of a hotfix, but it works! 
                     - needs more analysis
+                - seems to be an issue based on timestep. Needs to be incredibly low in order to 
             - The total energy plot doesn't appear to be a simple addition of the ke and pe 
                 - perfect idea for a unit test! 
                 - this is due to errors with floating point maths. It is only very very small variations :neutral_face:
@@ -53,11 +54,11 @@ This page is just to keep track of things that need doing, and random thoughts t
     - add config file :white_check_mark: 
         - unable to comment within the file which is annoying - the reason for the weird position number is because it starts at an angle of 30 deg
     
-    - Dataframes :construction:
+    - Dataframes :white_check_mark:
         - collision data frame :white_check_mark:
         - time to run dataframe :white_check_mark:
-            - add the number of the balls that are colliding into plots, or dataframes?
-        - save dfs to disk?
+            
+        - save dfs to disk? :white_check_mark:
     
     - add "main.py" which is used to run the code? :white_check_mark:
 
@@ -65,7 +66,7 @@ This page is just to keep track of things that need doing, and random thoughts t
 
     - update docstrings and readme to include main, and the changes made to plotter :white_check_mark:
 
-    - deal with collisions when the balls have stopped :construction: 
+    - deal with collisions when the balls have stopped :white_check_mark:
 
     - add a change of mass possibility somewhere?
     

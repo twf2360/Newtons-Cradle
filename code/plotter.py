@@ -54,10 +54,11 @@ class plotter:
         '''
         this function is used to plot the x positions of all of the balls against time 
         '''
-        self.organise_by_ball_positon()
-        fig, ax = plt.subplots()
+        self.organise_by_ball_positon() #organise correctly 
+        fig, ax = plt.subplots() #initialise the plot
         fig.suptitle("x postions of Newton's Cradle Balls vs Time")
-        for ball in range(self.number):
+        
+        for ball in range(self.number): #for each ball, extract the x position and plot it 
             total_positions = self.position_organised_by_ball[ball]
             x_positions = []
             for position in range(len(total_positions)):
@@ -74,10 +75,10 @@ class plotter:
         '''
         used to plot the y position value of the balls against time 
         '''
-        self.organise_by_ball_positon()
-        fig, ax = plt.subplots()
+        self.organise_by_ball_positon() #ensure correct organisation of the balls 
+        fig, ax = plt.subplots() #initialise the plot
         fig.suptitle("y postions of Newton's Cradle Balls vs Time")
-        for ball in range(self.number):
+        for ball in range(self.number): #for each ball, extract the y position and plot it
             total_positions = self.position_organised_by_ball[ball]
             y_positions = []
             for position in range(len(total_positions)):
@@ -99,6 +100,8 @@ class plotter:
         this is used plot the path of the balls as a visual check that they are following the expected path
         
         '''
+
+        ''' extract system parameters, and generate the name for the plot, as well as the the text, txt, which is added to the plot'''
         timestep = system_config[0]
         approximation = system_config[1]
         density = system_config[2]
@@ -106,11 +109,11 @@ class plotter:
         config_name = 'timestep_{}'.format(timestep) + '_approximation_{}_'.format(approximation) + 'density_{}'.format(density) 
         plot_name = 'path_plot_' + config_name +'.jpeg'
         
-        self.organise_by_ball_positon()
+        self.organise_by_ball_positon() #ensure balls are organised correctly 
         fig, ax = plt.subplots(figsize= [15,8])
         
         fig.suptitle("x vs y positions")
-        for ball in range(self.number):
+        for ball in range(self.number): #for every ball individually, extract the x and y positions from the ball object and plot them against each other
             total_positions = self.position_organised_by_ball[ball]
             x_positions = []
             y_positions = []
@@ -120,14 +123,14 @@ class plotter:
             ax.plot(x_positions, y_positions, label = 'ball {}'.format(ball+1))
 
         ax.set(xlabel ='x positions', ylabel = 'y positions')
-        ax.set_xlim([-0.06, 0.06])
+        ax.set_xlim([-0.06, 0.06]) #set the size of the plots so that the motion appears circular - the relations between the axis are right 
         ax.set_ylim([-0.12, -0.06])
         ax.legend(loc='lower left')
         fig.text(.5, .05, txt, ha='center')
         if show:
             plt.show()
         plt.subplots_adjust(bottom=0.15)
-        plt.savefig(plot_name)
+        plt.savefig(plot_name) #save the plot to disk
         
     def kinetic_energy_by_time(self):
         '''
@@ -232,6 +235,7 @@ class plotter:
 
         '''
 
+        ''' extract system parameters, and generate the name for the plot, as well as the the text, txt, which is added to the plot'''
         timestep = system_config[0]
         approximation = system_config[1]
         density = system_config[2]
@@ -239,7 +243,7 @@ class plotter:
         config_name = 'timestep_{}'.format(timestep) + '_approximation_{}_'.format(approximation) + 'density_{}'.format(density) 
         plot_name = 'energy_plot_' + config_name +'.jpeg'
         
-        if kinetic and potential and (not total):
+        if kinetic and potential and (not total): #just kinetic and potential plot
             self.total_potential_energy()
             self.total_kinetic_energy()
             fig, ax = plt.subplots(nrows=1, ncols=2)
@@ -257,7 +261,7 @@ class plotter:
             if show:
                 plt.show()
 
-        if total and ((not kinetic) or (not potential)):
+        if total and ((not kinetic) and (not potential)): #just total energy plot
             self.total_energy()
             fig, ax = plt.subplots(nrows=1, ncols=1)
             ax.plot(self.timelist, self.total_energy_by_time)
@@ -268,7 +272,7 @@ class plotter:
             if show:
                 plt.show()
         
-        if kinetic != potential: #i think this will give me an exclusive or
+        if kinetic != potential: #just kinetic, exclusively or just potential plot
             if kinetic:
                 self.total_kinetic_energy()
                 fig, ax = plt.subplots(nrows=1, ncols=1)
@@ -289,7 +293,7 @@ class plotter:
                 if show:
                     plt.show()
 
-        if kinetic and potential and total:
+        if kinetic and potential and total: #plot of kinetic, total, and potential energy
             self.total_energy()
             
             fig, ax = plt.subplots(nrows=1, ncols=3, figsize= [25,10], sharey=True)
@@ -321,11 +325,3 @@ class plotter:
 
 
     
-'''
-test = plotter('system_states_over_time', 1)
-#test.plot_y_positions_vs_time()
-#test.plot_x_positions_vs_time()
-test.plot_x_vs_y()
-test.energy_plot(kinetic=True, potential=True, total=True)
-
-'''

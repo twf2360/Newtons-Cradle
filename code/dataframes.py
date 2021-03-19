@@ -141,15 +141,16 @@ class results:
         return a dataframe showing the difference between the minimum and maximum of total energy for each system configuration
         used to compare system configurations 
         '''
-        first_column = True
+        first_column = True #changes to false after first column has been made
         for timestep in timesteps:
             for approximation in approximations:
-                for density in densities:
-                    calculating = calculator(timestep=timestep, iterations=self.iterations)
+                for density in densities: #for every possible simulation permutation
+                    calculating = calculator(timestep=timestep, iterations=self.iterations) #initialise the calculator for current permutation and get all the required balls 
                     calculating.get_balls(number = self.number, positions = self.start_positions, velocities= self.start_velocities, radii = self.radii, masses= self.masses, anchors= self.anchors)
-                    calculating.time_to_run(approximation, density)
-                    plot_class_call = plotter('system_states_over_time.npy', self.number)
-                    energy_list = plot_class_call.total_energy()
+                    calculating.time_to_run(approximation, density) #run the calculator class 
+                    plot_class_call = plotter('system_states_over_time.npy', self.number) #initialise the plot class to the energy list can be read 
+                    energy_list = plot_class_call.total_energy() #use the plotter class function to get the energy list
+                    ''' from the energy list, find the minimum, maximum, and variation of the energy'''
                     energy_min= min(energy_list)
                     energy_max= max(energy_list)
                     energy_diff= energy_max - energy_min
@@ -157,14 +158,15 @@ class results:
                     energy_variation_as_fraction = energy_diff/energy_start
                     energy_variation_as_percentage = energy_variation_as_fraction * 100
                     
-                    if first_column:
+                    if first_column: #initialise the dataframe 
                         conservation_df = pd.DataFrame(data=[timestep, approximation, density, energy_diff, energy_variation_as_percentage], columns=['timstep','approximation', 'density', 'difference in minimum and maximum energy', 'energy difference as a oercentage of initial energy']) 
                         first_column = False
                         continue 
+                    '''generate new row of dataframe and append it to the previously initialised df'''
                     conservation_df_new_row = pd.DataFrame(data=[timestep, approximation, density, energy_diff, energy_variation_as_percentage], columns=['timstep','approximation', 'density', 'difference in minimum and maximum energy', 'energy difference as a oercentage of initial energy'])
                     conservation_df.append(conservation_df_new_row, ignore_index = True)
                 
-        conservation_df.to_csv('conservation.csv')
+        conservation_df.to_csv('conservation.csv') #save to disk as a csv
 
     def all_three_dfs(self, timesteps, approximations, densities):
         '''
@@ -177,15 +179,15 @@ class results:
         for timestep in timesteps:
             for approximation in approximations:
                 for fluid_density in densities:
-                    calculating = calculator(timestep=timestep, iterations=self.iterations)
+                    calculating = calculator(timestep=timestep, iterations=self.iterations) #initialise the calculator for current permutation and get all the required balls 
                     calculating.get_balls(number = self.number, positions = self.start_positions, velocities= self.start_velocities, radii = self.radii, masses= self.masses, anchors= self.anchors)
-                    results = calculating.time_to_run(approximation, fluid_density)
-                    time = results[0]
+                    results = calculating.time_to_run(approximation, fluid_density)  #run the calculator class 
+                    time = results[0] #seperate the results out into time to run and collision information
                     collision_results = results[1]
-
-                    plot_class_call = plotter('system_states_over_time', self.number)
-                    energy_list = plot_class_call.total_energy()
                     
+                    plot_class_call = plotter('system_states_over_time', self.number) #initialise the plot class to the energy list can be read 
+                    energy_list = plot_class_call.total_energy() #use the plotter class function to get the energy list
+                    ''' from the energy list, find the minimum, maximum, and variation of the energy'''
                     energy_min= min(energy_list)
                     energy_max= max(energy_list)
                     energy_diff= energy_max - energy_min

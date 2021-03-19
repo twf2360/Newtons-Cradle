@@ -69,7 +69,7 @@ class ball:
 
         self.position = position_midpoint
         self.velocity = velocity_midpoint
-        #print('prep complete!')
+
 
         return [start_position, start_velocity]
 

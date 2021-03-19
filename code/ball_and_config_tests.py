@@ -1,10 +1,4 @@
-''' IDEAS! 
-CHECK KE + PE = TOTAL E 
-CHECK STARTING E = INITIAL E
-check the config is correct
-check the time to run is correct?
-check the balls made are expected
-'''
+
 
 import pytest
 import math
@@ -55,9 +49,7 @@ def test_ball_energies():
     ball = ball_initialisation(position=[0,0], velocity=[0,0],radius= 1, mass = 1,anchor= [0,1])
     assert ball.kinetic == 0, "kinetic energy should be 0"
     assert ball.potential == 0, "potential energy should be 0"
-'''
-make sure that we don't just include 0s
-'''
+
 
 
  

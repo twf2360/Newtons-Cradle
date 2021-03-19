@@ -88,7 +88,7 @@ def test_two_ball_energy():
     plot = two_ball_init()
     ke = plot.total_kinetic_energy 
     pe = plot.total_potential_energy
-    total = plot.total_energy
+    total = plot.total_energy()
     
     ke_plus_pe = ke + pe 
     assert np.isclose(ke_plus_pe[0], total[0]).all(), "total energy not equal to kinetic plus potential at start" 
@@ -96,10 +96,3 @@ def test_two_ball_energy():
     random_time_int = math.floor(random_time)
     assert np.isclose(ke_plus_pe[random_time_int], total[random_time_int]).all(), "total energy not equal to kinetic plus potential at random time"
 
-'''
-this is more analysis than a test, really 
-def test_energy_conservation():
-    energies = plotter_init()
-    total = energies[2]
-    assert (np.isclose(total[0], total[4999])) #might need to check what tolerance should be used here 
-'''

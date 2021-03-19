@@ -34,7 +34,7 @@ class calculator:
         self.timestep = timestep
         self.iterations = iterations 
         self.ball_list = []
-        system_states_to_plot.clear()
+        system_states_to_plot.clear() #when the class is called upon multiple times by main.py, this ensures there is not overlapping data between systems
         
         
        
@@ -55,9 +55,9 @@ class calculator:
         '''
         self.number = number
         
-        for i in np.arange(self.number):
+        for i in np.arange(self.number): #generate the correct number of balls 
             spawnedBall = ball(position= np.array(positions[i], dtype = float),velocity= np.array(velocities[i], dtype = float), radius= np.array(radii[i], dtype = float), mass = masses[i], anchor= anchors[i])
-            self.ball_list.append(spawnedBall)
+            self.ball_list.append(spawnedBall) #add the newly create ball object into the list of all balls in the system
         
         
         return self.ball_list
@@ -83,15 +83,15 @@ class calculator:
         
         cross_sec_area = math.pi * ball.radius**2
         
-        if not np.any(ball.velocity):
-            return [0,0]
+        if not np.any(ball.velocity): #if the ball has no velocity then the fluid resistance is 0
+            return [0,0] 
         
         velocity = ball.velocity
         speed = np.linalg.norm(velocity)
         
         vel_direction = velocity / speed
 
-        force_scalar = 0.5 * fluid_density * speed**2 *drag_coefficient * cross_sec_area
+        force_scalar = 0.5 * fluid_density * speed**2 *drag_coefficient * cross_sec_area #calculate magnitude of drag force
         force_vector = (-force_scalar) * vel_direction # - as it always acts against the direction of the velocity
         return force_vector
 
@@ -114,21 +114,20 @@ class calculator:
         v2_before = ball2.velocity # #velocity of ball 2 before the collision
 
 
-        v1_after = v1_before - (2*ball1.mass / totalMass) * (np.dot((v1_before-v2_before), (pos1- pos2)) / distance) * (pos1 - pos2)
+        v1_after = v1_before - (2*ball1.mass / totalMass) * (np.dot((v1_before-v2_before), (pos1- pos2)) / distance) * (pos1 - pos2) #derived from consv. of KE and momentum
         v2_after = v2_before - (2*ball2.mass / totalMass) * (np.dot((v2_before-v1_before) ,(pos2- pos1)) / distance) * (pos2 - pos1)
 
-        print('maybe direction is weird', pos1 - pos2)
-        print('maybe velocities before are wierd', v1_before, v2_before)
-        ''' the dot product is used to handle the angle between the two.. maybe force this vaulue? '''
-        print(np.dot((v1_before-v2_before), (pos1- pos2)))
-        ''' this is where things arguably get very dodgy''' 
-        ''' there were some major issues with the y direction acting very weirdly during collisions, so now that has been artificially set to 0'''
-        ''' this can be thought of as the strings holding the balls having an infinitely large spring constant '''
 
-        '''
+        
+        ''' as mentioned in report, there is a section where the y velocity after collisions was artificially set to zero. 
+
+        
         v1_y = 0
         v2_y = 0
+
+        although not used, this is kept here for reference     
         '''
+
 
         v1_x = v1_after[0]
         v2_x = v2_after[0] 
@@ -136,7 +135,7 @@ class calculator:
         v1_y = v1_after[1]
         v2_y = v2_after[1]
         
-        ball1.velocity = np.array([v1_x, v1_y], dtype= float)
+        ball1.velocity = np.array([v1_x, v1_y], dtype= float) #change the ball velocities to the new, calculated velocities
         ball2.velocity = np.array([v2_x, v2_y], dtype = float)
 
     def stringtension(self,ball):
@@ -169,7 +168,7 @@ class calculator:
             angPos = 0
         
         stringTension_scalar = ((ball.mass*g_scalar*math.cos(angPos)) + ball.mass*magAcceleration) #calculate magnitude of string tension
-        stringTension_vector = stringTension_scalar * (np.array((to_anchor)/normalisation))
+        stringTension_vector = stringTension_scalar * (np.array((to_anchor)/normalisation)) #times magnitude by the direction of string tension force 
 
         return stringTension_vector
 
@@ -183,13 +182,13 @@ class calculator:
         
         returns the acceleration of the ball object that was inputted
         '''
-        tension_force = self.stringtension(ball)
+        tension_force = self.stringtension(ball) #calculates the string tension force
 
-        air_resistance_force = self.fluid_resistance(ball, density) 
+        air_resistance_force = self.fluid_resistance(ball, density) #calculates the fluid resistance force
 
 
-        netForce = ball.mass*g_vector + tension_force + air_resistance_force
-        acceleration = (netForce/ball.mass)
+        netForce = ball.mass*g_vector + tension_force + air_resistance_force #add the forces together to calculate net force 
+        acceleration = (netForce/ball.mass) #newtons second law to calculate acceleratiob
         return acceleration
         
 
@@ -206,43 +205,46 @@ class calculator:
         saves 'system_states_over_time.npy' to disk, which is the ball objects list, time, approximation, and density, for every timestep
         returns collision_info, an array of all of the points in time at which there was a collision
         '''
-        collision_info = []
+        collision_info = [] #make the list that will be read later by the dataframes class. This list willcontain collision info, and basic system parameters 
         fluid_density = density
-        collision_info.append([self.timestep ,approximation, fluid_density])
+        collision_info.append([self.timestep ,approximation, fluid_density]) #add the system parameters
         
-        if not approximation.lower() in ('cromer', 'euler', 'rk2'): #ensure the approximation is a recognises one. 
+        if not approximation.lower() in ('cromer', 'euler', 'rk2'): #ensure the approximation is a recognised one. 
             print('approximation not recognised, must be cromer, euler, or RK2')
             sys.exit()
         
         constant_collisions = 0 #this value is set to nonzero when the balls are found to be stationary, therefore constantly colliding - could use true / false instead 
-        for i in np.arange(self.iterations):
-            for ball in self.ball_list: 
+        for i in np.arange(self.iterations): # needs to be calculated every iteration
+            for ball in self.ball_list: #balls movement is calculated individually
                 while True:
-                    pairs = combinations(range(self.number), 2)
+                    pairs = combinations(range(self.number), 2) #split the balls up into bairs to test if they're overlapping 
                     for x,y in pairs:
-                        if self.ball_list[x].overlap(self.ball_list[y]):
-                            if (np.isclose(self.ball_list[x].velocity, [0,0], atol=0.0005).all()) and (np.isclose(self.ball_list[y].velocity, [0,0], atol=0.0005).all()): #change these to isclose
-                                self.collision(self.ball_list[x], self.ball_list[y])
-                                number = i + 1 
+                        if self.ball_list[x].overlap(self.ball_list[y]): #if the balls are colliding
+                            
+                            if (np.isclose(self.ball_list[x].velocity, [0,0], atol=0.0005).all()) and (np.isclose(self.ball_list[y].velocity, [0,0], atol=0.0005).all()): #the balls will be found to be constantly coliding if stationary
+                                self.collision(self.ball_list[x], self.ball_list[y]) 
                                 if constant_collisions == 0:
-                                    collision_info.append('stationary balls, constant collisions')
+                                    collision_info.append('stationary balls, constant collisions') 
                                     constant_collisions += 1
                                 break 
+                            
                             #print('There was a collsison at iteration {}'.format(i))
 
                           
                             self.collision(self.ball_list[x], self.ball_list[y])
                             
                             number = i + 1
-                            collision_info.append('iteration {}, time {}s'.format(number, self.timestep*number)) #add the balls that collide? 
+                            collision_info.append('iteration {}, time {}s'.format(number, self.timestep*number)) #add the details of the collision to the collision info list for the dataframe
 
                             break
-                    acceleration = self.calculate_acceleration(ball, fluid_density)
+                    
+                    
+                    acceleration = self.calculate_acceleration(ball, fluid_density) #if there's no collision, just calculate the normal pendulum acceleration
                     delta_v = acceleration * self.timestep  # calculate the change in velocity over the timestep
                     
                     break   
                 
-                
+                ''' use the selected approximation, automatically set to lower case to avoid them not being recognised due to casing '''
                 if approximation.lower() == 'euler':
                     ball.euler_update(delta_v, self.timestep)
                 
@@ -258,25 +260,27 @@ class calculator:
 
                     ball.runge_kutta2(start_position, start_velocity, acceleration, mid_acceleration, self.timestep)
                 
-            
+            ''' add the time, and the state of the system - all of the ball objects in their current state - to a list that will be read in by the plotter '''
             time = (i+1) * self.timestep
             time_and_balls = [time, copy.deepcopy(self.ball_list)]
             system_states_to_plot.append(time_and_balls)
 
-        if os.path.isfile('system_states_over_time.npy'):
+        if os.path.isfile('system_states_over_time.npy'): #  if the data of the simulation already exists, this will be from a previous version, and must be deleted
             os.remove('system_states_over_time.npy')
-        np.save('system_states_over_time.npy', system_states_to_plot, allow_pickle=True)
+        
+        np.save('system_states_over_time.npy', system_states_to_plot, allow_pickle=True) #save the state of the system over time to disk so it can be used by plotter
         return collision_info
 
     def time_to_run(self, approximation, density):
         '''
         used to return the time to run the calculate function, as well as the collision info
-        takes all of the same inputs 
+        
+        requires all of the same inputs as the calculate function
 
         '''
-        start_time = time()
+        start_time = time() #time before doing the calculation 
         collision_info = self.calculate(approximation, density)
-        time_to_run = time() - start_time
+        time_to_run = time() - start_time #ttotal time take to run the calculation
         return [time_to_run, collision_info]
 
 
