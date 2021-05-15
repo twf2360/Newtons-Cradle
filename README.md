@@ -61,6 +61,3 @@ The "code" folder contains all of the code that is used to run, and test the sim
   - main.py accesses all of the other classes, and is to be ran by a user after they have defined the system configuration in the config.json file.
 
   - plotter_tests.py, ball_and_config_tests.py, and calculator_tests all use the PyTest framework to test the respective files that are contained within the name. 
-
-
-
