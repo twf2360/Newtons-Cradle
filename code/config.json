@@ -1,0 +1,20 @@
+{"initialisation": 
+
+    
+    {"iterations": 100000,
+    "number": 1 ,
+    "StartPositions": [[-0.05,-0.08660254037844386467637231707529361834714026269051903140279034897]],
+    "StartVelocities": [[0,0]],
+    "radii": [0.01],
+    "masses": [0.2],
+    "anchors": [[0,0]]},
+
+"system": 
+
+    {"timesteps" :[0.0065],
+    "approximations":  ["cromer", "euler", "rk2"],
+    "densities": [0]}
+
+}
+
+
